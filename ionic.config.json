@@ -1,0 +1,7 @@
+{
+  "name": "Parkhub-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
