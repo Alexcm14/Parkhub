@@ -1,1 +1,20 @@
-
+/* Style du fond blanc de la barre de navigation */
+ion-tab-bar {
+    background-color: #fff;
+  }
+  
+  /* Style des icônes en gris foncé */
+  ion-tab-button ion-icon {
+    color: #333; /* Couleur grise foncée */
+  }
+  
+  /* Style des icônes en bleu au survol */
+  ion-tab-button:hover ion-icon {
+    color: #46d1c8; /* Couleur bleue au survol */
+  }
+  
+  /* Style des icônes en bleu lorsque la page est active */
+  ion-tab-button[aria-selected="true"] ion-icon {
+    color: #46d1c8; /* Couleur bleue pour l'onglet actif */
+  }
+  
