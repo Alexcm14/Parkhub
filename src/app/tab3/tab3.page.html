@@ -5,40 +5,4 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-list>
-  <ion-item button (click)="goPersonal()" detail>
-
-    <ion-icon slot="start" name="person-circle"></ion-icon>
-    
-    <ion-label>
-    </ion-label>
-  </ion-item>
-    <ion-item button (click)="goCar()"detail>
-      <ion-icon slot="start" name="car"></ion-icon>
-      <ion-label>
-        Ma voiture
-      </ion-label>
-    </ion-item>
-
-    <ion-item button (click)="goPayement()"detail>
-      <ion-icon slot="start" name="card"></ion-icon>
-      <ion-label>
-      </ion-label>
-    </ion-item>
-
-    <ion-item button (click)="itemClick()" lines="full" detail>
-      <ion-icon slot="start" name="tablet-landscape"></ion-icon>
-      <ion-label>
-      </ion-label>
-      <ion-button slot="end" (click)="addClick(); $event.stopPropagation()">
-      </ion-button>
-    </ion-item>
-    
-  
-    
-  </ion-list>
-
-  <ion-button fill="clear" class="ion-margin" color="danger">
-    <ion-icon name="log-out" slot="start"></ion-icon> se déconnecter
-  </ion-button>
 
