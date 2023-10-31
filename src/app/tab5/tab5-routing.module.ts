@@ -9,7 +9,10 @@ const routes: Routes = [
     component: Tab5Page
   }
 ];
-
+{
+  path: 'personal'
+  loadChildren: () => import('../pages/personal/personal.module').then(m => m.PersonalPageModule)
+};
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
