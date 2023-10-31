@@ -1,0 +1,9 @@
+.range-value {
+    text-align: center;
+    font-size: 1.5rem;
+    position: absolute;
+    width: 100%;
+    top: -1.5rem; /* Ajustez la valeur en fonction de votre mise en page */
+    pointer-events: none; /* Pour que le texte n'interfère pas avec le curseur */
+  }
+  

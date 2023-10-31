@@ -1,10 +1,21 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>tab4</ion-title>
+    <ion-title>Mes Places</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <ion-list>
+    <ion-item>
+      <ion-range [(ngModel)]="valeur" min="0" max="30" step ="1" (ionChange)="calculerSomme()"></ion-range>
+      <span class="range-value">{{ valeur }}</span>
+      
+    </ion-item>
+    <ion-item>
+      <ion-label>{{ somme | currency: 'EUR' }}</ion-label>
+    </ion-item>
+  </ion-list>
+
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">tab4</ion-title>
