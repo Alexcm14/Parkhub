@@ -6,4 +6,91 @@
     top: -1.5rem; /* Ajustez la valeur en fonction de votre mise en page */
     pointer-events: none; /* Pour que le texte n'interfère pas avec le curseur */
   }
+
+.title{
+  font-size: 1.5rem;
+}
   
+/* Centrage des éléments */
+ion-item {
+  text-align: center;
+}
+
+/* Augmentation de la taille du texte */
+.ion-label {
+  font-size: large;
+}
+
+/* Couleur du texte en bleu */
+.T1 {
+  color: #46d1c8;
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+  white-space: normal;
+}
+
+.T2 {
+  font-size: 2rem;
+  white-space: normal;
+  font-weight: bold;
+}
+
+.somme{
+  font-size: 3rem;
+  white-space: normal;
+}
+
+
+/* Suppression de la barre entre les éléments */
+.ion-item {
+  --border-width: 0;
+}
+
+/* Soulignement du texte */
+.underline-text {
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.estimation {
+  white-space: normal;
+}
+
+.fixed-button {
+  margin-left: 50%;
+  margin-bottom: 10%;
+  transform: translateX(-50%);
+  z-index: 999;
+  text-align: center;
+  width: 100%;
+}
+
+.search{
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 10px;
+  margin-left: 15%;
+}
+
+.search-button-text {
+  text-align: center;
+}
+
+.gray-text {
+  color: #888; /* Couleur grise personnalisée */
+}
+
+.start{
+  font-size: 2rem;
+  white-space: normal;
+  margin-top: 25px;
+}
+
+.TitreEtapes{
+  font-size: 1.5rem;
+  white-space: normal;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
