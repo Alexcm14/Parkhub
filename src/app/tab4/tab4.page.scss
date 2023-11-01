@@ -3,31 +3,30 @@
     font-size: 1.5rem;
     position: absolute;
     width: 100%;
-    top: -1.5rem; /* Ajustez la valeur en fonction de votre mise en page */
-    pointer-events: none; /* Pour que le texte n'interfère pas avec le curseur */
+    top: -1.5rem;
+    pointer-events: none;
   }
 
 .title{
   font-size: 1.5rem;
 }
   
-/* Centrage des éléments */
 ion-item {
   text-align: center;
 }
 
-/* Augmentation de la taille du texte */
 .ion-label {
   font-size: large;
 }
 
-/* Couleur du texte en bleu */
 .T1 {
   color: #46d1c8;
   font-size: 2.5rem;
   font-weight: bold;
   text-align: center;
   white-space: normal;
+  display: block;
+  margin: 0 auto;
 }
 
 .T2 {
@@ -42,12 +41,10 @@ ion-item {
 }
 
 
-/* Suppression de la barre entre les éléments */
 .ion-item {
   --border-width: 0;
 }
 
-/* Soulignement du texte */
 .underline-text {
   text-decoration: underline;
   font-weight: bold;
@@ -58,6 +55,7 @@ ion-item {
 }
 
 .fixed-button {
+  position: relative;
   margin-left: 50%;
   margin-bottom: 10%;
   transform: translateX(-50%);
@@ -78,7 +76,7 @@ ion-item {
 }
 
 .gray-text {
-  color: #888; /* Couleur grise personnalisée */
+  color: #888;
 }
 
 .start{
@@ -92,5 +90,12 @@ ion-item {
   white-space: normal;
   margin-left: 10px;
   margin-right: 10px;
+}
+
+.etapes{
+  text-align: center;
+  margin-left: 25px;
+  margin-right: 25px;
+  white-space: normal;
 }
 

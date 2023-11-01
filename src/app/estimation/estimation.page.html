@@ -1,0 +1,64 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+    <ion-back-button defaultHref="/tab4"></ion-back-button>
+  </ion-buttons>
+    <ion-title style="font-size: 15px;">Parlez-nous de votre parking</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list>
+    <ion-item>
+      <ion-label class="zone">
+        <ion-text>
+          <h2>Zone :</h2>
+        </ion-text>
+       
+      <ion-card class="ion-card-rounded">
+        <ion-card-content>
+          <ion-icon name="location-outline"></ion-icon> Bruxelles 
+        </ion-card-content>
+      </ion-card> 
+      </ion-label><br>
+    </ion-item>
+
+    <ion-item>
+    <ion-label class="parking">
+    <ion-text>
+      <h2>Type de parking :</h2><br>
+    </ion-text>
+    
+    <ion-segment class="type-pl" value="type-place">
+      <ion-segment-button value="default">
+        <ion-label><ion-icon name="pin-outline"></ion-icon> Emplacement</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="segment">
+        <ion-label><ion-icon name="home-outline"></ion-icon> Box</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+    </ion-label>
+  </ion-item>
+
+
+    <ion-item>
+      <ion-label class="nb-places">Nombre de places disponibles :</ion-label>  
+      <ion-buttons slot="end">
+        <ion-button (click)="decrementPlaces()"><ion-icon name="remove-outline"></ion-icon></ion-button>
+        <ion-label>{{ localNombrePlaces }}</ion-label>
+        <ion-button (click)="incrementPlaces()"><ion-icon name="add"></ion-icon></ion-button>
+      </ion-buttons>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+    <ion-footer>
+    <ion-item class="boutton">
+      <ion-label>
+        <ion-button (click)="mettreAJourEstimation()" class="custom-button">Mettre à jour l'estimation</ion-button>
+    </ion-label>
+    </ion-item>
+  
+  </ion-footer>
+  
+
