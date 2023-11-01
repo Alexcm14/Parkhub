@@ -27,7 +27,7 @@ export class EstimationPage {
 
   mettreAJourEstimation() {
     this.sharedService.nombrePlaces = this.localNombrePlaces;
-    this.navCtrl.navigateForward('/tab4');
+    this.navCtrl.navigateBack('tabs/tab4');
   }
 }
 
