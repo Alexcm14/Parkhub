@@ -1,0 +1,75 @@
+ion-header 
+
+  ion-toolbar, ion-item {
+    --background: #f1f5f8;
+    background: #f1f5f8;
+    padding: 0 10px;
+  }
+
+  ion-toolbar {
+    .bordered {
+      --border-radius: 10px;
+      --box-shadow: 5px 5px 10px #d1d1d1, -5px -5px 10px #FFFFFF;
+    }
+  }
+
+  ion-item {
+    h3 {
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    p {
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    ion-avatar {
+      --border-radius: 40%;
+    }
+  }
+
+#container a {
+  text-decoration: none;
+}
+
+
+ion-content {
+  
+
+  .slides {
+    background: #f1f5f8;
+    padding: 4px 20x 20px 4px;
+    border-radius: 0 0 28px 28px;
+  }
+
+  ion-card {
+    width: 90%;
+    box-shadow: none;
+    border-radius: 14px;
+    padding: 14px;
+    background: rgba(255,255,255,.8);
+    height: 7rem;
+    .main {
+      width: 20px;
+      height: 20px;
+      border-radius: 50px;
+      background: #FFFFFF;
+      box-shadow:  7px 7px 20px #dbdfe2, 
+             -7px -7px 20px #ffffff;
+            
+      display: flex;
+      align-items: center;
+      justify-content: center;}
+
+  }}
+
+  .ios {
+    ion-searchbar {
+      padding: 8px 12px;
+    }
+  }
+  
+
+
+ 
