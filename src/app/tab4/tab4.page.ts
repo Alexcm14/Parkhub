@@ -24,6 +24,10 @@ export class Tab4Page implements OnInit {
     this.somme = this.valeur * 20 * this.sharedService.nombrePlaces;
   }
 
+  redirigerVersAnnonces() {
+    this.navCtrl.navigateForward('/annonces');
+  }
+
 
 
 

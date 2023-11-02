@@ -1,0 +1,23 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+   
+      <ion-back-button slot="start" defaultHref="tabs/tab4">
+        <ion-icon name="close"></ion-icon>
+      </ion-back-button>
+      <ion-button slot="end" class="questions">Des questions ?</ion-button>
+   
+    <ion-title class="title"></ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list>
+    <ion-text class="T1">
+      Nous sommes ravis de vous voir de ce côté de l'application !
+    </ion-text>
+    <ion-text class="creer">
+      Créer une nouvelle annonce
+    </ion-text>
+    <ion-button class="creation" (click)="redirigerVersConfig1()"><ion-icon name="location"></ion-icon>  Créer une nouvelle annonce  <ion-icon name="arrow-forward"></ion-icon></ion-button>
+  </ion-list>
+</ion-content>

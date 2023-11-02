@@ -15,6 +15,14 @@ const routes: Routes = [
   {
     path: 'estimation',
     loadChildren: () => import('./estimation/estimation.module').then( m => m.EstimationPageModule)
+  },
+  {
+    path: 'annonces',
+    loadChildren: () => import('./annonces/annonces.module').then( m => m.AnnoncesPageModule)
+  },
+  {
+    path: 'config1',
+    loadChildren: () => import('./config1/config1.module').then( m => m.Config1PageModule)
   }
 ];
 @NgModule({
