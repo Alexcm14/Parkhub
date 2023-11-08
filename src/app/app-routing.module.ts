@@ -27,6 +27,10 @@ const routes: Routes = [
   {
     path: 'localisation',
     loadChildren: () => import('./localisation/localisation.module').then( m => m.LocalisationPageModule)
+  },
+  {
+    path: 'nbplaces',
+    loadChildren: () => import('./nbplaces/nbplaces.module').then( m => m.NbplacesPageModule)
   }
 ];
 @NgModule({
