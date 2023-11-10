@@ -1,24 +1,78 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Mes Places</ion-title>
+    <ion-title class="title">Mes Places</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-list>
+      <ion-text class="T1">
+        Mettez votre place de parking sur ParkHub.
+      </ion-text>
+
     <ion-item>
-      <ion-range [(ngModel)]="valeur" min="0" max="30" step ="1" (ionChange)="calculerSomme()"></ion-range>
-      <span class="range-value">{{ valeur }}</span>
-      
+      <ion-label class="T2">
+        Vous pourriez gagner jusqu'à 
+      </ion-label>
     </ion-item>
+
     <ion-item>
-      <ion-label>{{ somme | currency: 'EUR' }}</ion-label>
+      <ion-label class="somme">{{ somme }} €</ion-label>
     </ion-item>
+
+    <ion-item>
+      <ion-label class="estimation">
+        Pour <span class="underline-text">{{ valeur }} {{ valeur === 0 || valeur === 1 ? 'jour' : 'jours' }}</span> de location avec une estimation de 0,84€/heure*
+       </ion-label>
+     </ion-item>
+     
+    <ion-item>
+      <ion-range [(ngModel)]="valeur" min="1" max="30" step ="1" [pin]="true" (ionChange)="calculerSomme()">
+      </ion-range>
+    </ion-item>
+
+    <ion-button (click)="afficherEstimation()" class ="search" color="light">
+      <ion-icon name="search-outline" style="color: #46d1c8;"></ion-icon>
+      <div class="search-button-text">
+          Bruxelles -
+        <span class="gray-text">Place de parking...</span>
+      </div>
+    </ion-button>
+
+    <ion-img src="assets/images/cartebxl.png" alt="Carte de Bruxelles" style="width: 85%; margin: auto; border-radius: 10px; position: relative;"></ion-img>
+
+    <ion-item>
+      <ion-label class="start">
+        Avec ParkHub, c'est facile de se lancer 
+        <br>
+      </ion-label>
+    </ion-item>
+
+    <div class="etapes">
+    <ion-text style="text-align: center;">
+      <h2>Louez votre place de parking en 3 étapes tellement simple !</h2><br>
+      <h3>1. Saisissez les informations de base de votre parking</h3>
+      <p>Où se situe-t'il, combien de voitures peut-il accueillir,... </p>
+      <br>
+      <h3>2. Rendez votre annonce attrayante</h3>
+      <p>Postez plusieurs photos de votre place de parking, mettez-la en valeur, profitez des évènements près de chez vous,...</p>
+      <br>
+      <h3>3. Lancez-vous !</h3>
+      <p>Publiez votre annonce, fixez votre prix et recevez votre argent</p>
+    </ion-text>
+  </div>
+     
   </ion-list>
 
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">tab4</ion-title>
-    </ion-toolbar>
-  </ion-header>
 </ion-content>
+
+<ion-footer>
+<div class="fixed-button">
+  
+    <ion-button color="primary" (click)="redirigerVersAnnonces()">
+      <ion-icon name="car-outline"> </ion-icon> ParkHub Start</ion-button>
+
+</div>
+</ion-footer>
+
+

@@ -1,0 +1,37 @@
+ion-button .close{
+    background-color: none;
+}
+
+.etape1{
+    margin : 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.T-etape1{
+    margin : 30px;
+    font-size: 1.6rem;
+    white-space: normal;
+    display: block;
+}
+
+ion-card {
+    width: calc(50% - 10px); /* 50% moins la marge entre les cartes */
+    max-width: calc(50% - 10px); /* 50% moins la marge entre les cartes */
+    aspect-ratio: 1/1; /* Pour rendre les cartes carrées */
+    max-height: 100px; /* Réglez la hauteur maximale comme vous le souhaitez */
+  
+    /* Styles supplémentaires pour la mise en forme de la carte */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+  }
+
+  
