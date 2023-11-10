@@ -70,8 +70,12 @@
     </swiper-container>
   </div>
 
+
+
   <ion-toolbar color="tertiary">
     <ion-searchbar
+    id="barrenav"
+    
       search-icon="search-circle" 
       animated="true" 
       show-clear-button="focus" 
@@ -82,3 +86,9 @@
       >
     </ion-searchbar>
   </ion-toolbar>
+
+  <div id="container">
+    <capacitor-google-map #mapRef></capacitor-google-map>
+
+
+  </div>
