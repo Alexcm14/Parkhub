@@ -15,4 +15,9 @@ export class Tab5Page implements OnInit {
   goPersonal() {
     this.router.navigate(['/personal']);
 };
+
+goCar() {
+  this.router.navigate(['/car']);
+};
+
 }

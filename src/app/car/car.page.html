@@ -1,0 +1,50 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>car</ion-title>
+  </ion-toolbar>
+</ion-header>
+ 
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Ma voiture</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-toolbar>
+    </ion-toolbar>
+    <!-- Liste des véhicules -->
+  <ion-card *ngFor="let vehicle of vehicles">
+    <ion-card-header>
+      {{ vehicle.marque }}
+    </ion-card-header>
+    <ion-card-content>
+      Plaque: {{ vehicle.plaque }}<br>
+      Assurance: {{ vehicle.assurance }}<br>
+      Contrôle technique: {{ vehicle.controleTechnique }}<br>
+      Certificat d'authenticité: {{ vehicle.certificatAuthenticite }}
+    </ion-card-content>
+  
+  </ion-card>
+    <ion-item>
+      <ion-label position="stacked">Plaque d'immatriculation</ion-label>
+      <ion-input type="text" [(ngModel)]="plaque" required></ion-input>
+    </ion-item>
+  
+    <ion-item>
+      <ion-label position="stacked">Marque du véhicule</ion-label>
+      <ion-input type="text" [(ngModel)]="marque" required></ion-input>
+    </ion-item>
+  
+
+    <ion-button expand="full" (click)="ajouterVehicule()">Ajouter véhicule</ion-button>
+</ion-content>
+
+<ion-footer>
+  <ion-label>
+  <ion-buttons slot="start">
+    <ion-back-button slot="start" defaultHref="../tab5"></ion-back-button>
+  </ion-buttons>
+</ion-label>
+</ion-footer>
+
+ 

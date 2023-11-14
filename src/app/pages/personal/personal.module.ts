@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
+
 import { PersonalPageRoutingModule } from './personal-routing.module';
 
 import { PersonalPage } from './personal.page';

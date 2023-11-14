@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "parkhub-1": {
+      "hosting": {
+        "app": [
+          "parkhub-1"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "parkhub-1"
+  }
+}

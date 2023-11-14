@@ -14,24 +14,19 @@
 </div>
 
 <ion-list>
-  <button ion-button full (click)='goPersonal()'>
-  <ion-item   detail>
- 
-
+  <ion-item (click)='goPersonal()'  detail>
     <ion-icon slot="start" name="person-circle"></ion-icon>
-    
     <ion-label>
       mes données personelles
     </ion-label>
   </ion-item>
-</button>
 
-  <ion-item detail>
-    <ion-icon slot="start" name="car"></ion-icon>
-    <ion-label>
-      Ma voiture
-    </ion-label>
-  </ion-item>
+<ion-item (click)='goCar()'  detail>
+  <ion-icon slot="start" name="car"></ion-icon>
+  <ion-label>
+    Ma voiture
+  </ion-label>
+</ion-item>
 
   <ion-item detail>
     <ion-icon slot="start" name="card"></ion-icon>
