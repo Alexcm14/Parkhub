@@ -1,0 +1,52 @@
+<ion-content [fullscreen]="true">
+  <div >
+    <p class="Titre"> Créer un compte </p>
+  </div>
+ 
+  <div >
+    <p class="soustitre"> Bienvenue chez ParkHub! Inscrivez-vous en un instant pour rejoindre la communauté </p>
+  </div>
+ 
+  <form>
+    <div class="ion-padding">
+ 
+      <ion-item>
+        <ion-input class="input" label="Prénom" labelPlacement="floating"></ion-input>
+        <ion-icon name="person-outline"></ion-icon>
+      </ion-item>
+ 
+      <ion-item>
+        <ion-input class="input" label="Nom" labelPlacement="floating"></ion-input>
+        <ion-icon name="person-outline"></ion-icon>
+      </ion-item>
+ 
+     
+      <ion-item>
+        <ion-input class="input" label="Adresse mail" labelPlacement="floating"></ion-input>
+        <ion-icon name="mail-outline"></ion-icon>
+      </ion-item>
+ 
+     
+ 
+        <ion-item>
+          <ion-input class="input" label="Mot de passe" labelPlacement="floating"type="password"></ion-input>
+          <ion-icon name="lock-closed-outline"></ion-icon>
+        </ion-item>
+ 
+    </div>
+ 
+    <div>
+      <p class="login"> Déjà inscrit ? <a style="color: #46d1c8 ;" [routerLink]="['/login']">  Connectez-vous</a></p>
+    </div>
+  </form>
+  <ion-fab vertical="bottom" horizontal="end" style="margin-bottom: 30px ;">
+    <ion-fab-button [routerLink]="['/home']" >
+    <ion-icon style="color: black;" name="chevron-forward"></ion-icon>
+  </ion-fab-button>
+ 
+</ion-fab>
+ 
+ 
+ 
+</ion-content>
+ 

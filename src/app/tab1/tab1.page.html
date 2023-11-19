@@ -1,17 +1,103 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 1
-    </ion-title>
-  </ion-toolbar>
+<ion-header class="ion-no-border">
+ 
+ 
+ 
+  <ion-item lines="none">
+ 
+    <ion-avatar slot="start">
+      <ion-icon size="large" name="person-circle-outline"></ion-icon>
+     
+    </ion-avatar>
+      <ion-label>
+        <p>Bonjour,</p>
+        <h3>Mohamed Mjahed</h3>
+      </ion-label>
+ 
+      <ion-fab vertical="bottom" horizontal="end"  slot="end">
+      <ion-fab-button size="small"  style="margin-top: 20px;">
+      <ion-icon style="color: white;" name="help-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+ 
+  </ion-item>
+ 
 </ion-header>
-
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <app-explore-container name="Tab 1 page"></app-explore-container>
-</ion-content>
+ 
+<ion-content>
+ 
+  <div class="slides ion-margin-bottom">
+    <swiper-container>
+      <swiper-slide>
+        <ion-card>
+          <ion-card-header>
+ 
+          </ion-card-header>
+          <ion-card-content class="ion-text-left">
+            <ion-card-title class="ion-margin-bottom">Evènement 1</ion-card-title>
+           
+           
+          </ion-card-content>
+        </ion-card>
+      </swiper-slide>
+ 
+      <swiper-slide>
+        <ion-card>
+          <ion-card-header>
+           
+          </ion-card-header>
+          <ion-card-content class="ion-text-left">
+            <ion-card-title class="ion-margin-bottom">Evenement 2</ion-card-title>
+           
+          </ion-card-content>
+        </ion-card>
+      </swiper-slide>
+ 
+      <swiper-slide>
+        <ion-card>
+          <ion-card-header>
+ 
+          </ion-card-header>
+          <ion-card-content class="ion-text-left">
+            <ion-card-title class="ion-margin-bottom">Evènement 3</ion-card-title>
+           
+           
+          </ion-card-content>
+        </ion-card>
+      </swiper-slide>
+ 
+    </swiper-container>
+  </div>
+ 
+ 
+ 
+  <ion-toolbar color="tertiary">
+    <ion-searchbar
+   
+   
+ 
+     
+      search-icon="search-circle"
+      animated="true"
+      show-clear-button="focus"
+      clear-icon ="trash-bin"
+      debounce="800"
+      placeholder="Entrez l'adresse"
+      color="light"
+     
+      >
+    </ion-searchbar>
+  </ion-toolbar>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  <div id="container">
+ 
+    <capacitor-google-map #mapRef id="map"></capacitor-google-map>
+ 
+ 
+  </div>

@@ -1,0 +1,38 @@
+<ion-content [fullscreen]="true">
+ 
+  <div class="container">
+    <img src="assets/images/vrailogoparkhub.png">
+ 
+  </div>
+ 
+ 
+ 
+  <form>
+    <div class="ion-padding">
+      <ion-item>
+        <ion-input label="Adresse mail" labelPlacement="floating" class="input"></ion-input>
+        <ion-icon name="person-outline"></ion-icon>
+      </ion-item>
+ 
+        <ion-item>
+          <ion-input  label="Mot de passe" labelPlacement="floating"type="password" class="input"></ion-input>
+          <ion-icon name="lock-closed-outline"></ion-icon>
+        </ion-item>
+ 
+    </div>
+ 
+    <div class="signup" >
+      <p> Nouvel utilisateur ? <a style="color: primary;" [routerLink]="['/signup']"> Inscrivez-vous </a></p>
+    </div>
+    <div class="oubli" >
+      <p> Mot de passe oublié ? <a style="color: primary;" [routerLink]="['/oubli']"> Réinitialisez votre mot de passe </a></p>
+    </div>
+  </form>
+ 
+  <ion-fab vertical="bottom" horizontal="end" style="margin-bottom: 30px ;">
+    <ion-fab-button [routerLink]="['/home']">
+    <ion-icon style="color: black;" name="chevron-forward"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+ 
+</ion-content>

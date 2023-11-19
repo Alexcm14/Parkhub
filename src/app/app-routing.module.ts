@@ -6,6 +6,10 @@ import { PersonalPageModule } from './pages/personal/personal.module';
 const routes: Routes = [
   {
     path: '',
+    loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule)
+  },
+  {
+    path : '',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
   },
   {
@@ -39,6 +43,18 @@ const routes: Routes = [
   {
     path: 'car',
     loadChildren: () => import('./car/car.module').then( m => m.CarPageModule)
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
+  },
+  {
+    path: 'oubli',
+    loadChildren: () => import('./pages/oubli/oubli.module').then( m => m.OubliPageModule)
+  },
+  {
+    path: 'signup',
+    loadChildren: () => import('./pages/signup/signup.module').then( m => m.SignupPageModule)
   }
 ];
 @NgModule({

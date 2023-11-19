@@ -1,0 +1,42 @@
+.input{
+    font-size: 300;
+}
+ 
+ion-item{
+    --background: #f1f1f1;
+    border-radius: 10px;
+    margin-bottom: 16px;
+}
+ 
+ 
+ 
+.signup{
+    display: flex;
+    margin: auto;
+    flex-direction: row;
+    align-content: center;
+    margin-left: 7%;
+ 
+    a{
+        text-decoration: none;
+    }
+}
+ 
+.oubli{
+    display: flex;
+    margin: auto;
+    flex-direction: row;
+    align-content: center;
+    margin-left: 7%;
+    margin-right: 7%;
+ 
+    a{
+        text-decoration: none;
+    }
+}
+.container{
+    text-align: center;
+    margin-top: 20%;
+   
+ 
+}

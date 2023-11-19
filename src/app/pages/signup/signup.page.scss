@@ -1,0 +1,41 @@
+.input{
+    font-size: 300;
+}
+ 
+ion-item{
+    --background: #f1f1f1;
+    border-radius: 10px;
+    margin-bottom: 16px;
+}
+ 
+.Titre{
+    font-family: 'Segoe UI';
+    margin-top: 100px;
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 45px;
+    color: black;
+}
+ 
+.soustitre{
+    font-family: 'Segoe UI';
+    color:#46d1c8;
+    font-size: 17px;
+    margin-left: 7%;
+    margin-right: 7%;
+    margin-bottom: 50px;
+ 
+}
+ 
+ 
+.login{
+    display: flex;
+    margin: auto;
+    flex-direction: row;
+    align-content: center;
+    margin-left: 7%;
+ 
+    a{
+        text-decoration: none;
+    }
+}
