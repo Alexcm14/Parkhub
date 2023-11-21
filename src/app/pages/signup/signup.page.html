@@ -7,31 +7,53 @@
     <p class="soustitre"> Bienvenue chez ParkHub! Inscrivez-vous en un instant pour rejoindre la communauté </p>
   </div>
  
-  <form>
+  <form [formGroup] ="regForm"  nonvalidate >
     <div class="ion-padding">
  
       <ion-item>
-        <ion-input class="input" label="Prénom" labelPlacement="floating"></ion-input>
+        <ion-input  formControlName="fullname" class="input" label="Prénom" labelPlacement="floating"></ion-input>
         <ion-icon name="person-outline"></ion-icon>
       </ion-item>
+
+      <div style="padding-top: -26px;padding-bottom: 16px;"
+        *ngIf="this.regForm.controls?.['fullname'].touched && this.regForm.controls?.['fullname'].invalid">
+        <ion-text *ngIf="errorControl.fullname.errors?.required" class="errorInput" color="danger">Fullname is
+          required.</ion-text>
+      </div>
  
-      <ion-item>
-        <ion-input class="input" label="Nom" labelPlacement="floating"></ion-input>
-        <ion-icon name="person-outline"></ion-icon>
-      </ion-item>
  
      
       <ion-item>
-        <ion-input class="input" label="Adresse mail" labelPlacement="floating"></ion-input>
+        <ion-input formControlName="email" class="input" label="Adresse mail" labelPlacement="floating"></ion-input>
         <ion-icon name="mail-outline"></ion-icon>
       </ion-item>
+
+
+      <div style="padding-top: -26px;padding-bottom: 16px;"
+        *ngIf="this.regForm.controls?.['email'].touched && this.regForm.controls?.['email'].invalid">
+        <ion-text *ngIf="errorControl.email.errors?.required" class="errorInput" color="danger">Email is
+          required.</ion-text>
+        <ion-text *ngIf="errorControl.email.errors?.pattern" class="errorInput" color="danger">Please provide valid
+          email.</ion-text>
+      </div>
  
      
  
         <ion-item>
-          <ion-input class="input" label="Mot de passe" labelPlacement="floating"type="password"></ion-input>
+          <ion-input formControlName="password" class="input" label="Mot de passe" labelPlacement="floating"type="password"></ion-input>
           <ion-icon name="lock-closed-outline"></ion-icon>
         </ion-item>
+
+        <div style="padding-top: -26px;padding-bottom: 16px;"
+        *ngIf="this.regForm.controls?.['password'].touched && this.regForm.controls?.['password'].invalid">
+        <ion-text *ngIf="errorControl.password.errors?.required" class="errorInput" color="danger">Password is
+          required.</ion-text>
+        <ion-text *ngIf="errorControl.password.errors?.pattern" class="errorInput" color="danger">Password must be more than 8 length containing
+          at least one character.
+          at least one Capital letter.
+          at least one number.
+        </ion-text>
+      </div>
  
     </div>
  
@@ -40,7 +62,7 @@
     </div>
   </form>
   <ion-fab vertical="bottom" horizontal="end" style="margin-bottom: 30px ;">
-    <ion-fab-button [routerLink]="['/home']" >
+    <ion-fab-button (click)="signUp()" >
     <ion-icon style="color: black;" name="chevron-forward"></ion-icon>
   </ion-fab-button>
  

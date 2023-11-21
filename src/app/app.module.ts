@@ -12,10 +12,12 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuth, AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { environment } from 'src/environments/environment';
 import { FormsModule } from '@angular/forms';
+import { getAuth, provideAuth } from '@angular/fire/auth';
+import { getDatabase, provideDatabase } from '@angular/fire/database';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule,AngularFireModule.initializeApp(environment.firebaseConfig),AngularFireAuthModule, IonicModule.forRoot(), AppRoutingModule, provideFirebaseApp(() => initializeApp({"projectId":"parkhub-1","appId":"1:320325168213:web:398fb97215f1331e0978dc","storageBucket":"parkhub-1.appspot.com","apiKey":"AIzaSyBnNRxlE10F7jEOUL1YE1LMTz4jWyUgAGY","authDomain":"parkhub-1.firebaseapp.com","messagingSenderId":"320325168213"})), provideFirestore(() => getFirestore())],
+  imports: [BrowserModule,AngularFireModule, AngularFireModule.initializeApp(environment.firebaseConfig),AngularFireAuthModule, IonicModule.forRoot(), AppRoutingModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })
