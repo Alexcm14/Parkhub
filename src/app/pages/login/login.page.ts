@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { LoadingController } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
+import { Router, NavigationStart } from '@angular/router';
 
 
 @Component({
@@ -13,7 +14,14 @@ import { LoadingController } from '@ionic/angular';
 export class LoginPage implements OnInit{
   loginForm: FormGroup
 
-  constructor(public formbuilder:FormBuilder, public loadingCtrl: LoadingController, public authService:AuthService, public route : Router) {}
+  constructor(public formbuilder:FormBuilder, public loadingCtrl: LoadingController, public authService:AuthService, public route : Router, private navCtrl: NavController, private router: Router) {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        console.log('Navigation started');
+        console.log('Target URL:', event.url);
+      }
+    });
+  }
 
 ngOnInit() {
   this.loginForm = this.formbuilder.group({
@@ -56,6 +64,7 @@ ngOnInit() {
     // const user = await this.authService.registerUser(email, password)
   }
   }
+
 
 }
 
