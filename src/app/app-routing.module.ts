@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { PersonalPageModule } from './pages/personal/personal.module';
 import { redirectUnauthorizedTo, redirectLoggedInTo, canActivate } from '@angular/fire/auth-guard';
-
+import { CanActivate } from '@angular/router';
+import { AuthGuard } from '../app/services/auth.guard';
 
 
 const routes: Routes = [
@@ -13,11 +14,14 @@ const routes: Routes = [
   },
   {
     path : '',
-    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule),
+   
+    
   },
   {
     path: 'personal',
-    loadChildren: () => import('./pages/personal/personal.module').then( m => m.PersonalPageModule)
+    loadChildren: () => import('./pages/personal/personal.module').then( m => m.PersonalPageModule),
+    
   },
   {
     path: 'estimation',

@@ -7,6 +7,8 @@ import { IonicModule } from '@ionic/angular';
 import { Subscription, elementAt } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { GoogleMap,  Marker } from '@capacitor/google-maps';
+import { authInstance$ } from '@angular/fire/auth';
+import { AuthService } from 'src/app/services/auth.service';
  
 declare var google: any;
  
@@ -42,8 +44,11 @@ markers: any = [
 ]
 
 
-constructor(private router: Router) {}
 
+
+constructor(private router: Router, private authService: AuthService) {}
+
+ 
 
 
 

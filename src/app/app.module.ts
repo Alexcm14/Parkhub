@@ -18,7 +18,7 @@ import { getDatabase, provideDatabase } from '@angular/fire/database';
 
 import { provideStorage, getStorage } from '@angular/fire/storage';
 
-
+import { CardDetailsModalModule } from './cards/card.component/card.component.component.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -31,7 +31,8 @@ import { provideStorage, getStorage } from '@angular/fire/storage';
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
 		provideAuth(() => getAuth()),
 		provideFirestore(() => getFirestore()),
-		provideStorage(() => getStorage())
+		provideStorage(() => getStorage()),
+    CardDetailsModalModule
   ],
 
 
