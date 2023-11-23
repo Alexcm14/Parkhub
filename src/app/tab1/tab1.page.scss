@@ -1,10 +1,9 @@
 ion-header
  
-  ion-toolbar, ion-item {
-    --background: #f1f5f8;
-    background: #f1f5f8;
-    padding: 0 10px;
-  }
+ion-toolbar {
+  margin-top: 0; /* Réduit la marge supérieure à zéro */
+  margin-bottom: 0;
+}
  
  
  
@@ -47,20 +46,23 @@ ion-content {
     box-shadow: none;
     border-radius: 14px;
     padding: 14px;
-    background: rgba(255,255,255,.8);
+    background: rgba(255, 255, 255, 0.8);
     height: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
     .main {
-      width: 20px;
-      height: 17px;
-      border-radius: 50px;
-      background: #FFFFFF;
-      box-shadow:  7px 7px 20px #dbdfe2,
-             -7px -7px 20px #ffffff;
-           
-      display: flex;
-      align-items: center;
-      justify-content: center;}
- 
+      width: 100%; // Définir la largeur de la div .main à 100%
+      height: 100%; // Définir la hauteur de la div .main à 100%
+      border-radius: 50%;
+      overflow: hidden; // Masquer le contenu débordant
+      img {
+        width: 100%; // Définir la largeur de l'image à 100%
+        height: 100%; // Définir la hauteur de l'image à 100%
+        object-fit: cover; // Remplir complètement la div parente tout en préservant le ratio d'aspect de l'image
+      }
+    }
   }}
  
   .ios {
@@ -83,3 +85,23 @@ ion-content {
   height: 30px;
   margin-top: 20px;
  }
+
+ ion-toolbar {
+  --background-color: transparent;
+  --ion-color-base: transparent !important;
+}
+
+
+
+.prediction-list ion-item {
+  padding: 1px; /* Ajoutez un espace de remplissage */
+  border-bottom: 1px solid #ccc; /* Ajoutez une bordure inférieure */
+}
+
+.prediction-list ion-item:last-child {
+  border-bottom: none; /* Supprime la bordure inférieure pour le dernier élément */
+}
+
+.prediction-list ion-item:hover {
+  background-color: #3293b1; /* Change la couleur de fond lorsqu'un élément est survolé */
+}

@@ -5,6 +5,10 @@ import { redirectUnauthorizedTo, redirectLoggedInTo, canActivate } from '@angula
 
 
 
+
+// Automatically log in users
+const redirectLoggedInToChat = () => redirectLoggedInTo(['/tab1']);
+
 const routes: Routes = [
   {
     path: '',

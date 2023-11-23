@@ -1,5 +1,5 @@
-<ion-header class="ion-no-border">
- 
+<ion-header [translucent]="true">
+
  
  
   <ion-item lines="none">
@@ -30,10 +30,17 @@
       <swiper-slide>
         <ion-card>
           <ion-card-header>
+
+             <!-- Ajoute un lien autour de l'image -->
+          <a id="imgtour" href="https://www.bruxelles-j.be/actus/salon-siep-2022-tour-taxi/">
+            <!-- Ajoute l'image avec l'attribut src -->
+            <img src="assets/TOUR.jpg" alt="Description de l'image">
+          </a>
  
           </ion-card-header>
           <ion-card-content class="ion-text-left">
-            <ion-card-title class="ion-margin-bottom">Evènement 1</ion-card-title>
+            <ion-card-title class="ion-margin-bottom"></ion-card-title>
+
            
            
           </ion-card-content>
@@ -69,11 +76,17 @@
   </div>
  
  
+  <ion-toolbar color="primary">
+    <ion-searchbar [debounce]="600" [(ngModel)]="autocomplete.input" (ionInput)="updateSearchResults()" placeholder="Cherchez une adresse"></ion-searchbar>
+  </ion-toolbar>
  
  
- 
- 
- 
+  <ion-list  lines="none" [inset]="true" *ngIf="autocompleteItems.length > 0" class="prediction-list" [hidden]="autocompleteItems.length === 0">
+    <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
+      {{ item.description }}
+    </ion-item>
+  </ion-list>
+  
  
  
  
