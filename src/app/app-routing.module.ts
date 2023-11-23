@@ -6,6 +6,10 @@ import { CanActivate } from '@angular/router';
 import { AuthGuard } from '../app/services/auth.guard';
 
 
+
+// Automatically log in users
+const redirectLoggedInToChat = () => redirectLoggedInTo(['/tab1']);
+
 const routes: Routes = [
   {
     path: '',

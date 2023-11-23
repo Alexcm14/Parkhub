@@ -7,8 +7,6 @@ import { IonicModule } from '@ionic/angular';
 import { Subscription, elementAt } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { GoogleMap,  Marker } from '@capacitor/google-maps';
-import { authInstance$ } from '@angular/fire/auth';
-import { AuthService } from 'src/app/services/auth.service';
  
 declare var google: any;
  
@@ -21,11 +19,83 @@ declare var google: any;
 export class Tab1Page {
  
   map: any;
+  searchAddress: string;
+  GoogleAutocomplete: any;
+  autocomplete: any;
+  autocompleteItems: any = [];
+  geocoder: any;
+ 
+  
 
  @ViewChild('map',{read: ElementRef, static:false}) mapRef: ElementRef;
+ @ViewChild('searchbar', { read: ElementRef, static: false }) searchbarRef: ElementRef;
+
+ 
+
+ constructor(private router: Router, private zone: NgZone) {
+  // Déclarations et initialisations dans le constructeur
+  this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
+  this.autocomplete = { input: '' };
+  this.autocompleteItems = [];
+  this.geocoder = new google.maps.Geocoder;
+  this.markers = [];
+  
+}
 
 
- // markers sur CARTE
+//DEBUT BARRE DE RECHERCHE 
+
+
+ updateSearchResults() {
+  if (this.autocomplete.input === '') {
+    this.autocompleteItems = [];
+    return;
+  }
+  this.GoogleAutocomplete.getPlacePredictions({ input: this.autocomplete.input },
+  (predictions, status) => {
+    this.autocompleteItems = [];
+    this.zone.run(() => {
+      predictions.forEach((prediction) => {
+        this.autocompleteItems.push(prediction);
+      });
+    });
+  });
+}
+
+
+selectSearchResult(item) {
+  this.autocompleteItems = [];
+  
+
+  this.geocoder.geocode({ 'placeId': item.place_id }, (results, status) => {
+    if (status === 'OK' && results[0]) {
+      let position = {
+        lat: results[0].geometry.location.lat,
+        lng: results[0].geometry.location.lng
+      };
+
+      let marker = new google.maps.Marker({
+        position: results[0].geometry.location,
+        map: this.map,
+        icon: {
+          path: google.maps.SymbolPath.CIRCLE,
+          scale: 7, // Taille du cercle
+          fillColor: '#46d1c8', // Couleur bleue
+          fillOpacity: 0.7, // Opacité de remplissage
+          strokeColor: '#46d1c8', // Couleur de la bordure
+          strokeWeight: 2, // Épaisseur de la bordure
+        },
+      });
+
+      this.markers.push(marker);
+      this.map.setCenter(results[0].geometry.location);
+    }
+  });
+}
+
+//FIN BARRE DE RECHERCHE 
+
+
 
 infoWindows: any = [];
 markers: any = [
@@ -40,16 +110,10 @@ markers: any = [
      longitude:"4.323334693908692"
   },
 
+  
+
 
 ]
-
-
-
-
-constructor(private router: Router, private authService: AuthService) {}
-
- 
-
 
 
 
@@ -61,71 +125,71 @@ ionViewDidEnter(){
 
 //methode pour MARKERS
 
-addMarkersToMap(markers) {
-  for (let marker of markers){
-    console.log('Adding marker:', marker);
-    let position = new google.maps.LatLng(marker.latitude, marker.longitude);
-    let mapMarker = new google.maps.Marker({
-      position : position,
-      title: marker.title,
-      latitude: marker.latitude,
-      longitude: marker.longitude,
-      icon: {
-        path: google.maps.SymbolPath.CIRCLE,
-        scale: 13, // Taille du cercle
-        fillColor: '#46d1c8', // Couleur de remplissage
-        fillOpacity: 1, // Opacité de remplissage
-        strokeColor: '#ffffff', // Couleur de la bordure
-        strokeWeight: 2, // Épaisseur de la bordure
-      },
+// addMarkersToMap(markers) {
+ // for (let marker of markers){
+  //  console.log('Adding marker:', marker);
+   // let position = new google.maps.LatLng(marker.latitude, marker.longitude);
+    //let mapMarker = new google.maps.Marker({
+//      position : position,
+//      title: marker.title,
+ //     latitude: marker.latitude,
+ //     longitude: marker.longitude,
+ //     icon: {
+    //    path: google.maps.SymbolPath.CIRCLE,
+  //      scale: 13, // Taille du cercle
+ //       fillColor: '#46d1c8', // Couleur de remplissage
+ //       fillOpacity: 1, // Opacité de remplissage
+ //       strokeColor: '#ffffff', // Couleur de la bordure
+  //      strokeWeight: 2, // Épaisseur de la bordure
+  //    },
 
 
 
 
-    });
+ //   });
 
-    mapMarker.setMap(this.map);
-    this.addInfoWindowToMarker(mapMarker);
-  }
+ //   mapMarker.setMap(this.map);
+ //   this.addInfoWindowToMarker(mapMarker);
+ // }
 
    // SEPARATION
-  }
+//  }
 
-  addInfoWindowToMarker(marker){
-    let infowindowContent = '<div id = "content">' +
-                             '<h2 id = "firstHeading" class"firstHeading">' +marker.title +'</h2>'+
-                             '<button id="customButton">Réserver une place</button>' +
-                             
-                             '</div>'
+//  addInfoWindowToMarker(marker){
+ //   let infowindowContent = '<div id = "content">' +
+ //                            '<h2 id = "firstHeading" class"firstHeading">' +marker.title +'</h2>'+
+ //                            '<button id="customButton">Réserver une place</button>' +
+ //                            
+ //                           '</div>'
   
-     let infoWindow = new google.maps.InfoWindow({
-      content: infowindowContent
-     });
-     
-     marker.addListener('click', () => {
-      this.closeAllInfoWindows();
-      infoWindow.open(this.map, marker);
+  //   let infoWindow = new google.maps.InfoWindow({
+ //     content: infowindowContent
+  //   });
+  ////   
+  //   marker.addListener('click', () => {
+//      this.closeAllInfoWindows();
+ //     infoWindow.open(this.map, marker);
   
   // Ajouter un gestionnaire d'événements pour le bouton
-  const customButton = document.getElementById('customButton');
-  if (customButton) {
-    customButton.addEventListener('click', () => {
-      // Insérez ici le code que vous souhaitez exécuter lorsque le bouton est cliqué
-      this.router.navigate(['../tabs/tab3']);
-      // Vous pouvez également ajouter une navigation Angular ici si nécessaire
-    });
-  }
+ // const customButton = document.getElementById('customButton');
+ // if (customButton) {
+ //   customButton.addEventListener('click', () => {
+  //    // Insérez ici le code que vous souhaitez exécuter lorsque le bouton est cliqué
+ //     this.router.navigate(['../tabs/tab3']);
+ //     // Vous pouvez également ajouter une navigation Angular ici si nécessaire
+ //   });
+//  }
   
       
-     });
-     this.infoWindows.push(infoWindow);
-  }
+  //   });
+//     this.infoWindows.push(infoWindow);
+  //}
   
-  closeAllInfoWindows(){
-    for(let window of this.infoWindows){
-      window.close();
-    }
-  }
+ // closeAllInfoWindows(){
+ //   for(let window of this.infoWindows){
+  //    window.close();
+ //   }
+ // }
   
   
   
@@ -161,9 +225,10 @@ addMarkersToMap(markers) {
     }
     this.map = new google.maps.Map(this.mapRef.nativeElement, options);
     //call the method for marker
-    this.addMarkersToMap(this.markers);
+
+ //   this.addMarkersToMap(this.markers);
   
-  }
+ // }
   
   
   
@@ -190,4 +255,4 @@ addMarkersToMap(markers) {
    
   }
    
-  
+}
