@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { FormControl, FormGroup, Validators, FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, AlertController } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
 import { Router, NavigationStart } from '@angular/router';
 
@@ -11,62 +11,69 @@ import { Router, NavigationStart } from '@angular/router';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage implements OnInit{
-  loginForm: FormGroup
+export class LoginPage implements OnInit {
+	credentials: FormGroup;
 
-  constructor(public formbuilder:FormBuilder, public loadingCtrl: LoadingController, public authService:AuthService, public route : Router, private navCtrl: NavController, private router: Router) {
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationStart) {
-        console.log('Navigation started');
-        console.log('Target URL:', event.url);
-      }
-    });
-  }
+	constructor(
+		private fb: FormBuilder,
+		private loadingController: LoadingController,
+		private alertController: AlertController,
+		private authService: AuthService,
+		private router: Router
+	) {}
 
-ngOnInit() {
-  this.loginForm = this.formbuilder.group({
-    email : ['', [
-      Validators.required,
-      Validators.email,
-      Validators.pattern ("[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"),
-    ]],
-    password: ['', 
-    Validators.required,
-    Validators.pattern ("(?=.*\d)(?=.*[a-z])(?=.*[0-8])(?=.*[A-Z])")
-  
-  
-  ]
-  
-})
- }
- get errorControl(){
-  return this.loginForm?.controls;
+	// Easy access for form fields
+	get email() {
+		return this.credentials.get('email');
+	}
+
+	get password() {
+		return this.credentials.get('password');
+	}
+
+	ngOnInit() {
+		this.credentials = this.fb.group({
+			email: ['', [Validators.required, Validators.email]],
+			password: ['', [Validators.required, Validators.minLength(6)]]
+		});
+	}
+
+	async register() {
+		const loading = await this.loadingController.create();
+		await loading.present();
+
+		const user = await this.authService.register(this.credentials.value);
+		await loading.dismiss();
+
+		if (user) {
+			this.router.navigateByUrl('/tabs/tab1', { replaceUrl: true });
+		} else {
+			this.showAlert('Registration failed', 'Please try again!');
+		}
+	}
+
+	async login() {
+		const loading = await this.loadingController.create();
+		await loading.present();
+
+		const user = await this.authService.login(this.credentials.value);
+		await loading.dismiss();
+
+		if (user) {
+			this.router.navigateByUrl('/tabs/tab1', { replaceUrl: true });
+		} else {
+			this.showAlert('Login failed', 'Please try again!');
+		}
+	}
+
+	async showAlert(header, message) {
+		const alert = await this.alertController.create({
+			header,
+			message,
+			buttons: ['OK']
+		});
+		await alert.present();
+	}
 }
-
-  async logIn(){
-  const loading = await this.loadingCtrl.create();
-  await loading.present();
-
-  if(this.loginForm?.valid){
-    const user = await this.authService.loginUser(this.loginForm.value.email,this.loginForm.value.password).catch((error) =>{
-     console.log(error);
-     loading.dismiss()
-    })
- 
-    if(user){
-     loading.dismiss()
-     this.route.navigate(['../tab1'])
-    }else{
-     console.log('provide correct value')
-    }
-   }
-  if(this.loginForm?.valid){
-    // const user = await this.authService.registerUser(email, password)
-  }
-  }
-
-
-}
-
  
 
