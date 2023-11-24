@@ -40,9 +40,8 @@ export class PersonalPage implements OnInit {
         nom: this.nom,
         prenom: this.prenom,
         email: this.email,
-        motDePasse: this.motDePasse,
         telephone: this.telephone,
-        registreNational: this.registreNational,
+    
       };
 
   

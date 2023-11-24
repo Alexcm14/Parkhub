@@ -3,25 +3,14 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable, from } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators';
+import firebase from 'firebase/compat/app'; // Import firebase from the compat/app module
+import { user } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   constructor(private auth: AngularFireAuth, private firestore: AngularFirestore) {}
-
-  getCurrentUserId(): Observable<string> {
-    return this.auth.authState.pipe(
-      take(1),
-      switchMap((user) => {
-        if (user) {
-          return from([user.uid]);
-        } else {
-          return from([]);
-        }
-      })
-    );
-  }
 
   // Updated method to fetch the current user's data
   getLoggedInUserObservable(): Observable<any> {
@@ -42,27 +31,31 @@ export class AuthService {
   async register({ email, password }) {
     try {
       const userCredential = await this.auth.createUserWithEmailAndPassword(email, password);
-      const { user } = userCredential;
+      const uid = userCredential.user.uid;
+      const userDocRef = firebase.firestore().collection('user_data').doc(uid);
+      await userDocRef.set({
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        nom:'',
+        prenom:'',
+        email:userCredential.user.email,
+        telephone:'',
+      });
       // Additional user data can be saved to Firestore here if needed
-      return user;
+      return userCredential.user;
     } catch (error) {
       console.error('Error registering user: ', error);
       return null;
     }
   }
-
-  async login({ email, password }) {
+  async login(credentials: { email: string; password: string }) {
     try {
-      const userCredential = await this.auth.signInWithEmailAndPassword(email, password);
-      const { user } = userCredential;
-      return user;
+      // Your login logic here
+      // For example:
+      const userCredential = await this.auth.signInWithEmailAndPassword(credentials.email, credentials.password);
+      return userCredential.user;
     } catch (error) {
-      console.error('Error logging in: ', error);
+      console.error('Error during login: ', error);
       return null;
     }
-  }
-
-  logout() {
-    return this.auth.signOut();
-  }
+}
 }
