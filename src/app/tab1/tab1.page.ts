@@ -7,7 +7,9 @@ import { IonicModule } from '@ionic/angular';
 import { Subscription, elementAt } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { GoogleMap,  Marker } from '@capacitor/google-maps';
- 
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AuthService } from 'src/app/services/auth.service';
+
 declare var google: any;
  
 @Component({
@@ -24,6 +26,8 @@ export class Tab1Page {
   autocomplete: any;
   autocompleteItems: any = [];
   geocoder: any;
+  email:string;
+  motDePasse:string;
  
   
 
@@ -32,7 +36,7 @@ export class Tab1Page {
 
  
 
- constructor(private router: Router, private zone: NgZone) {
+ constructor(private router: Router, private zone: NgZone,private authService: AuthService, private firestore: AngularFirestore) {
   // Déclarations et initialisations dans le constructeur
   this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
   this.autocomplete = { input: '' };
@@ -41,6 +45,22 @@ export class Tab1Page {
   this.markers = [];
   
 }
+ngOnInit() {
+  // Fetch logged-in user data
+  this.authService.getLoggedInUserObservable().subscribe((userData) => {
+    if (userData) {
+      this.email = userData.email;
+      this.motDePasse = userData.motDePasse;
+      console.log('User is logged in:', this.email);
+    } else {
+      this.email = ''; 
+      this.motDePasse = '';
+      console.log('User is not logged in');
+  
+    }
+  });
+}
+
 
 
 //DEBUT BARRE DE RECHERCHE 
