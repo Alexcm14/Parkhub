@@ -45,6 +45,12 @@ export class AuthService {
         email: userCredential.user.email,
         telephone: '',
       });
+      const userCarRef = firebase.firestore().collection('car_data').doc(uid);
+      await userCarRef.set({
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        plaqueImmatriculation:'',
+        modèle:'',
+      });
       // Additional user data can be saved to Firestore here if needed
       return userCredential.user;
     } catch (error) {
