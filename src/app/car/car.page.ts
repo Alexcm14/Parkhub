@@ -10,6 +10,7 @@ export class CarPage {
   marque: string = '';
  
   vehicles: any[] = []; // Tableau pour stocker les véhicules
+  
  
   ajouterVehicule() {
     // Logique pour récupérer les données du formulaire
