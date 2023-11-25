@@ -13,7 +13,7 @@ export class AuthService {
 
   constructor(private auth: AngularFireAuth, private firestore: AngularFirestore) {}
 
-  // Updated method to fetch the current user's data
+  // fetch les données
   getLoggedInUserObservable(): Observable<any> {
     return this.auth.authState.pipe(
       switchMap((user) => {
@@ -21,10 +21,10 @@ export class AuthService {
           // Store the UID in the AuthService
           this.uid = user.uid;
 
-          // If the user is logged in, get user data from Firestore
+          // User connecté/ fetch ses données
           return this.firestore.collection('user_data').doc(this.uid).valueChanges();
         } else {
-          // If the user is not logged in, return null or handle accordingly
+          // pas connecté/rien
           return from([]);
         }
       }),
@@ -36,7 +36,7 @@ export class AuthService {
     try {
       const userCredential = await this.auth.createUserWithEmailAndPassword(email, password);
       const uid = userCredential.user.uid;
-      this.uid = uid; // Store the UID in the AuthService
+      this.uid = uid; // on garde le Uid
       const userDocRef = firebase.firestore().collection('user_data').doc(uid);
       await userDocRef.set({
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -56,7 +56,6 @@ export class AuthService {
   async login(credentials: { email: string; password: string }) {
     try {
       // Your login logic here
-      // For example:
       const userCredential = await this.auth.signInWithEmailAndPassword(credentials.email, credentials.password);
       this.uid = userCredential.user.uid; // Store the UID in the AuthService
       return userCredential.user;

@@ -22,7 +22,7 @@ export class LoginPage implements OnInit {
 		private router: Router
 	) {}
 
-	// Easy access for form fields
+	
 	get email() {
 		return this.credentials.get('email');
 	}
