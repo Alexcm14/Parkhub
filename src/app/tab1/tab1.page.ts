@@ -9,6 +9,8 @@ import { environment } from 'src/environments/environment';
 import { GoogleMap,  Marker } from '@capacitor/google-maps';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthService } from 'src/app/services/auth.service';
+import { from, of, switchMap, take } from 'rxjs';
+
 
 declare var google: any;
  
@@ -26,6 +28,12 @@ export class Tab1Page {
   autocomplete: any;
   autocompleteItems: any = [];
   geocoder: any;
+  
+  nom: string;
+  prenom: string;
+  email: string;
+  motDePasse: string;
+  telephone: string;
  
   
 
@@ -34,7 +42,7 @@ export class Tab1Page {
 
  
 
- constructor(private router: Router, private zone: NgZone) {
+ constructor(private router: Router, private zone: NgZone, private authService: AuthService, private firestore: AngularFirestore) {
   // Déclarations et initialisations dans le constructeur
   this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
   this.autocomplete = { input: '' };
@@ -44,6 +52,44 @@ export class Tab1Page {
   
 }
 
+
+ngOnInit() {
+  // Fetch logged-in user data
+  this.authService.getLoggedInUserObservable().pipe(
+    switchMap((userData) => {
+      console.log('Raw userData:', userData);
+
+      if (userData) {
+        this.email = userData.email;
+        this.motDePasse = userData.motDePasse;
+        console.log('User is logged in:', this.email, this.authService.uid);
+
+        // Connecte le UID et EMAIL
+        console.log('Logged-in UID:', this.authService.uid);
+        console.log('Logged-in Email:', this.email);
+
+        // Retourne les données supplémentaires de Firestore
+        return this.firestore.collection('user_data').doc(this.authService.uid).valueChanges();
+      } else {
+        this.email = '';
+        this.motDePasse = '';
+        console.log('User is not logged in');
+        return from([]); // Chaîne qui continue
+      }
+    }),
+    take(1)
+  ).subscribe((additionalData: any) => {
+    console.log('Processed additionalData:', additionalData);
+
+    if (additionalData) {
+      this.nom = additionalData.nom;
+      this.prenom = additionalData.prenom;
+      this.telephone = additionalData.telephone;
+    } else {
+      console.log('User data not found in Firestore.');
+    }
+  });
+}
 
 //DEBUT BARRE DE RECHERCHE 
 
