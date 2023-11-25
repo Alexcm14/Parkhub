@@ -51,6 +51,15 @@ export class AuthService {
         plaqueImmatriculation:'',
         modèle:'',
       });
+      const userEmpRef = firebase.firestore().collection('emplacement_data').doc(uid);
+      await userEmpRef.set({
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        code_postale:'',
+        coordonnées:'',
+        emplacement_id:'',
+        nb_places:'',
+        statut:'',
+      });
       // Additional user data can be saved to Firestore here if needed
       return userCredential.user;
     } catch (error) {
