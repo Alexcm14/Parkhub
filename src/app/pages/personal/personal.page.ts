@@ -17,23 +17,22 @@ export class PersonalPage implements OnInit {
 
   constructor(private authService: AuthService, private firestore: AngularFirestore) {}
 
-  // Inside ngOnInit()
   ngOnInit() {
     // Fetch logged-in user data
     this.authService.getLoggedInUserObservable().pipe(
-      switchMap((userData) => {
-        console.log('Raw userData:', userData); // Log the raw user data
+      switchMap((userData) => { // switchMap pour gérer les données
+        console.log('Raw userData:', userData); // le code récupère les données de l'utilisateur connecté en utilisant this.authService.getLoggedInUserObservable().
 
         if (userData) {
           this.email = userData.email;
           this.motDePasse = userData.motDePasse;
           console.log('User is logged in:', this.email, this.authService.uid);
 
-          // Log the UID and email
+          // connecte le UID et EMAIL
           console.log('Logged-in UID:', this.authService.uid);
           console.log('Logged-in Email:', this.email);
 
-          // Return an observable with additional user data
+          // retourne les données supp
           return of({
             userData: userData,
             additionalData: this.firestore.collection('user_data').doc(this.authService.uid).valueChanges(),
@@ -42,7 +41,7 @@ export class PersonalPage implements OnInit {
           this.email = '';
           this.motDePasse = '';
           console.log('User is not logged in');
-          return from([]); // Return an observable to keep the pipe chain going
+          return from([]); // chaine qui continue
         }
       }),
       take(1)
@@ -54,7 +53,7 @@ export class PersonalPage implements OnInit {
         this.prenom = additionalData.prenom;
         this.telephone = additionalData.telephone;
 
-        // Log additional user data next to this.email and UID
+        // données supplémentaires de l'utilisateur
         console.log('Additional user data:', {
           email: this.email,
           uid: this.authService.uid,
@@ -68,16 +67,16 @@ export class PersonalPage implements OnInit {
     });
   }
 
-  // Inside enregistrer()
+  
   enregistrer() {
     if (this.nom && this.prenom && this.email && this.telephone) {
-      // Get the user observable
+      // récupèrer l'observable utilisateur
       const userObservable = this.authService.getLoggedInUserObservable();
 
-      // Subscribe to the user observable to get the user data
+      // obtenir les données utilisateur
       userObservable.pipe(take(1)).subscribe((userData) => {
         if (userData) {
-          const userId = this.authService.uid || userData['uid']; // Access the UID property
+          const userId = this.authService.uid || userData['uid']; 
 
           console.log('User ID:', userId);
 
@@ -91,10 +90,10 @@ export class PersonalPage implements OnInit {
 
             const userDocRef = this.firestore.collection('user_data').doc(userId);
 
-            // Check if the user exists in Firestore
+            // l'utilisateur existe dans firestore?
             userDocRef.get().subscribe((doc: any) => {
               if (doc.exists) {
-                // User exists, update the document
+                // si il existe on update le doc
                 userDocRef.set(user, { merge: true })
                   .then(() => {
                     console.log('User data updated in Firestore successfully!');
