@@ -20,52 +20,41 @@ export class PersonalPage implements OnInit {
   ngOnInit() {
     // Fetch logged-in user data
     this.authService.getLoggedInUserObservable().pipe(
-      switchMap((userData) => { // switchMap pour gérer les données
-        console.log('Raw userData:', userData); // le code récupère les données de l'utilisateur connecté en utilisant this.authService.getLoggedInUserObservable().
-
+      switchMap((userData) => {
+        console.log('Raw userData:', userData);
+  
         if (userData) {
           this.email = userData.email;
           this.motDePasse = userData.motDePasse;
           console.log('User is logged in:', this.email, this.authService.uid);
-
-          // connecte le UID et EMAIL
+  
+          // Connecte le UID et EMAIL
           console.log('Logged-in UID:', this.authService.uid);
           console.log('Logged-in Email:', this.email);
-
-          // retourne les données supp
-          return of({
-            userData: userData,
-            additionalData: this.firestore.collection('user_data').doc(this.authService.uid).valueChanges(),
-          });
+  
+          // Retourne les données supplémentaires de Firestore
+          return this.firestore.collection('user_data').doc(this.authService.uid).valueChanges();
         } else {
           this.email = '';
           this.motDePasse = '';
           console.log('User is not logged in');
-          return from([]); // chaine qui continue
+          return from([]); // Chaîne qui continue
         }
       }),
       take(1)
-    ).subscribe(({ userData, additionalData }: { userData: any; additionalData: any }) => {
-      console.log('Processed userData:', userData); // Log the processed user data
-
+    ).subscribe((additionalData: any) => {
+      console.log('Processed additionalData:', additionalData);
+  
       if (additionalData) {
         this.nom = additionalData.nom;
         this.prenom = additionalData.prenom;
         this.telephone = additionalData.telephone;
-
-        // données supplémentaires de l'utilisateur
-        console.log('Additional user data:', {
-          email: this.email,
-          uid: this.authService.uid,
-          nom: this.nom,
-          prenom: this.prenom,
-          telephone: this.telephone,
-        });
       } else {
         console.log('User data not found in Firestore.');
       }
     });
   }
+  
 
   
   enregistrer() {
@@ -76,7 +65,7 @@ export class PersonalPage implements OnInit {
       // obtenir les données utilisateur
       userObservable.pipe(take(1)).subscribe((userData) => {
         if (userData) {
-          const userId = this.authService.uid || userData['uid']; 
+          const userId = this.authService.uid || userData['uid']; // Access the UID property
 
           console.log('User ID:', userId);
 

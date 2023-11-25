@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { switchMap, from, take,map } from 'rxjs';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 
 @Component({
@@ -13,25 +15,48 @@ import { ReactiveFormsModule } from '@angular/forms';
 export class Tab5Page implements OnInit {
   userName: string;
   credentials: FormGroup;
+  prenom: any;
+  nom: any;
+  authService: any;
 
   constructor(
     private router: Router,
     private afAuth: AngularFireAuth,
     private fb: FormBuilder,
+    private firestore: AngularFirestore
+    
   ) {}
 
   ngOnInit() {
-    // Fetch the user's information on component initialization
-    this.afAuth.authState.subscribe((user) => {
-      if (user) {
-        // Assuming your user data in Firebase has a 'displayName' property
-        this.userName = user.displayName || 'User'; // Default to 'User' if display name is not set
+    // Check if the user is already authenticated
+    this.afAuth.authState.pipe(
+      switchMap((user) => {
+        console.log('Raw userData:', user);
 
-        // Initialize the form with the user's email and an empty password
-        this.credentials = this.fb.group({
-          email: [user.email || '', [Validators.required, Validators.email]],
-          password: ['', [Validators.required, Validators.minLength(6)]],
-        });
+        if (user) {
+          this.userName = user.displayName || 'User';
+
+          // Display the logged-in email and UID in the console
+          console.log('Logged-in Email:', user.email);
+          console.log('Logged-in UID:', user.uid);
+
+          // Return additional user data from Firestore
+          return this.firestore.collection('user_data').doc(user.uid).valueChanges();
+        } else {
+          console.log('User is not logged in');
+          return from([]); // Continue the observable chain
+        }
+      }),
+      take(1)
+    ).subscribe((additionalData: any) => {
+      console.log('Processed additionalData:', additionalData);
+
+      if (additionalData) {
+        // Assuming 'prenom' and 'nom' are fields in your Firestore document
+        this.prenom = additionalData.prenom;
+        this.nom = additionalData.nom;
+      } else {
+        console.log('User data not found in Firestore.');
       }
     });
   }
