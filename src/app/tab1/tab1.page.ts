@@ -7,6 +7,8 @@ import { IonicModule } from '@ionic/angular';
 import { Subscription, elementAt } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { GoogleMap,  Marker } from '@capacitor/google-maps';
+
+
  
 declare var google: any;
  
@@ -14,6 +16,7 @@ declare var google: any;
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss'],
+  
   })
  
 export class Tab1Page {

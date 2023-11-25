@@ -9,6 +9,8 @@ import { CardDetailsModalComponent } from '../cards/card.component/card.componen
 })
 export class Tab3Page implements OnInit {
   activeTab: string = 'reservations'; // Pour suivre l'onglet actif
+  
+
 
   items = [
     { title: 'Item 1', description: 'Description for Item 1' },

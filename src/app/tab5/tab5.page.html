@@ -1,42 +1,42 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>tab5</ion-title>
+    <ion-title>Mes informations</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content fullscreen>
 
   <div align="center">
-    <ion-avatar>
+    <ion-avatar class="avatar">
       <!-- Add an image or initials if you have -->
-      <img src="YOUR_USER_PROFILE_IMAGE_URL_HERE" />
+      <img src="YOUR_USER_PROFILE_IMAGE_URL_HERE"/>
     </ion-avatar>
     <ion-label color="primary">{{ userName }}</ion-label>
   </div>
 
   <ion-list>
-    <ion-item lines="full" detail (click)="goPersonal()">
+    <ion-item lines="full" detail (click)="goPersonal()" class="perso">
       <ion-icon slot="start" name="person-circle"></ion-icon>
       <ion-label>
         Mes données personelles
       </ion-label>
     </ion-item>
 
-    <ion-item lines="full" detail (click)="goCar()">
+    <ion-item lines="full" detail (click)="goCar()" class="car">
       <ion-icon slot="start" name="car"></ion-icon>
       <ion-label>
-        Ma voiture
+        Mon véhicule
       </ion-label>
     </ion-item>
 
-    <ion-item lines="full" detail>
+    <ion-item lines="full" detail class="pay">
       <ion-icon slot="start" name="card"></ion-icon>
       <ion-label>
-        Méthode de paiement
+        Méthodes de paiement
       </ion-label>
     </ion-item>
 
-    <ion-item lines="full" detail>
+    <ion-item lines="full" detail class="FAQ">
       <ion-icon slot="start" name="tablet-landscape"></ion-icon>
       <ion-label>
         FAQ
@@ -44,8 +44,7 @@
     </ion-item>
   </ion-list>
 
-  <ion-button fill="clear" class="ion-margin" color="danger" (click)="logout()">
-    <ion-icon name="log-out" slot="start"></ion-icon> se déconnecter
-  </ion-button>
+  <ion-button fill="clear" class="ion-margin" color="danger" (click)="logout()" class="deco">
+    <ion-icon name="log-out" slot="start"></ion-icon>Se déconnecter</ion-button>
 
 </ion-content>
