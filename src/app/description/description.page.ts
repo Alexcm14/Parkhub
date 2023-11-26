@@ -18,6 +18,13 @@ export class DescriptionPage implements OnInit {
     this.navCtrl.navigateForward('tabs/tab4');
   }
 
+  handleFileInput(event: any): void {
+    const files: FileList = event.target.files;
+    if (files && files.length > 0) {
+      console.log(files);
+    }
+  }
+
   ngOnInit() {
   }
 

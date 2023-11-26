@@ -17,7 +17,7 @@
   </ion-text>
 
   <ion-text class="T-desc">
-    Maintenant, rédigez une description de votre parking.
+    Maintenant, rédigez une description et ajoutez des photos votre parking.
   </ion-text>
   <ion-text class="description">
    Soyez complets, donnez des détails utiles aux utilisateurs qui liront votre annonce
@@ -33,7 +33,17 @@
   [counterFormatter]="customCounterFormatter"
 ></ion-input>
 
+<br>
+<br>
 
+<ion-text class="T-desc">
+  Ajouter des photos.
+</ion-text>
+
+<div class="upload-button">
+<input type="file" (change)="handleFileInput($event)" accept="image/*" multiple />
+<ion-icon name="add-circle"></ion-icon>
+</div>
 
 </ion-content>
 
