@@ -63,6 +63,10 @@ const routes: Routes = [
     path: 'oubli',
     loadChildren: () => import('./pages/oubli/oubli.module').then( m => m.OubliPageModule)
   },
+  {
+    path: 'recapitulatif',
+    loadChildren: () => import('./recapitulatif/recapitulatif.module').then( m => m.RecapitulatifPageModule)
+  },
   
 ];
 @NgModule({

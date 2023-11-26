@@ -25,6 +25,10 @@ export class DescriptionPage implements OnInit {
     }
   }
 
+  redirigerVersRecap() {
+    this.navCtrl.navigateForward('/recapitulatif');
+  }
+
   ngOnInit() {
   }
 
