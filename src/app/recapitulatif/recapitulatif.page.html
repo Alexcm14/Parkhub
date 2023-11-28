@@ -1,0 +1,63 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Récapitulatif de l'annonce</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <!-- Type de parking -->
+
+  <ion-item>
+    <ion-label position="stacked">Type de parking :</ion-label>
+  </ion-item>
+
+  <!-- Adresse du parking -->
+  <ion-item>
+    <ion-label position="stacked">Adresse du parking</ion-label>
+  </ion-item>
+
+
+  <!-- Nombre de places disponibles -->
+
+  <ion-item>
+    <ion-label position="stacked">Nombre de places disponibles</ion-label>
+  </ion-item>
+
+
+  <!-- Types de véhicules acceptés -->
+
+  <ion-item>
+    <ion-label position="stacked">Types de véhicules acceptés</ion-label>
+  </ion-item>
+
+
+  <!-- Description -->
+
+  <ion-item>
+    <ion-label position="stacked">Description</ion-label>
+  </ion-item>
+
+
+  <!-- Photos -->
+  <ion-item>
+    <ion-label position="stacked">Photos</ion-label>
+  </ion-item>
+
+  <!-- Bouton on/off pour poster l'annonce -->
+  <ion-item>
+    <ion-label>Poster l'annonce</ion-label>
+    <ion-toggle [(ngModel)]="isAdPosted"></ion-toggle>
+  </ion-item>
+
+  <!-- Bouton de validation -->
+  <ion-button>Valider</ion-button>
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-title></ion-title>
+    <ion-back-button slot="start" defaultHref="/description">Retour</ion-back-button>
+  </ion-toolbar>
+</ion-footer>

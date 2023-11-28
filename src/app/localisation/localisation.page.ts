@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
+import { NgZone } from '@angular/core';
 
 @Component({
   selector: 'app-localisation',

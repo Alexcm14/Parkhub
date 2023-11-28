@@ -4,18 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { LocalisationPageRoutingModule } from './localisation-routing.module';
+import { RecapitulatifPageRoutingModule } from './recapitulatif-routing.module';
 
-import { LocalisationPage } from './localisation.page';
-
+import { RecapitulatifPage } from './recapitulatif.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    LocalisationPageRoutingModule
+    RecapitulatifPageRoutingModule
   ],
-  declarations: [LocalisationPage]
+  declarations: [RecapitulatifPage]
 })
-export class LocalisationPageModule {}
+export class RecapitulatifPageModule {}
