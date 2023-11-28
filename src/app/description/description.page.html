@@ -17,7 +17,7 @@
   </ion-text>
 
   <ion-text class="T-desc">
-    Maintenant, rédigez une description et ajoutez des photos votre parking.
+    Maintenant, rédigez une description de votre parking.
   </ion-text>
   <ion-text class="description">
    Soyez complets, donnez des détails utiles aux utilisateurs qui liront votre annonce
@@ -33,17 +33,7 @@
   [counterFormatter]="customCounterFormatter"
 ></ion-input>
 
-<br>
-<br>
 
-<ion-text class="T-desc">
-  Ajouter des photos.
-</ion-text>
-
-<div class="upload-button">
-<input type="file" (change)="handleFileInput($event)" accept="image/*" multiple />
-<ion-icon name="add-circle"></ion-icon>
-</div>
 
 </ion-content>
 
@@ -51,6 +41,6 @@
   <ion-toolbar>
     <ion-title></ion-title>
     <ion-back-button slot="start" defaultHref="/nbplaces">Retour</ion-back-button>
-    <ion-button slot="end" (click)="redirigerVersRecap()">Suivant <ion-icon name="arrow-forward"></ion-icon></ion-button>
+    <ion-button slot="end">Suivant <ion-icon name="arrow-forward"></ion-icon></ion-button>
   </ion-toolbar>
 </ion-footer>

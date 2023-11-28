@@ -8,7 +8,6 @@ import { LocalisationPageRoutingModule } from './localisation-routing.module';
 
 import { LocalisationPage } from './localisation.page';
 
-
 @NgModule({
   imports: [
     CommonModule,

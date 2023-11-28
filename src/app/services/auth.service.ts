@@ -59,8 +59,11 @@ export class AuthService {
         emplacement_id:'',
         nb_places:'',
         statut:'',
+        adresse:'',
+        type_emplacement:'',
+        type_vehicule:'',
+        description:'',
       });
-      // Additional user data can be saved to Firestore here if needed
       return userCredential.user;
     } catch (error) {
       console.error('Error registering user: ', error);
