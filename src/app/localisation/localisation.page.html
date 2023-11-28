@@ -20,7 +20,15 @@
     L'adresse sera uniquement communiqué aux locataires une fois leur réservation effectuée
   </ion-text>
 
-  <ion-searchbar animated="true" placeholder="Adresse"></ion-searchbar>
+
+    <ion-searchbar [debounce]="600" [(ngModel)]="autocomplete.input" (ionInput)="updateSearchResults()" placeholder="Cherchez une adresse"></ion-searchbar>
+   
+    <ion-list  lines="none" [inset]="true" *ngIf="autocompleteItems.length > 0" class="prediction-list" [hidden]="autocompleteItems.length === 0">
+      <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
+        {{ item.description }}
+      </ion-item>
+    </ion-list>
+ 
 
 </ion-content>
 

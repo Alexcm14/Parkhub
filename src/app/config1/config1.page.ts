@@ -12,8 +12,8 @@ export class Config1Page implements OnInit {
 
   selectedCard: string | null = null;
 
-  selectCard(cardType: string) {
-    this.selectedCard = this.selectedCard === cardType ? null : cardType;
+  selectCard(Type: string) {
+    this.selectedCard = this.selectedCard = Type;
   }
   
   constructor(private navCtrl: NavController) { }
