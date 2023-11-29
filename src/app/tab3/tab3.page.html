@@ -1,18 +1,22 @@
 <!-- tab3.page.html -->
 
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-button [ngClass]="{'active-tab': activeTab === 'reservations'}" (click)="switchTabs('reservations')">Mes Réservations</ion-button>
-    </ion-buttons>
-    <ion-title></ion-title>
-    <ion-buttons slot="end">
-      <ion-button [ngClass]="{'active-tab': activeTab === 'places'}" (click)="switchTabs('places')">Mes Places</ion-button>
-    </ion-buttons>
-  </ion-toolbar>
+<ion-item>
+    <ion-label class="parking">
+    
+    <ion-segment class="type-pl" value="type-place">
+      <ion-segment-button value="default">
+        <ion-label><ion-icon name="bag-check-outline"></ion-icon> Mes réservations</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="segment">
+        <ion-label><ion-icon name="home-outline"></ion-icon> Mes places</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+    </ion-label>
+  </ion-item>
 </ion-header>
 
-<ion-content>
+<ion-content fullscreen="true">
   <ion-row *ngFor="let chunk of itemsChunks" class="ion-align-items-stretch">
     <ion-col *ngFor="let item of chunk" class="ion-padding">
       <ion-card (click)="showDetails(item)" [ngClass]="{'reservation-card': activeTab === 'reservations', 'place-card': activeTab === 'places'}">

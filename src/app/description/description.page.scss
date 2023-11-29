@@ -11,3 +11,29 @@
         margin-bottom: 50px; 
         display: block;   
 }
+
+.upload-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 200px; /* Ajustez la taille selon vos préférences */
+    height: 250px; /* Ajustez la taille selon vos préférences */
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    margin: 20px auto; /* Ajustez la marge selon vos préférences */
+    cursor: pointer;
+    position: relative;
+  
+    input {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+  
+    ion-icon {
+      font-size: 50px; /* Ajustez la taille de l'icône selon vos préférences */
+      color: #333; /* Couleur de l'icône */
+    }
+  }
