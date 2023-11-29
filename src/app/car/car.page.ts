@@ -87,23 +87,16 @@ export class CarPage {
             };
             this.vehicles.unshift(user);
 
-            const userDocRef = this.firestore.collection('car_data').doc(userId);
-
-            // l'utilisateur existe dans firestore?
-            userDocRef.get().subscribe((doc: any) => {
-              if (doc.exists) {
-                // si il existe on update le doc
-                userDocRef.set(user, { merge: true })
-                  .then(() => {
-                    console.log('User Car data updated in Firestore successfully!');
-                    // Charger les données de car_data après la mise à jour
-                    this.loadCarData();
-                  })
-                  .catch((error) => {
-                    console.error('Error updating user Car data in Firestore: ', error);
-                  });
-              }
-            });
+            // Ajouter un nouveau document à la collection car_data
+            this.firestore.collection('car_data').add(user)
+              .then((docRef) => {
+                console.log('User Car data added to Firestore successfully with ID:', docRef.id);
+                // Charger les données de car_data après l'ajout
+                this.loadCarData();
+              })
+              .catch((error) => {
+                console.error('Error adding user Car data to Firestore: ', error);
+              });
           }
         }
       });

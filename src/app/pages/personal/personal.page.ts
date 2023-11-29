@@ -28,10 +28,7 @@ export class PersonalPage implements OnInit {
           this.motDePasse = userData.motDePasse;
           console.log('User is logged in:', this.email, this.authService.uid);
   
-          // Connecte le UID et EMAIL
-          console.log('Logged-in UID:', this.authService.uid);
-          console.log('Logged-in Email:', this.email);
-  
+          
           // Retourne les données supplémentaires de Firestore
           return this.firestore.collection('user_data').doc(this.authService.uid).valueChanges();
         } else {
