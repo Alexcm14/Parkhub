@@ -21,6 +21,7 @@
    Indiquez uniquement le nombre de places que vous souhaitez mettre en location ainsi que le type de véhicule qui peut y être stationné.
   </ion-text>
 
+<ion-list>
   <ion-item>
     <ion-label class="nb-places">Nombre de places disponibles :</ion-label>  
     <ion-buttons slot="end">
@@ -30,18 +31,20 @@
     </ion-buttons>
   </ion-item>
 
-  <ion-list>
-    <ion-item>
-      <ion-select aria-label="TypeVoiture" placeholder="Type(s) de véhicule" [multiple]="true">
-        <ion-select-option value="2 roues">2 Roues</ion-select-option>
-        <ion-select-option value="Citadine">Citadine</ion-select-option>
-        <ion-select-option value="Berline">Berline</ion-select-option>
-        <ion-select-option value="4x4">4x4</ion-select-option>
-        <ion-select-option value="Pick-up">Pick-up</ion-select-option>
-        <ion-select-option value="Camionnette">Camionnette</ion-select-option>
-      </ion-select>
-    </ion-item>
-  </ion-list>
+  <ion-item>
+    <ion-label position="stacked">Types de véhicules acceptés</ion-label>
+    <ion-select aria-label="TypeVoiture" placeholder="Type(s) de véhicule" [multiple]="true" (ionChange)="selectVehicleType($event.detail.value)">
+      <ion-select-option value="2 roues">2 Roues</ion-select-option>
+      <ion-select-option value="Citadine">Citadine</ion-select-option>
+      <ion-select-option value="Berline">Berline</ion-select-option>
+      <ion-select-option value="4x4">4x4</ion-select-option>
+      <ion-select-option value="Pick-up">Pick-up</ion-select-option>
+      <ion-select-option value="Camionnette">Camionnette</ion-select-option>
+    </ion-select>
+  </ion-item>
+  
+</ion-list>
+
 
 </ion-content>
 

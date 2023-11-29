@@ -17,12 +17,12 @@ ion-button .close{
 }
 
 ion-card {
-    width: calc(50% - 10px); /* 50% moins la marge entre les cartes */
-    max-width: calc(50% - 10px); /* 50% moins la marge entre les cartes */
-    aspect-ratio: 1/1; /* Pour rendre les cartes carrées */
-    max-height: 100px; /* Réglez la hauteur maximale comme vous le souhaitez */
+    width: calc(50% - 10px); 
+    max-width: calc(50% - 10px); 
+    aspect-ratio: 1/1; 
+    max-height: 100px;
   
-    /* Styles supplémentaires pour la mise en forme de la carte */
+    
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -35,8 +35,8 @@ ion-card {
   }
 
   ion-card.selected {
-    border: 2px solid #007bff;  // Change the border color as needed
-    background-color: #f0f0f0;  // Change the background color as needed
+    border: 2px solid #46d1c8; 
+    background-color: #f0f0f0;  
   }
 
   

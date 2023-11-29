@@ -1,5 +1,8 @@
+// nbplaces.page.ts
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
+import { VehicleSelectionService } from '../shared/vehicule-selection.service';
+
 
 @Component({
   selector: 'app-nbplaces',
@@ -8,9 +11,16 @@ import { NavController } from '@ionic/angular';
 })
 export class NbplacesPage implements OnInit {
 
-    NombrePlaces: number = 1;
+  selectedVehicleTypes: string[] = [];
 
-  constructor(private navCtrl: NavController) { }
+  selectVehicleType(selectedTypes: string[]) {
+    this.vehicleSelectionService.setSelectedVehicleTypes(selectedTypes);
+  }
+
+
+  NombrePlaces: number = 1;
+
+  constructor(private navCtrl: NavController, private vehicleSelectionService: VehicleSelectionService) { }
 
   incrementPlaces() {
     this.NombrePlaces++;
@@ -32,5 +42,5 @@ export class NbplacesPage implements OnInit {
 
   ngOnInit() {
   }
-
 }
+
