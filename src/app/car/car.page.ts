@@ -16,9 +16,10 @@ export class CarPage {
   email: string;
   motDePasse: string;
   telephone: string;
+  
  
  
-  vehicles: any[] = []; // Tableau pour stocker les véhicules
+  vehicles: any[] = []; 
 
   constructor( private authService: AuthService, private firestore: AngularFirestore) {}
 
@@ -61,7 +62,7 @@ export class CarPage {
   }
   
  
-  ajouterVehicule() {
+  /*ajouterVehicule() {
     // Logique pour récupérer les données du formulaire
     const nouveauVehicule = {
       plaque: this.plaque,
@@ -75,4 +76,48 @@ export class CarPage {
     this.plaque = '';
     this.marque = '';
   }
+  
 }
+*/
+ajouterVehicule() {
+  if (this.plaque && this.marque) {
+    // récupèrer l'observable utilisateur
+    const userObservable = this.authService.getLoggedInUserObservable();
+
+    // obtenir les données utilisateur
+    userObservable.pipe(take(1)).subscribe((userData) => {
+      if (userData) {
+        const userId = this.authService.uid || userData['uid']; // Access the UID property
+
+        console.log('User ID:', userId);
+
+        if (userId) {
+          const user = {
+            marque: this.marque,
+            plaque: this.plaque,
+          };
+          this.vehicles.unshift(user);
+
+          const userDocRef = this.firestore.collection('car_data').doc(userId);
+
+          // l'utilisateur existe dans firestore?
+          userDocRef.get().subscribe((doc: any) => {
+            if (doc.exists) {
+              // si il existe on update le doc
+              userDocRef.set(user, { merge: true })
+                .then(() => {
+                  console.log('User Car data updated in Firestore successfully!');
+                })
+                .catch((error) => {
+                  console.error('Error updating user Car data in Firestore: ', error);
+                });
+                
+            }
+          });
+
+  }
+}
+});
+
+  }
+}}

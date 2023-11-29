@@ -48,8 +48,8 @@ export class AuthService {
       const userCarRef = firebase.firestore().collection('car_data').doc(uid);
       await userCarRef.set({
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        plaqueImmatriculation:'',
-        modèle:'',
+        plaque:'',
+        marque:'',
       });
       const userEmpRef = firebase.firestore().collection('emplacement_data').doc(uid);
       await userEmpRef.set({

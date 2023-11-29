@@ -12,7 +12,7 @@
   </ion-header>
   <ion-toolbar>
     </ion-toolbar>
-    <!-- Liste des véhicules -->
+
   <ion-card *ngFor="let vehicle of vehicles">
     <ion-card-header>
       {{ vehicle.marque }}
@@ -31,9 +31,39 @@
   
     <ion-item>
       <ion-label position="stacked">Marque du véhicule</ion-label>
-      <ion-input type="text" [(ngModel)]="marque" required></ion-input>
+      <ion-select placeholder="Sélectionnez la marque" [(ngModel)]="marque" required interface="popover">
+      
+        <ion-select-option value="Mercedes">Mercedes </ion-select-option>
+        <ion-select-option value="BMW">BMW</ion-select-option>
+        <ion-select-option value="Audi">Audi</ion-select-option>
+        <ion-select-option value="Citroën">Citroën</ion-select-option>
+        <ion-select-option value="Renault">Renault</ion-select-option>
+        <ion-select-option value="Peugeot">Peugeot</ion-select-option>
+        <ion-select-option value="Porsche">Porsche</ion-select-option>
+        <ion-select-option value="Volkswagen">Volkswagen</ion-select-option>
+        <ion-select-option value="Seat">Seat</ion-select-option>
+        <ion-select-option value="Polestar">Polestar</ion-select-option>
+        <ion-select-option value="tesla">tesla</ion-select-option>
+        <ion-select-option value="Volvo">Volvo</ion-select-option>
+        <ion-select-option value="Alfa Romeo">Alfa Romeo</ion-select-option>
+        <ion-select-option value="Fiat">Fiat</ion-select-option>
+        <ion-select-option value="Suzuki">Suzuki</ion-select-option>
+        <ion-select-option value="Toyota">Toyota</ion-select-option>
+        <ion-select-option value="Kia">Kia</ion-select-option>
+        <ion-select-option value="Hyundai">Hyundai</ion-select-option>
+        <ion-select-option value="Subaru">Subaru</ion-select-option>
+        <ion-select-option value="Nissan">Nissan</ion-select-option>
+        <ion-select-option value="Ford">Ford</ion-select-option>
+        <ion-select-option value="Dodge">Dodge</ion-select-option>
+        <ion-select-option value="Link&co">Link&co</ion-select-option>
+        <ion-select-option value="Mini">Mini</ion-select-option>
+        <ion-select-option value="Cupra">Cupra</ion-select-option>
+        <ion-select-option value="Smart">Smart</ion-select-option>
+        <ion-select-option value="Abarth">Abarth</ion-select-option>
+        
+      </ion-select>
     </ion-item>
-  
+
 
     <ion-button expand="full" (click)="ajouterVehicule()">Ajouter véhicule</ion-button>
 </ion-content>
