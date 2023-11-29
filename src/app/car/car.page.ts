@@ -1,8 +1,10 @@
+// car.page.ts
+
 import { Component } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthService } from 'src/app/services/auth.service';
-import { from, of, switchMap, take } from 'rxjs';
- 
+import { from, take, switchMap } from 'rxjs';
+
 @Component({
   selector: 'app-car',
   templateUrl: './car.page.html',
@@ -16,33 +18,24 @@ export class CarPage {
   email: string;
   motDePasse: string;
   telephone: string;
-  
- 
- 
-  vehicles: any[] = []; 
+  vehicles: any[] = [];
 
-  constructor( private authService: AuthService, private firestore: AngularFirestore) {}
+  constructor(private authService: AuthService, private firestore: AngularFirestore) {}
 
   ngOnInit() {
     // Fetch logged-in user data
     this.authService.getLoggedInUserObservable().pipe(
       switchMap((userData) => {
         console.log('Raw userData:', userData);
-  
+
         if (userData) {
-          this.email = userData.email;
-          this.motDePasse = userData.motDePasse;
-          console.log('User is logged in:', this.email, this.authService.uid);
-  
-          // Connecte le UID et EMAIL
-          console.log('Logged-in UID:', this.authService.uid);
-          console.log('Logged-in Email:', this.email);
-  
+          const userId = this.authService.uid || userData['uid']; // Access the UID property
+
+          console.log('User ID:', userId);
+
           // Retourne les données supplémentaires de Firestore
-          return this.firestore.collection('user_data').doc(this.authService.uid).valueChanges();
+          return this.firestore.collection('user_data').doc(userId).valueChanges();
         } else {
-          this.email = '';
-          this.motDePasse = '';
           console.log('User is not logged in');
           return from([]); // Chaîne qui continue
         }
@@ -50,74 +43,70 @@ export class CarPage {
       take(1)
     ).subscribe((additionalData: any) => {
       console.log('Processed additionalData:', additionalData);
-  
+
       if (additionalData) {
         this.nom = additionalData.nom;
         this.prenom = additionalData.prenom;
         this.telephone = additionalData.telephone;
+
+        // Charger les données de car_data
+        this.loadCarData();
       } else {
         console.log('User data not found in Firestore.');
       }
     });
   }
-  
- 
-  /*ajouterVehicule() {
-    // Logique pour récupérer les données du formulaire
-    const nouveauVehicule = {
-      plaque: this.plaque,
-      marque: this.marque,
-    };
- 
-    // Ajouter le nouveau véhicule au tableau
-    this.vehicles.unshift(nouveauVehicule);
- 
-    // Réinitialiser les champs du formulaire
-    this.plaque = '';
-    this.marque = '';
+
+  loadCarData() {
+    // récupérer les données de car_data
+    this.firestore.collection('car_data').doc(this.authService.uid).valueChanges().subscribe((carData: any) => {
+      if (carData) {
+        console.log('Car Data:', carData);
+        // Mettre à jour la liste des véhicules
+        this.vehicles = [carData];
+      }
+    });
   }
-  
-}
-*/
-ajouterVehicule() {
-  if (this.plaque && this.marque) {
-    // récupèrer l'observable utilisateur
-    const userObservable = this.authService.getLoggedInUserObservable();
 
-    // obtenir les données utilisateur
-    userObservable.pipe(take(1)).subscribe((userData) => {
-      if (userData) {
-        const userId = this.authService.uid || userData['uid']; // Access the UID property
+  ajouterVehicule() {
+    if (this.plaque && this.marque) {
+      // récupèrer l'observable utilisateur
+      const userObservable = this.authService.getLoggedInUserObservable();
 
-        console.log('User ID:', userId);
+      // obtenir les données utilisateur
+      userObservable.pipe(take(1)).subscribe((userData) => {
+        if (userData) {
+          const userId = this.authService.uid || userData['uid']; // Access the UID property
 
-        if (userId) {
-          const user = {
-            marque: this.marque,
-            plaque: this.plaque,
-          };
-          this.vehicles.unshift(user);
+          console.log('User ID:', userId);
 
-          const userDocRef = this.firestore.collection('car_data').doc(userId);
+          if (userId) {
+            const user = {
+              marque: this.marque,
+              plaque: this.plaque,
+            };
+            this.vehicles.unshift(user);
 
-          // l'utilisateur existe dans firestore?
-          userDocRef.get().subscribe((doc: any) => {
-            if (doc.exists) {
-              // si il existe on update le doc
-              userDocRef.set(user, { merge: true })
-                .then(() => {
-                  console.log('User Car data updated in Firestore successfully!');
-                })
-                .catch((error) => {
-                  console.error('Error updating user Car data in Firestore: ', error);
-                });
-                
-            }
-          });
+            const userDocRef = this.firestore.collection('car_data').doc(userId);
 
+            // l'utilisateur existe dans firestore?
+            userDocRef.get().subscribe((doc: any) => {
+              if (doc.exists) {
+                // si il existe on update le doc
+                userDocRef.set(user, { merge: true })
+                  .then(() => {
+                    console.log('User Car data updated in Firestore successfully!');
+                    // Charger les données de car_data après la mise à jour
+                    this.loadCarData();
+                  })
+                  .catch((error) => {
+                    console.error('Error updating user Car data in Firestore: ', error);
+                  });
+              }
+            });
+          }
+        }
+      });
+    }
   }
 }
-});
-
-  }
-}}
