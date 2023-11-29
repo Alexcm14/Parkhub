@@ -10,6 +10,12 @@ import { NavController } from '@ionic/angular';
 
 export class Config1Page implements OnInit {
 
+  selectedCard: string | null = null;
+
+  selectCard(Type: string) {
+    this.selectedCard = this.selectedCard = Type;
+  }
+  
   constructor(private navCtrl: NavController) { }
 
  fermerPage() {
