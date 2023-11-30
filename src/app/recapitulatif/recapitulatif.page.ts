@@ -1,6 +1,5 @@
 // recapitulatif.page.ts
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { VehicleSelectionService } from '../shared/vehicule-selection.service';
@@ -13,21 +12,33 @@ import { ChangeDetectorRef } from '@angular/core';
 })
 export class RecapitulatifPage implements OnInit, OnDestroy {
 
-  parkingType: string;
-  parkingAddress: string;
-  nbPlaces: number;
+  selectedParkingType$: Observable<string | null>;
+  selectedParkingAddress$: Observable<string | null>;
+  numberOfPlaces$: Observable<number>;
   selectedVehicleTypes$: Observable<string[]>;
-  description: string;  // Ajoute la déclaration si nécessaire
+  selectedDescription$: Observable<string | null>;
+  selectedPhotos$: Observable<string[]>;
   isAdPosted: boolean = false;
 
-  constructor(private navCtrl: NavController, private route: ActivatedRoute, private vehicleSelectionService: VehicleSelectionService, private cdr: ChangeDetectorRef) {
+  constructor(
+    private navCtrl: NavController,
+    private vehicleSelectionService: VehicleSelectionService,
+    private cdr: ChangeDetectorRef
+  ) {
     this.selectedVehicleTypes$ = this.vehicleSelectionService.selectedVehicleTypes$;
+    this.selectedParkingType$ = this.vehicleSelectionService.selectedParkingType$;
+    this.selectedParkingAddress$ = this.vehicleSelectionService.selectedParkingAddress$; 
+    this.numberOfPlaces$ = this.vehicleSelectionService.numberOfPlaces$;
+    this.selectedDescription$ = this.vehicleSelectionService.selectedDescription$;
+    this.selectedPhotos$ = this.vehicleSelectionService.selectedPhotos$;
+
   }
 
   ngOnInit() {
-    this.cdr.detectChanges();
+    this.cdr.detectChanges(); 
   }
 
   ngOnDestroy() {
+    // Aucun besoin de désabonnement car nous utilisons async dans le template
   }
 }

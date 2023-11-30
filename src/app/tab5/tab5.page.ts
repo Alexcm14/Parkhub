@@ -69,6 +69,10 @@ export class Tab5Page implements OnInit {
     this.router.navigate(['/car']);
   }
 
+  goPay() {
+    this.router.navigate(['/pay']);
+  }
+
   async logout() {
     await this.afAuth.signOut(); // Use AngularFireAuth method to sign out
     // You can navigate to the login page or any other desired page after logout

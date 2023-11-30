@@ -7,21 +7,23 @@
 
 <ion-content [fullscreen]="true">
   <!-- Type de parking -->
-  <ion-item>
-    <ion-label position="stacked">Type de parking</ion-label>
-    <h3></h3>
-  </ion-item>
+<ion-item *ngIf="(selectedParkingType$ | async) as selectedParkingType">
+  <ion-label position="stacked">Type de parking</ion-label>
+  <ion-note>{{ selectedParkingType }}</ion-note>
+</ion-item>
+
 
   <!-- Adresse du parking -->
-  <ion-item>
-    <ion-label position="stacked">Adresse du parking</ion-label>
-    <h3></h3>
-  </ion-item>
+<ion-item *ngIf="(selectedParkingAddress$ | async) as selectedParkingAddress">
+  <ion-label position="stacked">Adresse du parking</ion-label>
+  <ion-note>{{ selectedParkingAddress }}</ion-note>
+</ion-item>
+
 
   <!-- Nombre de places disponibles -->
-  <ion-item>
+  <ion-item *ngIf="(numberOfPlaces$ | async) as numberOfPlaces">
     <ion-label position="stacked">Nombre de places disponibles</ion-label>
-    <h3></h3>
+    <ion-note>{{ numberOfPlaces }}</ion-note>
   </ion-item>
 
   <!-- Types de véhicules acceptés -->
@@ -31,15 +33,19 @@
   </ion-item>
 
   <!-- Description -->
-  <ion-item>
+  <ion-item *ngIf="(selectedDescription$ | async) as selectedDescription">
     <ion-label position="stacked">Description</ion-label>
-    <!-- Ajoute la balise h3 ou le composant que tu utilises pour afficher la description -->
+    <ion-note>{{ selectedDescription }}</ion-note>
   </ion-item>
 
   <!-- Photos -->
-  <ion-item>
+  <ion-item *ngIf="(selectedPhotos$ | async) as selectedPhotos">
     <ion-label position="stacked">Photos</ion-label>
-    <!-- Ajoute la balise h3 ou le composant que tu utilises pour afficher les photos -->
+    <ion-row>
+      <ion-col *ngFor="let photo of selectedPhotos">
+        <img [src]="photo" alt="Selected Photo" class="selected-photo" />
+      </ion-col>
+    </ion-row>
   </ion-item>
 
   <!-- Bouton on/off pour poster l'annonce -->

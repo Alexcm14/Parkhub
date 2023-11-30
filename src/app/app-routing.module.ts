@@ -67,6 +67,14 @@ const routes: Routes = [
     path: 'oubli',
     loadChildren: () => import('./pages/oubli/oubli.module').then( m => m.OubliPageModule)
   },
+  {
+    path: 'pay',
+    loadChildren: () => import('./pay/pay.module').then( m => m.PayPageModule)
+  },
+  {
+    path: 'paypopup',
+    loadChildren: () => import('./paypopup/paypopup.module').then( m => m.PaypopupPageModule)
+  },
   
 ];
 @NgModule({

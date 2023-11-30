@@ -1,6 +1,8 @@
+// config1.page.ts
+
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
-import { SharedService } from '../shared.service';
+import { VehicleSelectionService } from '../shared/vehicule-selection.service'; 
 
 @Component({
   selector: 'app-config1',
@@ -10,10 +12,11 @@ import { SharedService } from '../shared.service';
 export class Config1Page implements OnInit {
   selectedCard: string | null = null;
 
-  constructor(private navCtrl: NavController, public sharedService: SharedService) {}
+  constructor(private navCtrl: NavController, private vehicleSelectionService: VehicleSelectionService) {}
 
   selectCard(Type: string) {
     this.selectedCard = Type;
+    this.vehicleSelectionService.updateSelectedParkingType(Type);
   }
   
   fermerPage() {

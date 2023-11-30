@@ -11,3 +11,17 @@
         margin-bottom: 10px; 
         display: block;   
 }
+
+.prediction-list ion-item {
+    padding: 1px; /* Ajoutez un espace de remplissage */
+    border-bottom: 1px solid #ccc; /* Ajoutez une bordure inférieure */
+  }
+  
+  .prediction-list ion-item:last-child {
+    border-bottom: none; /* Supprime la bordure inférieure pour le dernier élément */
+  }
+  
+  .prediction-list ion-item:hover {
+    background-color: #3293b1; /* Change la couleur de fond lorsqu'un élément est survolé */
+  }
+  
