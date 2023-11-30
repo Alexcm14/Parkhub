@@ -1,3 +1,13 @@
 ion-back-button {
     --color: lightblue; 
   }
+
+  ion-card {
+    position: relative;
+  
+    ion-button {
+      position: absolute;
+      top: 8px; 
+      right: 8px;
+    }
+  }

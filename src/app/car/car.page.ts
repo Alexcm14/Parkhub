@@ -4,6 +4,8 @@ import { Component } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthService } from 'src/app/services/auth.service';
 import { from, take, switchMap } from 'rxjs';
+import { AngularFirestoreDocument } from '@angular/fire/compat/firestore';
+
 
 @Component({
   selector: 'app-car',
@@ -19,6 +21,7 @@ export class CarPage {
   motDePasse: string;
   telephone: string;
   vehicles: any[] = [];
+  selectedVehicle: any;
 
   constructor(private authService: AuthService, private firestore: AngularFirestore) {}
 
@@ -58,55 +61,54 @@ export class CarPage {
   }
 
   loadCarData() {
-    // récupérer les données de car_data
-    this.firestore.collection('car_data').doc(this.authService.uid).valueChanges().subscribe((carData: any) => {
+    // récupérer les données de toutes les collections car_data
+    this.firestore.collection('car_data').doc(this.authService.uid).collection('car_data').valueChanges().subscribe((carData: any) => {
       if (carData) {
         console.log('Car Data:', carData);
         // Mettre à jour la liste des véhicules
-        this.vehicles = [carData];
+        this.vehicles = carData;
       }
     });
   }
 
   ajouterVehicule() {
     if (this.plaque && this.marque) {
-      // récupèrer l'observable utilisateur
+      // récupérer l'observable utilisateur
       const userObservable = this.authService.getLoggedInUserObservable();
-
+  
       // obtenir les données utilisateur
       userObservable.pipe(take(1)).subscribe((userData) => {
         if (userData) {
-          const userId = this.authService.uid || userData['uid']; // Access the UID property
-
+          const userId = this.authService.uid || userData['uid'];
+  
           console.log('User ID:', userId);
-
+  
           if (userId) {
             const user = {
               marque: this.marque,
               plaque: this.plaque,
             };
-            this.vehicles.unshift(user);
-
-            const userDocRef = this.firestore.collection('car_data').doc(userId);
-
-            // l'utilisateur existe dans firestore?
-            userDocRef.get().subscribe((doc: any) => {
-              if (doc.exists) {
-                // si il existe on update le doc
-                userDocRef.set(user, { merge: true })
-                  .then(() => {
-                    console.log('User Car data updated in Firestore successfully!');
-                    // Charger les données de car_data après la mise à jour
-                    this.loadCarData();
-                  })
-                  .catch((error) => {
-                    console.error('Error updating user Car data in Firestore: ', error);
-                  });
-              }
-            });
+  
+            // Créer une nouvelle collection pour chaque véhicule
+            const userDocRef = this.firestore.collection('car_data').doc(userId).collection('car_data').doc();
+  
+            // Ajouter les données du véhicule à la collection
+            userDocRef.set(user)
+              .then(() => {
+                console.log('Vehicle added to Firestore successfully!');
+                // Charger les données de car_data après l'ajout
+                this.loadCarData();
+              })
+              .catch((error) => {
+                console.error('Error adding vehicle to Firestore: ', error);
+              });
           }
         }
       });
     }
   }
+  
+  
+  
+  
 }
