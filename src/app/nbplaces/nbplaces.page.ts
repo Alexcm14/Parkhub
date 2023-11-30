@@ -14,7 +14,7 @@ export class NbplacesPage implements OnInit {
   selectedVehicleTypes: string[] = [];
 
   selectVehicleType(selectedTypes: string[]) {
-    this.vehicleSelectionService.setSelectedVehicleTypes(selectedTypes);
+    this.vehicleSelectionService.updateSelectedVehicleTypes(selectedTypes);
   }
 
 
@@ -24,12 +24,14 @@ export class NbplacesPage implements OnInit {
 
   incrementPlaces() {
     this.NombrePlaces++;
+    this.vehicleSelectionService.updateNumberOfPlaces(this.NombrePlaces);
   }
 
   decrementPlaces() {
     if (this.NombrePlaces > 1) {
       this.NombrePlaces--;
     }
+    this.vehicleSelectionService.updateNumberOfPlaces(this.NombrePlaces);
   }
 
   fermerPage() {

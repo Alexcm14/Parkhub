@@ -113,6 +113,7 @@ ngOnInit() {
 
 selectSearchResult(item) {
   this.autocompleteItems = [];
+  this.autocomplete.input = item.description;
   
 
   this.geocoder.geocode({ 'placeId': item.place_id }, (results, status) => {

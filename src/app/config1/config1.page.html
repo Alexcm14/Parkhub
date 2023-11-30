@@ -20,19 +20,19 @@
     Parmi les propositions suivantes, laquelle décrit le mieux votre parking ?
   </ion-text>
   <ion-item>
-    <ion-card (click)="selectCard('emplacement')" [class.selected]="selectedCard === 'emplacement'">
+    <ion-card (click)="selectCard('Emplacement')" [class.selected]="selectedCard === 'Emplacement'">
       <ion-icon name="car"></ion-icon> Emplacement
     </ion-card>
-    <ion-card (click)="selectCard('parking')" [class.selected]="selectedCard === 'parking'">
+    <ion-card (click)="selectCard('Parking')" [class.selected]="selectedCard === 'Parking'">
       <ion-icon name="people"></ion-icon> Parking partagé
     </ion-card>
   </ion-item>
   
   <ion-item class="last">
-    <ion-card (click)="selectCard('box')" [class.selected]="selectedCard === 'box'">
+    <ion-card (click)="selectCard('Box')" [class.selected]="selectedCard === 'Box'">
       <ion-icon name="cube"></ion-icon> Box
     </ion-card>
-    <ion-card (click)="selectCard('garage')" [class.selected]="selectedCard === 'garage'">
+    <ion-card (click)="selectCard('Garage')" [class.selected]="selectedCard === 'Garage'">
       <ion-icon name="home"></ion-icon> Garage
     </ion-card>
   </ion-item>

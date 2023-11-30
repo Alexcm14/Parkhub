@@ -1,0 +1,47 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+   
+    <ion-title class="title">Moyens de paiement</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <!-- Affiche le message s'il n'y a pas de moyen de paiement -->
+  <ion-text *ngIf="!hasPaymentMethods" class="no-payment-methods">
+    Tu n'as pas encore de moyen de paiement. Ajoutes-en via le bouton "+".
+  </ion-text>
+
+  <!-- Affiche le bouton "+" pour ajouter un moyen de paiement -->
+  <ion-button
+    expand="full"
+    shape="round"
+    color="primary"
+    class="add-payment-button"
+    (click)="openAddPaymentMethodPopup()"
+    *ngIf="!hasPaymentMethods"
+  >
+    +
+  </ion-button>
+
+  <!-- Pop-up pour ajouter une carte de crédit -->
+  <ion-popover
+    showBackdrop="true"
+    (ionPopoverDidDismiss)="closeAddPaymentMethodPopup()"
+    *ngIf="isAddPaymentMethodPopupOpen">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Ajouter une carte de crédit</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="closeAddPaymentMethodPopup()">
+            <ion-icon name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="ion-padding">
+      <!-- Contenu du pop-up ici -->
+      <ion-button expand="full">Ajouter une carte de crédit</ion-button>
+    </ion-content>
+  </ion-popover>
+</ion-content>

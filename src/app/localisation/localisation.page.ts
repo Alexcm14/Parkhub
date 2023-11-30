@@ -4,6 +4,7 @@ import { NgZone } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthService } from 'src/app/services/auth.service';
 import { from, switchMap, take } from 'rxjs';
+import { VehicleSelectionService } from '../shared/vehicule-selection.service';
 
 declare var google: any;
 
@@ -27,7 +28,7 @@ export class LocalisationPage implements OnInit {
 
   @ViewChild('searchbar', { read: ElementRef, static: false }) searchbarRef: ElementRef;
 
-  constructor(private navCtrl: NavController, private zone: NgZone, private authService: AuthService, private firestore: AngularFirestore) { 
+  constructor(private navCtrl: NavController, private zone: NgZone, private authService: AuthService, private firestore: AngularFirestore, public vehicleSelectionService: VehicleSelectionService) { 
     this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
     this.autocomplete = { input: '' };
     this.autocompleteItems = [];
@@ -63,6 +64,8 @@ export class LocalisationPage implements OnInit {
     console.log('Selected Address:', item.description);
     this.selectedAddress = item.description;
     console.log('Selected Address:', this.selectedAddress);
+    this.autocomplete.input = item.description;
+    this.vehicleSelectionService.updateParkingAddress(item.description);
   }
 
   ngOnInit(){
