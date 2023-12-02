@@ -75,6 +75,10 @@ const routes: Routes = [
     path: 'paypopup',
     loadChildren: () => import('./paypopup/paypopup.module').then( m => m.PaypopupPageModule)
   },
+  {
+    path: 'tab3',
+    loadChildren: () => import('./tab3/tab3.module').then(m => m.Tab3PageModule)
+  },
   
 ];
 @NgModule({

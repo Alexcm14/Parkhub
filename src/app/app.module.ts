@@ -18,6 +18,8 @@ import { getDatabase, provideDatabase } from '@angular/fire/database';
 
 import { provideStorage, getStorage } from '@angular/fire/storage';
 
+
+
 import { CardDetailsModalModule } from './cards/card.component/card.component.component.module';
 
 @NgModule({
@@ -32,9 +34,9 @@ import { CardDetailsModalModule } from './cards/card.component/card.component.co
 		provideAuth(() => getAuth()),
 		provideFirestore(() => getFirestore()),
 		provideStorage(() => getStorage()),
-    CardDetailsModalModule
+    CardDetailsModalModule,
+  
   ],
-
 
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

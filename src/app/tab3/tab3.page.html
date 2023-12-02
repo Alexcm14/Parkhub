@@ -1,34 +1,11 @@
 <!-- tab3.page.html -->
 
-<ion-header>
-<ion-item>
-    <ion-label class="parking">
-    
-    <ion-segment class="type-pl" value="type-place">
-      <ion-segment-button value="default">
-        <ion-label><ion-icon name="bag-check-outline"></ion-icon> Mes réservations</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="segment">
-        <ion-label><ion-icon name="home-outline"></ion-icon> Mes places</ion-label>
-      </ion-segment-button>
-    </ion-segment>
-    </ion-label>
-  </ion-item>
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title class="title">Réservations</ion-title>
+  </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen="true">
-  <ion-row *ngFor="let chunk of itemsChunks" class="ion-align-items-stretch">
-    <ion-col *ngFor="let item of chunk" class="ion-padding">
-      <ion-card (click)="showDetails(item)" [ngClass]="{'reservation-card': activeTab === 'reservations', 'place-card': activeTab === 'places'}">
-        <ion-card-header>
-          {{ item.title }}
-        </ion-card-header>
-        <ion-card-content>
-          {{ item.description }}
-        </ion-card-content>
-        <!-- Ajoutez une flèche pour visualiser plus de détails -->
-        <ion-icon name="chevron-forward" slot="end" (click)="openCardDetailsModal(item)"></ion-icon>
-      </ion-card>
-    </ion-col>
-  </ion-row>
+<ion-content [fullscreen]="true">
+
 </ion-content>
