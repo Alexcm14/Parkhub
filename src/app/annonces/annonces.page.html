@@ -20,4 +20,17 @@
     </ion-text>
     <ion-button class="creation" (click)="redirigerVersConfig1()"><ion-icon name="location"></ion-icon>  Créer une nouvelle annonce  <ion-icon name="arrow-forward"></ion-icon></ion-button>
   </ion-list>
+  <ion-card *ngFor="let emplacement of emplacements | async">
+    <ion-card-header>
+      {{ emplacement.Description }}
+    </ion-card-header>
+    <ion-card-content>
+      Adresse: {{ emplacement.Adresse }}<br>
+      Parking Type: {{ emplacement.ParkingType }}<br>
+      Vehicle Type: {{ emplacement.VehicleType }}<br>
+    </ion-card-content>
+  </ion-card>
+  
+  
 </ion-content>
+
