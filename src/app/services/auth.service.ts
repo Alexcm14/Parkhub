@@ -58,22 +58,7 @@ export class AuthService {
         plaque: '',
         marque: '',
       });
-  
-      // Reference to the emplacement_data subcollection
-      const emplacementDataRef = userDocRef.collection('emplacement_data').doc(uid);
-  
-      // Set emplacement data
-      await emplacementDataRef.set({
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        emplacement_id: '',
-        nb_places: '',
-        statut: '',
-        adresse: '',
-        type_emplacement: '',
-        type_vehicule: '',
-        description: '',
-      });
-  
+
       return userCredential.user;
     } catch (error) {
       console.error('Error registering user: ', error);
