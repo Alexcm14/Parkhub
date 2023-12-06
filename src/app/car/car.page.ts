@@ -90,7 +90,7 @@ export class CarPage {
             };
   
             // Créer une nouvelle collection pour chaque véhicule
-            const userDocRef = this.firestore.collection('car_data').doc(userId).collection('car_data').doc();
+            const userDocRef = this.firestore.collection('user_data').doc(userId).collection('car_data').doc();
   
             // Ajouter les données du véhicule à la collection
             userDocRef.set(user)

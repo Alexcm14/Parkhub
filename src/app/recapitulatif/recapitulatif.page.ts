@@ -119,14 +119,14 @@ export class RecapitulatifPage implements OnInit, OnDestroy {
                 VehicleType: selectedVehicleTypes,
               };
   
-              // Créer une nouvelle collection pour chaque véhicule
-              const userDocRef = this.firestore.collection('emplacement_data').doc(userId).collection('emplacement_data').doc();
+              
+              const userDocRef = this.firestore.collection('user_data').doc(userId).collection('emplacement_data').doc();
   
-              // Ajouter les données du véhicule à la collection
+             
               userDocRef.set(user)
                 .then(() => {
                   console.log('Emplacement added to Firestore successfully!');
-                  // Charger les données de emplacement_data après l'ajout
+                  
                   this.navCtrl.navigateForward('/annonces');
 
                 })

@@ -43,21 +43,22 @@ export class Tab3Page implements OnInit {
           console.log('Logged-in UID:', this.authService.uid);
           console.log('Logged-in Email:', this.email);
 
-          // Retourne les données de la collection emplacement_data
-          return this.firestore.collection('emplacement_data').
-            .collection('emplacement_data').valueChanges();
+          // Return the data from the collection emplacement_data
+          return this.firestore.collectionGroup('emplacement_data').valueChanges().pipe(
+            take(1)
+          );
         } else {
           this.email = '';
           this.motDePasse = '';
           console.log('User is not logged in');
-          return from([]); // Chaîne qui continue
+          return from([]); // Continue the observable chain
         }
       }),
       take(1)
     ).subscribe((emplacementData: any[]) => {
       console.log('Processed emplacementData:', emplacementData);
 
-      // Now emplacementData contains data from the 'emplacement_data' collection for the logged-in user
+      // Now emplacementData contains data from the 'emplacement_data' subcollection for all users
       // Assign it to the property for use in the template
       this.emplacementData = emplacementData;
     });

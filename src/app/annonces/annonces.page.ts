@@ -67,7 +67,7 @@ export class AnnoncesPage implements OnInit {
     loadEmpData() {
      
       this.firestore
-        .collection('emplacement_data')
+        .collection('user_data')
         .doc(this.authService.uid)
         .collection('emplacement_data')
         .valueChanges()

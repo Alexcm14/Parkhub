@@ -36,8 +36,11 @@ export class AuthService {
     try {
       const userCredential = await this.auth.createUserWithEmailAndPassword(email, password);
       const uid = userCredential.user.uid;
-      this.uid = uid; // on garde le Uid
-      const userDocRef = firebase.firestore().collection('user_data').doc(uid);
+  
+      // Reference to the main user_data document
+      const userDocRef = this.firestore.collection('user_data').doc(uid);
+  
+      // Set user-related data
       await userDocRef.set({
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         nom: '',
@@ -45,29 +48,39 @@ export class AuthService {
         email: userCredential.user.email,
         telephone: '',
       });
-      const userCarRef = firebase.firestore().collection('car_data').doc(uid);
-      await userCarRef.set({
+  
+      // Reference to the car_data subcollection
+      const carDataRef = userDocRef.collection('car_data').doc(uid);
+  
+      // Set car data
+      await carDataRef.set({
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        plaque:'',
-        marque:'',
+        plaque: '',
+        marque: '',
       });
-      const userEmpRef = firebase.firestore().collection('emplacement_data').doc(uid);
-      await userEmpRef.set({
+  
+      // Reference to the emplacement_data subcollection
+      const emplacementDataRef = userDocRef.collection('emplacement_data').doc(uid);
+  
+      // Set emplacement data
+      await emplacementDataRef.set({
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        emplacement_id:'',
-        nb_places:'',
-        statut:'',
-        adresse:'',
-        type_emplacement:'',
-        type_vehicule:'',
-        description:'',
+        emplacement_id: '',
+        nb_places: '',
+        statut: '',
+        adresse: '',
+        type_emplacement: '',
+        type_vehicule: '',
+        description: '',
       });
+  
       return userCredential.user;
     } catch (error) {
       console.error('Error registering user: ', error);
       return null;
     }
   }
+  
  
   async login(credentials: { email: string; password: string }) {
     try {
