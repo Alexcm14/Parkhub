@@ -1,10 +1,12 @@
+// tab3.page.ts
+
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { CardDetailsModalComponent } from '../cards/card.component/card.component.component';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthService } from 'src/app/services/auth.service';
-import { from, of, switchMap, take } from 'rxjs';
-
+import { switchMap, take } from 'rxjs/operators';
+import { from } from 'rxjs';
 
 @Component({
   selector: 'app-tab3',
@@ -18,53 +20,46 @@ export class Tab3Page implements OnInit {
   email: string;
   motDePasse: string;
   telephone: string;
+  emplacementData: any[] = []; 
 
+  constructor(
+    private modalController: ModalController,
+    private authService: AuthService,
+    private firestore: AngularFirestore
+  ) {}
 
-  constructor(private modalController: ModalController, private authService: AuthService, private firestore: AngularFirestore) {}
+  ngOnInit() {
+    // Fetch logged-in user data
+    this.authService.getLoggedInUserObservable().pipe(
+      switchMap((userData) => {
+        console.log('Raw userData:', userData);
 
+        if (userData) {
+          this.email = userData.email;
+          this.motDePasse = userData.motDePasse;
+          console.log('User is logged in:', this.email, this.authService.uid);
 
-ngOnInit() {
-  // Fetch logged-in user data
-  this.authService.getLoggedInUserObservable().pipe(
-    switchMap((userData) => {
-      console.log('Raw userData:', userData);
+          // Connecte le UID et EMAIL
+          console.log('Logged-in UID:', this.authService.uid);
+          console.log('Logged-in Email:', this.email);
 
-      if (userData) {
-        this.email = userData.email;
-        this.motDePasse = userData.motDePasse;
-        console.log('User is logged in:', this.email, this.authService.uid);
+          // Retourne les données de la collection emplacement_data
+          return this.firestore.collection('emplacement_data').
+            .collection('emplacement_data').valueChanges();
+        } else {
+          this.email = '';
+          this.motDePasse = '';
+          console.log('User is not logged in');
+          return from([]); // Chaîne qui continue
+        }
+      }),
+      take(1)
+    ).subscribe((emplacementData: any[]) => {
+      console.log('Processed emplacementData:', emplacementData);
 
-        // Connecte le UID et EMAIL
-        console.log('Logged-in UID:', this.authService.uid);
-        console.log('Logged-in Email:', this.email);
-
-        // Retourne les données supplémentaires de Firestore
-        return this.firestore.collection('user_data').doc(this.authService.uid).valueChanges();
-      } else {
-        this.email = '';
-        this.motDePasse = '';
-        console.log('User is not logged in');
-        return from([]); // Chaîne qui continue
-      }
-    }),
-    take(1)
-  ).subscribe((additionalData: any) => {
-    console.log('Processed additionalData:', additionalData);
-
-    if (additionalData) {
-      this.nom = additionalData.nom;
-      this.prenom = additionalData.prenom;
-      this.telephone = additionalData.telephone;
-    } else {
-      console.log('User data not found in Firestore.');
-    }
-  });
-}
-  
-
-  //ngOnInit() {
-    //this.itemsChunks = this.chunkArray(this.items, 3); // Divisez les éléments en groupes de 3
- // }
-
-
+      // Now emplacementData contains data from the 'emplacement_data' collection for the logged-in user
+      // Assign it to the property for use in the template
+      this.emplacementData = emplacementData;
+    });
+  }
 }

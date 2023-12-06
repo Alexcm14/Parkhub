@@ -1,11 +1,21 @@
-<!-- tab3.page.html -->
-
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title class="title">Réservations</ion-title>
+    <ion-title>
+      Tab 3
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-
-</ion-content>
+<ion-content>
+  <ion-content>
+    <ion-card *ngFor="let data of emplacementData">
+      <ion-card-header>
+        {{ data.title }} 
+      </ion-card-header>
+      <ion-card-content>
+        {{ data.Adresse }} 
+        {{ data.ParkingType }} 
+      </ion-card-content>
+    </ion-card>
+  </ion-content>
+  
