@@ -105,3 +105,18 @@ ion-content {
 .prediction-list ion-item:hover {
   background-color: #3293b1; /* Change la couleur de fond lorsqu'un élément est survolé */
 }
+
+
+.info-window-container {
+  /* Styles pour le conteneur de l'info-bulle */
+
+
+.reserveButton {
+  background-color: #46d1c8; /* Couleur bleue */
+  color: #fff; /* Texte blanc */
+  padding: 10px 20px; /* Rembourrage pour définir la taille */
+  border-radius: 15px; /* Coins arrondis */
+  display: block; /* Pour centrer le bouton */
+  margin: 0 auto; /* Pour centrer le bouton */
+  font-size: 18px; /* Taille de la police */
+}}

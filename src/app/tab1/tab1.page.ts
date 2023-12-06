@@ -21,8 +21,24 @@ declare var google: any;
   })
  
 export class Tab1Page {
- 
+
+  startTimeInput: HTMLInputElement;
+  hourInput: HTMLInputElement;
+  endTimeSpan: HTMLElement;
+  totalPriceSpan: HTMLElement;
+  chosenStartTime: string = '';
+
   map: any;
+  markers: any[] = [];
+
+  formatTime(date: Date): string {
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+  }
+
+
+  infoWindows: any[] = [];
   searchAddress: string;
   GoogleAutocomplete: any;
   autocomplete: any;
@@ -34,6 +50,9 @@ export class Tab1Page {
   email: string;
   motDePasse: string;
   telephone: string;
+
+  // Nouvelle propriété pour stocker le prix du marqueur sélectionné
+  selectedMarkerPrice: number;
  
   
 
@@ -44,6 +63,14 @@ export class Tab1Page {
 
  constructor(private router: Router, private zone: NgZone, private authService: AuthService, private firestore: AngularFirestore) {
   // Déclarations et initialisations dans le constructeur
+
+  this.endTimeSpan = document.createElement('div');
+  this.endTimeSpan.id = 'endTimeSpan';
+
+  this.totalPriceSpan = document.createElement('div');
+  this.totalPriceSpan.id = 'endTimeSpan';
+
+
   this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
   this.autocomplete = { input: '' };
   this.autocompleteItems = [];
@@ -54,6 +81,7 @@ export class Tab1Page {
 
 
 ngOnInit() {
+  
   // Fetch logged-in user data
   this.authService.getLoggedInUserObservable().pipe(
     switchMap((userData) => {
@@ -90,6 +118,127 @@ ngOnInit() {
     }
   });
 }
+
+loadMarkers() {
+  console.log('loadMarkers called');
+  
+  // Mise à jour pour accéder à la sous-collection 'emplacement_data'
+  this.firestore.collectionGroup('emplacement_data').valueChanges().subscribe(
+    (data: any[]) => {
+      console.log('Received data from Firebase:', data);
+      this.markers = data;
+      this.addMarkersToMap();
+    },
+    (error) => {
+      console.error('Error fetching data from Firebase:', error);
+    }
+  );
+}
+
+
+
+addMarkersToMap() {
+  console.log('addMarkersToMap called');
+  this.zone.run(() => {
+    for (const data of this.markers) {
+      if (data.Adresse) {
+        this.geocodeAddress(data.Adresse, data).then((coordinates: any) => {
+          console.log('Geocoded coordinates:', coordinates);
+          const position = new google.maps.LatLng(coordinates.latitude, coordinates.longitude);
+
+          const marker = new google.maps.Marker({
+            position: position,
+            title: data.Adresse,
+            map: this.map,
+            icon: {
+              path: google.maps.SymbolPath.CIRCLE,
+              scale: 7,
+              fillColor: '#46d1c8',
+              fillOpacity: 0.7,
+              strokeColor: '#46d1c8',
+              strokeWeight: 2 ,
+            },
+          });
+
+          const infowindowContent = `
+            <div>
+              <p><strong>Adresse:</strong> ${data.Adresse}</p>
+              <p><strong>Description:</strong> ${data.Description}</p>
+              <p><strong>Parking Type:</strong> ${data.ParkingType}</p>
+              <p><strong>Vehicle Type:</strong> ${data.VehicleType}</p>
+              <p><strong>Prix:</strong> ${data.Prix } € </p>
+
+              <ion-datetime displayFormat="HH:mm" [(ngModel)]="chosenStartTime"></ion-datetime>
+
+              <label for="hours">Nombre d'heures:</label>
+              <input type="number" id="hours" min="1" value="1">
+    
+             <p><strong>Heure de fin:</strong> <span id="endTime"></span></p>
+             <p><strong> Prix total:</strong> <span id="totalPrice"> totalPrice</span>  </p>
+
+
+              <button class="reserveButton" > Réserver  </button>
+
+            </div>
+          `;
+
+          const infowindow = new google.maps.InfoWindow({
+            content: infowindowContent,
+          });
+
+          marker.addListener('click', () => {
+            this.closeAllInfoWindows();
+            infowindow.open(this.map, marker);
+            
+            this.selectedMarkerPrice = data.Prix;
+            
+
+            
+          });
+          
+
+          this.infoWindows.push(infowindow);
+        }).catch(error => {
+          console.error('Error geocoding address:', data.Adresse, error);
+        });
+
+        
+      }
+
+      
+    }
+  });
+
+  
+
+  
+}
+
+
+
+
+
+
+
+
+
+
+geocodeAddress(address: string, data: any): Promise<any> {
+  return new Promise((resolve, reject) => {
+    const geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ 'address': address }, (results, status) => {
+      if (status === 'OK' && results[0]) {
+        resolve({
+          latitude: results[0].geometry.location.lat(),
+          longitude: results[0].geometry.location.lng(),
+        });
+      } else {
+        reject('Geocode was not successful for the following address: ' + address);
+      }
+    });
+  });
+}
+
 
 //DEBUT BARRE DE RECHERCHE 
 
@@ -146,102 +295,21 @@ selectSearchResult(item) {
 
 
 
-infoWindows: any = [];
-markers: any = [
-  {
-     title: "Colruyt jette",
-     latitude: "50.87302017211914",
-     longitude:"4.327065467834473",
-  },
-  {
-     title: "LIDL Chaussée de Gand",
-     latitude: "50.857233982129245",
-     longitude:"4.323334693908692"
-  },
 
-  
-
-
-]
 
 
 
 
 ionViewDidEnter(){
+
+  console.log('ionViewDidEnter called');
+  this.loadMarkers();
+
   this.ShowMap();
 }
 
 
-//methode pour MARKERS
 
-// addMarkersToMap(markers) {
- // for (let marker of markers){
-  //  console.log('Adding marker:', marker);
-   // let position = new google.maps.LatLng(marker.latitude, marker.longitude);
-    //let mapMarker = new google.maps.Marker({
-//      position : position,
-//      title: marker.title,
- //     latitude: marker.latitude,
- //     longitude: marker.longitude,
- //     icon: {
-    //    path: google.maps.SymbolPath.CIRCLE,
-  //      scale: 13, // Taille du cercle
- //       fillColor: '#46d1c8', // Couleur de remplissage
- //       fillOpacity: 1, // Opacité de remplissage
- //       strokeColor: '#ffffff', // Couleur de la bordure
-  //      strokeWeight: 2, // Épaisseur de la bordure
-  //    },
-
-
-
-
- //   });
-
- //   mapMarker.setMap(this.map);
- //   this.addInfoWindowToMarker(mapMarker);
- // }
-
-   // SEPARATION
-//  }
-
-//  addInfoWindowToMarker(marker){
- //   let infowindowContent = '<div id = "content">' +
- //                            '<h2 id = "firstHeading" class"firstHeading">' +marker.title +'</h2>'+
- //                            '<button id="customButton">Réserver une place</button>' +
- //                            
- //                           '</div>'
-  
-  //   let infoWindow = new google.maps.InfoWindow({
- //     content: infowindowContent
-  //   });
-  ////   
-  //   marker.addListener('click', () => {
-//      this.closeAllInfoWindows();
- //     infoWindow.open(this.map, marker);
-  
-  // Ajouter un gestionnaire d'événements pour le bouton
- // const customButton = document.getElementById('customButton');
- // if (customButton) {
- //   customButton.addEventListener('click', () => {
-  //    // Insérez ici le code que vous souhaitez exécuter lorsque le bouton est cliqué
- //     this.router.navigate(['../tabs/tab3']);
- //     // Vous pouvez également ajouter une navigation Angular ici si nécessaire
- //   });
-//  }
-  
-      
-  //   });
-//     this.infoWindows.push(infoWindow);
-  //}
-  
- // closeAllInfoWindows(){
- //   for(let window of this.infoWindows){
-  //    window.close();
- //   }
- // }
-  
-  
-  
   
   
   
@@ -273,35 +341,20 @@ ionViewDidEnter(){
       ],
     }
     this.map = new google.maps.Map(this.mapRef.nativeElement, options);
-    //call the method for marker
+    
+    this.loadMarkers();
 
  //   this.addMarkersToMap(this.markers);
   
- // }
-  
-  
-  
-  
- 
- 
- 
- 
- 
- 
-  
-         
-        
-         
- 
-       
-    
-     
-     
- 
-  
- 
- 
-   
+ // }   
   }
+
+  closeAllInfoWindows() {
+    for (const window of this.infoWindows) {
+      window.close();
+    }
+  }
+  
    
 }
+

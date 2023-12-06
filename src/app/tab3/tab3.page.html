@@ -1,21 +1,24 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Tab 3
+      Réservation
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-content>
-    <ion-card *ngFor="let data of emplacementData">
-      <ion-card-header>
-        {{ data.title }} 
-      </ion-card-header>
-      <ion-card-content>
-        {{ data.Adresse }} 
-        {{ data.ParkingType }} 
-      </ion-card-content>
-    </ion-card>
-  </ion-content>
+  <h1>Emplacements à Réserver</h1>
+
+  <ion-card *ngFor="let data of emplacementData">
+    <ion-card-header>
+      {{ data.title }} 
+    </ion-card-header>
+    <ion-card-content>
+      {{ data.Adresse }} 
+      {{ data.ParkingType }} 
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+
   
