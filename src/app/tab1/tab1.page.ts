@@ -10,6 +10,12 @@ import { GoogleMap,  Marker } from '@capacitor/google-maps';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthService } from 'src/app/services/auth.service';
 import { from, of, switchMap, take } from 'rxjs';
+import { ModalController } from '@ionic/angular';
+import { PopoverController } from '@ionic/angular';
+import { MarkerDetailsPage } from '../marker-details/marker-details.page';
+
+
+
 
 
 declare var google: any;
@@ -27,6 +33,8 @@ export class Tab1Page {
   endTimeSpan: HTMLElement;
   totalPriceSpan: HTMLElement;
   chosenStartTime: string = '';
+  chosenEndTime: string = '';
+  totalPrice: number = 0;
 
   map: any;
   markers: any[] = [];
@@ -51,6 +59,9 @@ export class Tab1Page {
   motDePasse: string;
   telephone: string;
 
+  selectedMarkerData: any; // Type it based on your marker data structure
+
+
   // Nouvelle propriété pour stocker le prix du marqueur sélectionné
   selectedMarkerPrice: number;
  
@@ -61,7 +72,7 @@ export class Tab1Page {
 
  
 
- constructor(private router: Router, private zone: NgZone, private authService: AuthService, private firestore: AngularFirestore) {
+ constructor(private popoverController: PopoverController, private modalController: ModalController, private router: Router, private zone: NgZone, private authService: AuthService, private firestore: AngularFirestore) {
   // Déclarations et initialisations dans le constructeur
 
   this.endTimeSpan = document.createElement('div');
@@ -152,71 +163,56 @@ addMarkersToMap() {
             map: this.map,
             icon: {
               path: google.maps.SymbolPath.CIRCLE,
-              scale: 7,
+              scale: 10,
               fillColor: '#46d1c8',
-              fillOpacity: 0.7,
+              fillOpacity: 1,
               strokeColor: '#46d1c8',
               strokeWeight: 2 ,
             },
           });
-
-          const infowindowContent = `
-            <div>
-              <p><strong>Adresse:</strong> ${data.Adresse}</p>
-              <p><strong>Description:</strong> ${data.Description}</p>
-              <p><strong>Parking Type:</strong> ${data.ParkingType}</p>
-              <p><strong>Vehicle Type:</strong> ${data.VehicleType}</p>
-              <p><strong>Prix:</strong> ${data.Prix } € </p>
-
-              <ion-datetime displayFormat="HH:mm" [(ngModel)]="chosenStartTime"></ion-datetime>
-
-              <label for="hours">Nombre d'heures:</label>
-              <input type="number" id="hours" min="1" value="1">
-    
-             <p><strong>Heure de fin:</strong> <span id="endTime"></span></p>
-             <p><strong> Prix total:</strong> <span id="totalPrice"> totalPrice</span>  </p>
-
-
-              <button class="reserveButton" > Réserver  </button>
-
-            </div>
-          `;
-
-          const infowindow = new google.maps.InfoWindow({
-            content: infowindowContent,
-          });
-
-          marker.addListener('click', () => {
-            this.closeAllInfoWindows();
-            infowindow.open(this.map, marker);
-            
-            this.selectedMarkerPrice = data.Prix;
-            
-
-            
-          });
           
 
-          this.infoWindows.push(infowindow);
+        
+
+          marker.addListener('click', async (event) => {
+            this.closeAllInfoWindows();
+
+            // Afficher le Popover
+            const popover = await this.popoverController.create({
+              component: MarkerDetailsPage,
+              componentProps: {
+                markerData: {
+                  address: data.Adresse,
+                  description: data.Description,
+                  parkingType: data.ParkingType,
+                  vehicleType: data.VehicleType,
+                  price: data.Prix,
+                },
+              },
+              event: event, // Utilisez l'événement du clic pour déterminer la position du popover
+              translucent: true,
+              cssClass: 'custom-popover',
+            });
+
+            await popover.present();
+          });
+
+          this.markers.push(marker);
         }).catch(error => {
           console.error('Error geocoding address:', data.Adresse, error);
         });
-
-        
       }
-
-      
     }
   });
-
-  
-
-  
 }
 
 
 
-
+navigateToTab3() {
+  // You can navigate to tab3 using the router
+  console.log('Navigating to tab3');
+  this.router.navigate(['./tab3']);
+}
 
 
 
@@ -261,12 +257,19 @@ geocodeAddress(address: string, data: any): Promise<any> {
 
 
 selectSearchResult(item) {
+
+  
+
   this.autocompleteItems = [];
   this.autocomplete.input = item.description;
+
+ 
   
 
   this.geocoder.geocode({ 'placeId': item.place_id }, (results, status) => {
     if (status === 'OK' && results[0]) {
+
+      
       let position = {
         lat: results[0].geometry.location.lat,
         lng: results[0].geometry.location.lng
@@ -285,11 +288,16 @@ selectSearchResult(item) {
         },
       });
 
+      
       this.markers.push(marker);
       this.map.setCenter(results[0].geometry.location);
+
+      
     }
   });
 }
+
+
 
 //FIN BARRE DE RECHERCHE 
 
