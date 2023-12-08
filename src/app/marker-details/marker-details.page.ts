@@ -8,6 +8,7 @@ import { NavigationExtras } from '@angular/router';
 
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthService } from 'src/app/services/auth.service';
+import { take } from 'rxjs/operators';
 
 
 @Component({
@@ -52,37 +53,55 @@ export class MarkerDetailsPage {
   constructor(  private firestore: AngularFirestore,
     private authService: AuthService, private router: Router, private popoverController: PopoverController, private alertController: AlertController) {}
 
-  async reserve() {
-    // Vérifier si l'utilisateur a entré l'heure de départ et le nombre d'heures
-    if (!this.departureTime || this.numberOfHours === undefined || this.numberOfHours < 0) {
-      const alert = await this.alertController.create({
-        header: 'Erreur',
-        message: 'Veuillez entrer une heure de départ valide et un nombre d\'heures positif.',
-        buttons: ['OK'],
-      });
-      await alert.present();
-      return;
+    async reserve() {
+      // Vérifier si l'utilisateur a entré l'heure de départ et le nombre d'heures
+      if (!this.departureTime || this.numberOfHours === undefined || this.numberOfHours < 0) {
+        const alert = await this.alertController.create({
+          header: 'Erreur',
+          message: 'Veuillez entrer une heure de départ valide et un nombre d\'heures positif.',
+          buttons: ['OK'],
+        });
+        await alert.present();
+        return;
+      }
+    
+      try {
+        // Get the current user
+        const user = await this.authService.getLoggedInUserObservable();
+    
+        if (user) {
+          // Get the user ID
+          const userUid = this.authService.uid || (await this.authService.getLoggedInUserObservable().pipe(take(1)).toPromise())?.uid;
+    
+          console.log('User ID:', userUid);
+    
+          if (userUid) {
+            // Check for valid values before adding to Firestore
+            if (this.markerData && this.markerData.price !== undefined) {
+              // Ajouter les données de réservation à la sous-collection reservation_data de l'utilisateur actuel
+              this.firestore.collection('user_data').doc(userUid).collection('reservation_data').add({
+                address: this.markerData.address,
+                description: this.markerData.description,
+                parkingType: this.markerData.parkingType,
+                vehicleType: this.markerData.vehicleType,
+                price: this.markerData.price,
+                departureTime: this.departureTime,
+                numberOfHours: this.numberOfHours,
+              });
+    
+              // Fermer le Popover après la réservation
+              await this.popoverController.dismiss();
+              this.router.navigate(['/tabs/tab3']);
+            } else {
+              console.error('Invalid value for price');
+            }
+          } else {
+            // L'utilisateur n'est pas connecté, afficher un message ou effectuer une action appropriée
+            console.error('L\'utilisateur n\'est pas connecté.');
+          }
+        }
+      } catch (error) {
+        console.error('Error getting current user:', error);
+      }
     }
-
-    // Logique pour effectuer la réservation avec l'heure de départ et la durée
-    console.log('Réservation effectuée pour:', this.markerData.address);
-    console.log('Heure de départ:', this.departureTime);
-    console.log('Nombre d\'heures:', this.numberOfHours);
-
-    // Ajouter les données de réservation à la sous-collection reservation_data de l'utilisateur actuel
-    const userUid = 'votre_uid'; // Remplacez ceci par la logique pour récupérer l'UID de l'utilisateur actuel
-    this.firestore.collection('user_data').doc(userUid).collection('reservation_data').add({
-      address: this.markerData.address,
-      description: this.markerData.description,
-      parkingType: this.markerData.parkingType,
-      vehicleType: this.markerData.vehicleType,
-      price: this.markerData.price,
-      departureTime: this.departureTime,
-      numberOfHours: this.numberOfHours,
-    });
-
-    // Fermer le Popover après la réservation
-    await this.popoverController.dismiss();
-    this.router.navigate(['/tabs/tab3']);
-  }
-}
+  }    

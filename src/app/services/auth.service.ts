@@ -9,6 +9,9 @@ import firebase from 'firebase/compat/app';
   providedIn: 'root',
 })
 export class AuthService {
+  getCurrentUser() {
+    throw new Error('Method not implemented.');
+  }
   uid: string;
  
   constructor(private auth: AngularFireAuth, private firestore: AngularFirestore) {}

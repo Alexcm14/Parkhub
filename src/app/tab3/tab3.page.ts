@@ -62,5 +62,6 @@ export class Tab3Page implements OnInit {
       // Assign it to the property for use in the template
       this.emplacementData = emplacementData;
     });
+    
   }
 }
