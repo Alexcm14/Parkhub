@@ -7,17 +7,29 @@
 </ion-header>
 
 <ion-content>
-  <h1>Emplacements à Réserver</h1>
-
-  <ion-card *ngFor="let data of emplacementData">
+  
+  <ion-card *ngFor="let res of reservationData">
     <ion-card-header>
-      {{ data.title }} 
+      {{ res.address }}
     </ion-card-header>
     <ion-card-content>
-      {{ data.Adresse }} 
-      {{ data.ParkingType }} 
+      <p><strong>Description:</strong> {{ res.description }}</p>
+      <p><strong>Parking Type:</strong> {{ res.parkingType }}</p>
+      <p><strong>Vehicle Type:</strong> {{ res.vehicleType }}</p>
+      <p><strong>Price:</strong> {{ res.price }}</p>
+      <p><strong>Departure Time:</strong> {{ res.departureTime }}</p>
+      <p><strong>Number of Hours:</strong> {{ res.numberOfHours }}</p>
     </ion-card-content>
   </ion-card>
+  
+  
+  <h1>Emplacements à Réserver</h1>
+
+  
+  
+
+  
+  
 </ion-content>
 
 
