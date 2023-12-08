@@ -1,13 +1,12 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>paypopup</ion-title>
+    <ion-title></ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">paypopup</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-button (click)="ajouterCarte()">
+    Ajouter une carte
+    <ion-icon name="credit-card-outline"></ion-icon>
+  </ion-button>
 </ion-content>

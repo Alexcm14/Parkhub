@@ -83,6 +83,10 @@ const routes: Routes = [
     path: 'prix',
     loadChildren: () => import('./prix/prix.module').then( m => m.PrixPageModule)
   },
+  {
+    path: 'cartes',
+    loadChildren: () => import('./cartes/cartes.module').then( m => m.CartesPageModule)
+  },
   
 ];
 @NgModule({

@@ -1,0 +1,35 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Ajouter une carte
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="retourAuPopup()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-card>
+    <ion-card-content>
+      <ion-item>
+        <ion-label>Numéro de carte</ion-label>
+        <ion-input type="number" [(ngModel)]="numeroCarte"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Date d'expiration</ion-label>
+        <ion-input type="date" [(ngModel)]="DateExp"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Numéro CVC</ion-label>
+        <ion-input type="number" [(ngModel)]="numeroCvc"></ion-input>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+
+  <ion-button expand="full" (click)="ajouterCarte()">Ajouter la carte</ion-button>
+</ion-content>
+
