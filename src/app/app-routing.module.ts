@@ -79,6 +79,10 @@ const routes: Routes = [
     path: 'tab3',
     loadChildren: () => import('./tab3/tab3.module').then(m => m.Tab3PageModule)
   },
+  {
+    path: 'prix',
+    loadChildren: () => import('./prix/prix.module').then( m => m.PrixPageModule)
+  },
   
 ];
 @NgModule({

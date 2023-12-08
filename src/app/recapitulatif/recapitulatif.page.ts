@@ -21,6 +21,9 @@ export class RecapitulatifPage implements OnInit, OnDestroy {
   selectedDescription$: Observable<string | null>;
   selectedPhotos$: Observable<string[]>;
   isAdPosted: boolean = false;
+  selectedPrice$: Observable<number>;
+selectedStartDate$: Observable<Date | null>;
+selectedEndDate$: Observable<Date | null>;
 
   nom: string;
   prenom: string;
@@ -40,7 +43,10 @@ export class RecapitulatifPage implements OnInit, OnDestroy {
     this.numberOfPlaces$ = this.vehicleSelectionService.numberOfPlaces$;
     this.selectedDescription$ = this.vehicleSelectionService.selectedDescription$;
     this.selectedPhotos$ = this.vehicleSelectionService.selectedPhotos$;
-
+    this.selectedPrice$ = this.vehicleSelectionService.selectedPrice$;
+    this.selectedStartDate$ = this.vehicleSelectionService.selectedStartDate$;
+    this.selectedEndDate$ = this.vehicleSelectionService.selectedEndDate$;
+  
   }
 
   ngOnInit() {
@@ -94,13 +100,16 @@ export class RecapitulatifPage implements OnInit, OnDestroy {
       this.selectedParkingType$,
       this.selectedParkingAddress$,
       this.selectedDescription$,
-      this.selectedVehicleTypes$
-      
+      this.selectedVehicleTypes$,
+      this.numberOfPlaces$,
+      this.selectedPrice$,
+      this.selectedStartDate$,
+      this.selectedEndDate$,
 
     ]).pipe(
       take(1)
-    ).subscribe(([selectedParkingType, selectedParkingAddress, selectedDescription, selectedVehicleTypes, ]) => {
-      if (selectedParkingType && selectedParkingAddress && selectedDescription && selectedVehicleTypes ) {
+    ).subscribe(([selectedParkingType, selectedParkingAddress, selectedDescription, selectedVehicleTypes, numberOfPlaces$, selectedPrice$, selectedStartDate$, selectedEndDate$]) => {
+      if (selectedParkingType && selectedParkingAddress && selectedDescription && selectedVehicleTypes && numberOfPlaces$ && selectedPrice$ && selectedStartDate$ && selectedEndDate$ ) {
         // récupérer l'observable utilisateur
         const userObservable = this.authService.getLoggedInUserObservable();
   
@@ -117,6 +126,10 @@ export class RecapitulatifPage implements OnInit, OnDestroy {
                 Adresse: selectedParkingAddress,
                 ParkingType: selectedParkingType,
                 VehicleType: selectedVehicleTypes,
+                NombrePlace : numberOfPlaces$, 
+                Prix: selectedPrice$, 
+                DateDebut: selectedStartDate$, 
+                DateFin: selectedEndDate$,
               };
   
               

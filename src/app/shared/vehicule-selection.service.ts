@@ -25,7 +25,27 @@ export class VehicleSelectionService {
   private selectedPhotosSubject = new BehaviorSubject<string[]>([]);
   selectedPhotos$ = this.selectedPhotosSubject.asObservable();
 
+  private selectedPriceSubject = new BehaviorSubject<number>(0);
+selectedPrice$ = this.selectedPriceSubject.asObservable();
 
+private selectedStartDateSubject = new BehaviorSubject<Date | null>(null);
+selectedStartDate$ = this.selectedStartDateSubject.asObservable();
+
+private selectedEndDateSubject = new BehaviorSubject<Date | null>(null);
+selectedEndDate$ = this.selectedEndDateSubject.asObservable();
+
+
+updateSelectedPrice(price: number) {
+  this.selectedPriceSubject.next(price);
+}
+
+updateSelectedStartDate(startDate: Date | null) {
+  this.selectedStartDateSubject.next(startDate);
+}
+
+updateSelectedEndDate(endDate: Date | null) {
+  this.selectedEndDateSubject.next(endDate);
+}
 
   updateSelectedVehicleTypes(selectedTypes: string[]) {
     this.selectedVehicleTypesSubject.next(selectedTypes);
