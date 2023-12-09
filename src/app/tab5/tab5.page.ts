@@ -52,10 +52,11 @@ export class Tab5Page implements OnInit {
       console.log('Processed additionalData:', additionalData);
 
       if (additionalData) {
-        // Assuming 'prenom' and 'nom' are fields in your Firestore document
         this.prenom = additionalData.prenom;
         this.nom = additionalData.nom;
-      } else {
+      }
+
+       else {
         console.log('User data not found in Firestore.');
       }
     });

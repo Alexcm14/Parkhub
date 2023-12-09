@@ -11,3 +11,17 @@ ion-back-button {
       right: 8px;
     }
   }
+  .avatar {
+    width: 100px; /* Adjust the size as needed */
+    height: 100px; /* Adjust the size as needed */
+    border-radius: 50%;
+    background-color: #0074e4; /* Background color for the circle */
+  }
+  
+  .initials {
+    font-size: 32px; /* Adjust the font size as needed */
+    color: #ffffff; /* Text color for the initials */
+    text-align: center;
+    line-height: 100px; /* Should match the avatar's height for vertical alignment */
+  }
+  
