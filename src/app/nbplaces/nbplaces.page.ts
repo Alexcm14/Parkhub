@@ -38,8 +38,8 @@ export class NbplacesPage implements OnInit {
     this.navCtrl.navigateForward('tabs/tab4');
   }
 
-  redirigerVersDescription() {
-    this.navCtrl.navigateForward('/description');
+  redirigerVersPrix() {
+    this.navCtrl.navigateForward('/prix');
   }
 
   ngOnInit() {

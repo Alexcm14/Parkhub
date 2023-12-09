@@ -1,0 +1,73 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-button class="close" slot="start" (click)="fermerPage()">
+      <ion-icon name="close"></ion-icon>
+    </ion-button>
+    <ion-button slot="end" class="questions">?</ion-button>
+    <ion-title class="title">Prix et disponibilités</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <ion-item>
+    <ion-label position="floating" style="white-space: normal;">Prix par heure de votre parking :</ion-label>
+    <br>
+    <ion-range class="prix-range" [(ngModel)]="prix" min="0" max="20" step="0.25" [pin]="true" [pinFormatter]="pinFormatter">
+      <ion-label slot="start">0€</ion-label>
+      <ion-label slot="end">20€</ion-label>
+    </ion-range>
+    <div class="prix-label">Prix par heure : {{ prix }}€</div>
+  </ion-item>
+  <br>
+
+  <ion-row class="custom-margin">
+    <ion-text>Choisissez une date et une heure de début :</ion-text>
+  </ion-row>
+
+  <ion-row class="custom-margin">
+    <ion-item>
+      <ion-label>Date de début</ion-label>
+      <ion-datetime display-format="DD/MM/YYYY" [(ngModel)]="dateDebut" [value]="dateDebut"></ion-datetime>
+    </ion-item>
+    
+  </ion-row>
+
+  <ion-row class="custom-margin">
+    <ion-text>Choisissez une date et une heure de fin :</ion-text>
+  </ion-row>
+
+  <ion-row class="custom-margin">
+    <ion-item>
+      <ion-label>Date de fin</ion-label>
+      <ion-datetime display-format="DD/MM/YYYY" [(ngModel)]="dateFin"></ion-datetime>
+    </ion-item>
+  </ion-row>
+
+  <ion-button (click)="afficherSelections()">Afficher les sélections</ion-button>
+
+  <ion-card *ngIf="isSelectionsAffichees">
+    <ion-card-header *ngIf="isSelectionsAffichees">
+      Sélections
+    </ion-card-header>
+    <ion-card-content *ngIf="isSelectionsAffichees">
+      Prix : {{ prix }}€ <br>
+      Date de début : {{ dateDebut | date: 'dd/MM/yyyy' }} <br>
+      Date de fin : {{ dateFin | date: 'dd/MM/yyyy' }} <br>
+      Heure de début : {{ dateDebut | date: 'HH:mm' }} <br>
+      Heure de fin : {{ dateFin | date: 'HH:mm' }} <br>
+    </ion-card-content>
+  </ion-card>
+  
+  <ion-label *ngIf="isSelectionsAffichees" class="date-saved">Informations enregistrées</ion-label>
+  
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-title></ion-title>
+    <ion-back-button slot="start" defaultHref="/nbplaces">Retour</ion-back-button>
+    <ion-button slot="end" (click)="redirigerVersDesc()">Suivant <ion-icon name="arrow-forward"></ion-icon></ion-button>
+  </ion-toolbar>
+</ion-footer>
