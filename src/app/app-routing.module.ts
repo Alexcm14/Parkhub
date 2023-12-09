@@ -78,9 +78,18 @@ const routes: Routes = [
   {
     path: 'tab3',
     loadChildren: () => import('./tab3/tab3.module').then(m => m.Tab3PageModule)
-  },  {
+  },
+  {
     path: 'marker-details',
     loadChildren: () => import('./marker-details/marker-details.module').then( m => m.MarkerDetailsPageModule)
+  },
+  {
+    path: 'prix',
+    loadChildren: () => import('./prix/prix.module').then( m => m.PrixPageModule)
+  },
+  {
+    path: 'cartes',
+    loadChildren: () => import('./cartes/cartes.module').then( m => m.CartesPageModule)
   },
 
 
