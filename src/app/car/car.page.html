@@ -16,7 +16,7 @@
     <ion-card *ngFor="let vehicle of vehicles">
       <ion-card-header>
         {{ vehicle.marque }}
-        <ion-button fill="clear" color="danger" (click)="supprimerVehicule()" >
+        <ion-button fill="clear" color="danger" (click)="deleteVehicule(vehicle)">
           <ion-icon name="close"></ion-icon>
         </ion-button>
       </ion-card-header>
