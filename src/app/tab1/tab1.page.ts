@@ -14,12 +14,8 @@ import { ModalController } from '@ionic/angular';
 import { PopoverController } from '@ionic/angular';
 import { MarkerDetailsPage } from '../marker-details/marker-details.page';
 
-
-
-
-
 declare var google: any;
- 
+
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
@@ -164,9 +160,9 @@ addMarkersToMap() {
             icon: {
               path: google.maps.SymbolPath.CIRCLE,
               scale: 10,
-              fillColor: '#46d1c8',
+              fillColor: '#000CFF',
               fillOpacity: 1,
-              strokeColor: '#46d1c8',
+              strokeColor: '#000CFF',
               strokeWeight: 2 ,
             },
           });
