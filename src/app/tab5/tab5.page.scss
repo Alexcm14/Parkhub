@@ -1,8 +1,43 @@
-.avatar{
-    margin-top: 35px;
-    margin-bottom: 25px;
-    width: 50px;
-}
+.avatar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .avatar {
+    width: 100px; /* Adjust based on your avatar size */
+    height: 100px;
+    border-radius: 50%;
+  }
+  
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none; /* Ignore pointer events */
+  }
+  
+  .avatar-container:hover .overlay {
+    opacity: 1;
+  }
+  
+  ion-icon {
+    color: white; /* Icon color */
+    font-size: 30px; /* Icon size */
+  }
+  
+
 
 .perso{
     margin-top: 30px;

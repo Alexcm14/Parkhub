@@ -3,9 +3,9 @@ import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import { switchMap, from, take,map } from 'rxjs';
+import { switchMap, from, take, map, finalize } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 
 @Component({
   selector: 'app-tab5',
@@ -17,47 +17,33 @@ export class Tab5Page implements OnInit {
   credentials: FormGroup;
   prenom: any;
   nom: any;
-  authService: any;
+  userProfileImageUrl: string;
+  hovering: boolean;
 
   constructor(
     private router: Router,
     private afAuth: AngularFireAuth,
     private fb: FormBuilder,
-    private firestore: AngularFirestore
-    
+    private firestore: AngularFirestore,
+    private storage: AngularFireStorage
   ) {}
 
   ngOnInit() {
-    // Check if the user is already authenticated
     this.afAuth.authState.pipe(
       switchMap((user) => {
-        console.log('Raw userData:', user);
-
         if (user) {
           this.userName = user.displayName || 'User';
-
-          // Display the logged-in email and UID in the console
-          console.log('Logged-in Email:', user.email);
-          console.log('Logged-in UID:', user.uid);
-
-          // Return additional user data from Firestore
           return this.firestore.collection('user_data').doc(user.uid).valueChanges();
         } else {
-          console.log('User is not logged in');
-          return from([]); // Continue the observable chain
+          return from([]);
         }
       }),
       take(1)
     ).subscribe((additionalData: any) => {
-      console.log('Processed additionalData:', additionalData);
-
       if (additionalData) {
         this.prenom = additionalData.prenom;
         this.nom = additionalData.nom;
-      }
-
-       else {
-        console.log('User data not found in Firestore.');
+        this.userProfileImageUrl = additionalData.profileImageUrl;
       }
     });
   }
@@ -73,10 +59,40 @@ export class Tab5Page implements OnInit {
   goPay() {
     this.router.navigate(['/pay']);
   }
+  onHover(status: boolean): void {
+    this.hovering = status;
+  }
+
+  changeImage(event): void {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      const filePath = `profile_images/${new Date().getTime()}_${file.name}`;
+      const fileRef = this.storage.ref(filePath);
+      const uploadTask = this.storage.upload(filePath, file);
+
+      uploadTask.snapshotChanges().pipe(
+        finalize(() => {
+          fileRef.getDownloadURL().subscribe(url => {
+            this.userProfileImageUrl = url;
+            this.updateUserProfileImage(url);
+          });
+        })
+      ).subscribe();
+    }
+  }
+
+  private updateUserProfileImage(url: string) {
+    this.afAuth.authState.subscribe(user => {
+      if (user) {
+        this.firestore.collection('user_data').doc(user.uid).update({
+          profileImageUrl: url
+        });
+      }
+    });
+  }
 
   async logout() {
-    await this.afAuth.signOut(); // Use AngularFireAuth method to sign out
-    // You can navigate to the login page or any other desired page after logout
+    await this.afAuth.signOut();
     this.router.navigateByUrl('/login', { replaceUrl: true });
   }
 }
