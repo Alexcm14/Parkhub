@@ -56,10 +56,10 @@
   </ion-text>
 
   <div class="upload-button">
-    <input type="file" (change)="handleFileInput($event)" accept="image/*" multiple />
-    <ion-icon name="add-circle" (click)="ajouterPhoto()"></ion-icon>
+    <input type="file" #fileInput (change)="handleFileInput($event)" accept="image/*" multiple hidden />
+    <ion-icon name="add-circle" (click)="fileInput.click()"></ion-icon>
   </div>
-
+  
   <ion-row>
     <ion-col *ngFor="let photo of photos">
       <img [src]="photo" alt="Uploaded Photo" class="uploaded-photo" />
