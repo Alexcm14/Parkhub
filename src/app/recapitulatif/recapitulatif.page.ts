@@ -133,7 +133,8 @@ selectedEndDate$: Observable<Date | null>;
                 Prix: selectedPrice, 
                 DateDebut: selectedStartDate, 
                 DateFin: selectedEndDate,
-                isAdPosted: this.isAdPosted
+                isAdPosted: this.isAdPosted,
+                isReserved: false
               };
   
               const userDocRef = this.firestore.collection('user_data').doc(userId).collection('emplacement_data').doc(uniqueEmplacementId);
