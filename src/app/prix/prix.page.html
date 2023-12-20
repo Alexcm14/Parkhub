@@ -21,28 +21,37 @@
   </ion-item>
   <br>
 
-  <ion-row class="custom-margin">
-    <ion-text>Choisissez une date et une heure de début :</ion-text>
-  </ion-row>
 
-  <ion-row class="custom-margin">
-    <ion-item>
-      <ion-label>Date de début</ion-label>
-      <ion-datetime display-format="DD/MM/YYYY" [(ngModel)]="dateDebut" [value]="dateDebut"></ion-datetime>
-    </ion-item>
-    
-  </ion-row>
 
-  <ion-row class="custom-margin">
-    <ion-text>Choisissez une date et une heure de fin :</ion-text>
-  </ion-row>
+  <!-- Ajout de la sélection des jours de la semaine -->
+<ion-row class="custom-margin">
+  <ion-text>Choisissez les jours :</ion-text>
+</ion-row>
+<ion-row>
+  <ion-col size="2" *ngFor="let day of days">
+    <ion-button expand="full" (click)="toggleDay(day.value)" [color]="day.selected ? 'primary' : 'medium'">{{ day.name }}</ion-button>
+  </ion-col>
+</ion-row>
 
-  <ion-row class="custom-margin">
-    <ion-item>
-      <ion-label>Date de fin</ion-label>
-      <ion-datetime display-format="DD/MM/YYYY" [(ngModel)]="dateFin"></ion-datetime>
-    </ion-item>
-  </ion-row>
+<!-- Sélection de l'heure de début -->
+<ion-row class="custom-margin">
+  <ion-item>
+    <ion-label>Heure de début</ion-label>
+    <ion-input type="time" [(ngModel)]="heureDebut"></ion-input>
+  </ion-item>
+</ion-row>
+
+<!-- Sélection de l'heure de fin -->
+<ion-row class="custom-margin">
+  <ion-item>
+    <ion-label>Heure de fin</ion-label>
+    <ion-input type="time" [(ngModel)]="heureFin"></ion-input>
+  </ion-item>
+</ion-row>
+
+
+
+  
 
   <ion-button (click)="afficherSelections()">Afficher les sélections</ion-button>
 
@@ -52,14 +61,17 @@
     </ion-card-header>
     <ion-card-content *ngIf="isSelectionsAffichees">
       Prix : {{ prix }}€ <br>
-      Date de début : {{ dateDebut | date: 'dd/MM/yyyy' }} <br>
-      Date de fin : {{ dateFin | date: 'dd/MM/yyyy' }} <br>
-      Heure de début : {{ dateDebut | date: 'HH:mm' }} <br>
-      Heure de fin : {{ dateFin | date: 'HH:mm' }} <br>
+      Jours sélectionnés : <span *ngFor="let day of days; let i = index" [ngClass]="{'last': i === days.length - 1}">
+        {{ day.selected ? day.name : '' }}<span *ngIf="!day.selected || i < days.length - 1">, </span>
+      </span><br>
+      Heure de début : {{ heureDebut }} <br>
+      Heure de fin : {{ heureFin }} <br>
     </ion-card-content>
   </ion-card>
   
-  <ion-label *ngIf="isSelectionsAffichees" class="date-saved">Informations enregistrées</ion-label>
+  <ion-label *ngIf="isSelectionsAffichees" class="date-saved">Informations enregistrées</ion-label><br><br>
+
+  <ion-text>Vous pourrez activer ou desactiver votre emplacement à tout moment !</ion-text>
   
 
 </ion-content>

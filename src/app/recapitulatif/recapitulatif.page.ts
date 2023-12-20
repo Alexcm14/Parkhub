@@ -14,6 +14,10 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 })
 export class RecapitulatifPage implements OnInit, OnDestroy {
 
+  selectedDays$: Observable<string[]>;
+  selectedStartTime$: Observable<string | null>;
+  selectedEndTime$: Observable<string | null>;
+
   selectedParkingType$: Observable<string | null>;
   selectedParkingAddress$: Observable<string | null>;
   numberOfPlaces$: Observable<number>;
@@ -22,6 +26,7 @@ export class RecapitulatifPage implements OnInit, OnDestroy {
   selectedPhotos$: Observable<string[]>;
   isAdPosted: boolean = false;
   selectedPrice$: Observable<number>;
+  
 selectedStartDate$: Observable<Date | null>;
 selectedEndDate$: Observable<Date | null>;
 
@@ -31,6 +36,10 @@ selectedEndDate$: Observable<Date | null>;
   email: string;
   motDePasse: string;
   telephone: string;
+  
+  days: string[] = [];
+  heureDebut: string;
+  heureFin: string;
 
   constructor(
     private navCtrl: NavController,
@@ -47,10 +56,13 @@ selectedEndDate$: Observable<Date | null>;
     this.selectedPrice$ = this.vehicleSelectionService.selectedPrice$;
     this.selectedStartDate$ = this.vehicleSelectionService.selectedStartDate$;
     this.selectedEndDate$ = this.vehicleSelectionService.selectedEndDate$;
+    
   
   }
 
   ngOnInit() {
+
+    
     this.cdr.detectChanges(); 
 
      // Fetch logged-in user data

@@ -5,6 +5,10 @@ import { Injectable, EventEmitter } from '@angular/core';
   providedIn: 'root'
 })
 export class SharedService {
+
+  
+
+  
   nombrePlaces: number = 1;
   selectedTypes: string[] = [];
   typesVehicule: string[] = ["2 roues", "Citadine", "Berline", "4x4", "Pick-up", "Camionnette"];
