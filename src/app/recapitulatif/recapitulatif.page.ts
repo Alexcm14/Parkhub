@@ -25,6 +25,7 @@ export class RecapitulatifPage implements OnInit, OnDestroy {
 selectedStartDate$: Observable<Date | null>;
 selectedEndDate$: Observable<Date | null>;
 
+
   nom: string;
   prenom: string;
   email: string;
@@ -105,11 +106,11 @@ selectedEndDate$: Observable<Date | null>;
       this.selectedPrice$,
       this.selectedStartDate$,
       this.selectedEndDate$,
-
+  
     ]).pipe(
       take(1)
-    ).subscribe(([selectedParkingType, selectedParkingAddress, selectedDescription, selectedVehicleTypes, numberOfPlaces$, selectedPrice$, selectedStartDate$, selectedEndDate$]) => {
-      if (selectedParkingType && selectedParkingAddress && selectedDescription && selectedVehicleTypes && numberOfPlaces$ && selectedPrice$ && selectedStartDate$ && selectedEndDate$ ) {
+    ).subscribe(([selectedParkingType, selectedParkingAddress, selectedDescription, selectedVehicleTypes, numberOfPlaces, selectedPrice, selectedStartDate, selectedEndDate]) => {
+      if (selectedParkingType && selectedParkingAddress && selectedDescription && selectedVehicleTypes && numberOfPlaces && selectedPrice && selectedStartDate && selectedEndDate) {
         // récupérer l'observable utilisateur
         const userObservable = this.authService.getLoggedInUserObservable();
   
@@ -118,39 +119,37 @@ selectedEndDate$: Observable<Date | null>;
           if (userData) {
             const userId = this.authService.uid || userData['uid'];
   
-            console.log('User ID:', userId);
-  
             if (userId) {
-              const user = {
+              // Generate a unique ID with prefix 'E-' and random numbers
+              const uniqueEmplacementId = `E-${Math.floor(Math.random() * 1000000)}`;
+  
+              const emplacementData = {
+                Id: uniqueEmplacementId,
                 Description: selectedDescription,
                 Adresse: selectedParkingAddress,
                 ParkingType: selectedParkingType,
                 VehicleType: selectedVehicleTypes,
-                NombrePlace : numberOfPlaces$, 
-                Prix: selectedPrice$, 
-                DateDebut: selectedStartDate$, 
-                DateFin: selectedEndDate$,
+                NombrePlace: numberOfPlaces, 
+                Prix: selectedPrice, 
+                DateDebut: selectedStartDate, 
+                DateFin: selectedEndDate,
+                isAdPosted: this.isAdPosted
               };
   
-              
-              const userDocRef = this.firestore.collection('user_data').doc(userId).collection('emplacement_data').doc();
+              const userDocRef = this.firestore.collection('user_data').doc(userId).collection('emplacement_data').doc(uniqueEmplacementId);
   
-             
-              userDocRef.set(user)
+              userDocRef.set(emplacementData)
                 .then(() => {
-                  console.log('Emplacement added to Firestore successfully!');
-                  
+                  console.log('Emplacement with unique ID added to Firestore successfully!');
                   this.navCtrl.navigateForward('/annonces');
-
                 })
                 .catch((error) => {
-                  console.error('Error adding emplacement to Firestore: ', error);
+                  console.error('Error adding emplacement with unique ID to Firestore: ', error);
                 });
-
-
             }
           }
         });
       }
     });
-  }}
+  }
+}
