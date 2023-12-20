@@ -1,3 +1,4 @@
+
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-button class="close" slot="start" (click)="fermerPage()">
@@ -22,25 +23,13 @@
   <br>
 
   <ion-row class="custom-margin">
-    <ion-text>Choisissez une date et une heure de début :</ion-text>
+    <ion-text>Choisissez une plage de dates et heures :</ion-text>
   </ion-row>
 
   <ion-row class="custom-margin">
     <ion-item>
-      <ion-label>Date de début</ion-label>
-      <ion-datetime display-format="DD/MM/YYYY" [(ngModel)]="dateDebut" [value]="dateDebut"></ion-datetime>
-    </ion-item>
-    
-  </ion-row>
-
-  <ion-row class="custom-margin">
-    <ion-text>Choisissez une date et une heure de fin :</ion-text>
-  </ion-row>
-
-  <ion-row class="custom-margin">
-    <ion-item>
-      <ion-label>Date de fin</ion-label>
-      <ion-datetime display-format="DD/MM/YYYY" [(ngModel)]="dateFin"></ion-datetime>
+      <ion-label>Plage de dates</ion-label>
+      <ion-datetime presentation="date" [multiple]="true" [(ngModel)]="selectedDates"></ion-datetime>
     </ion-item>
   </ion-row>
 
@@ -52,16 +41,12 @@
     </ion-card-header>
     <ion-card-content *ngIf="isSelectionsAffichees">
       Prix : {{ prix }}€ <br>
-      Date de début : {{ dateDebut | date: 'dd/MM/yyyy' }} <br>
-      Date de fin : {{ dateFin | date: 'dd/MM/yyyy' }} <br>
-      Heure de début : {{ dateDebut | date: 'HH:mm' }} <br>
-      Heure de fin : {{ dateFin | date: 'HH:mm' }} <br>
+      Dates sélectionnées :
+      <div *ngFor="let date of selectedDates">{{ date | date: 'dd/MM/yyyy' }}</div>
     </ion-card-content>
   </ion-card>
-  
-  <ion-label *ngIf="isSelectionsAffichees" class="date-saved">Informations enregistrées</ion-label>
-  
 
+  <ion-label *ngIf="isSelectionsAffichees" class="date-saved">Informations enregistrées</ion-label>
 </ion-content>
 
 <ion-footer>
@@ -71,3 +56,4 @@
     <ion-button slot="end" (click)="redirigerVersDesc()">Suivant <ion-icon name="arrow-forward"></ion-icon></ion-button>
   </ion-toolbar>
 </ion-footer>
+

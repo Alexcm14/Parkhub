@@ -12,14 +12,17 @@
 
 <ion-content [fullscreen]="true">
   <ion-list>
-    <ion-text class="T1">
+    <ion-text class="T1" *ngIf="!aDesAnnonces">
       Nous sommes ravis de vous voir de ce côté de l'application !
     </ion-text>
+    <br>
+    <br>
     <ion-text class="creer">
       Créer une nouvelle annonce
     </ion-text>
     <ion-button class="creation" (click)="redirigerVersConfig1()"><ion-icon name="location"></ion-icon>  Créer une nouvelle annonce  <ion-icon name="arrow-forward"></ion-icon></ion-button>
   </ion-list>
+  <ion-text class="creer" *ngIf="aDesAnnonces">Mes annonces</ion-text>
   <ion-card *ngFor="let emplacement of emplacements | async">
     <ion-card-header>
       {{ emplacement.Description }}

@@ -12,6 +12,7 @@ import { AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 })
 export class AnnoncesPage implements OnInit {
   emplacements: Observable<any[]>;
+  aDesAnnonces: boolean = false;
   Description: string;
   NumberOfPlaces: string;
   ParkingAdress: string;
@@ -65,7 +66,6 @@ export class AnnoncesPage implements OnInit {
     }
   
     loadEmpData() {
-     
       this.firestore
         .collection('user_data')
         .doc(this.authService.uid)
@@ -73,19 +73,19 @@ export class AnnoncesPage implements OnInit {
         .valueChanges()
         .subscribe(
           (empData: any) => {
-            if (empData) {
+            if (empData && empData.length > 0) {
               console.log('Emp Data:', empData);
-              
+              this.aDesAnnonces = true; // Mettez à jour la variable de statut
               this.emplacements = of(empData);
             } else {
               console.log('Nothing in empData');
-              
+              this.aDesAnnonces = false; // Mettez à jour la variable de statut
               this.emplacements = of([]);
             }
           },
           (error) => {
             console.error('Error fetching data:', error);
-            
+            this.aDesAnnonces = false; // Mettez à jour la variable de statut en cas d'erreur
             this.emplacements = of([]);
           }
         );
