@@ -15,9 +15,6 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 export class RecapitulatifPage implements OnInit, OnDestroy {
 
   selectedDays$: Observable<string[]>;
-  selectedStartTime$: Observable<string | null>;
-  selectedEndTime$: Observable<string | null>;
-
   selectedParkingType$: Observable<string | null>;
   selectedParkingAddress$: Observable<string | null>;
   numberOfPlaces$: Observable<number>;
@@ -26,9 +23,9 @@ export class RecapitulatifPage implements OnInit, OnDestroy {
   selectedPhotos$: Observable<string[]>;
   isAdPosted: boolean = false;
   selectedPrice$: Observable<number>;
-  
-selectedStartDate$: Observable<Date | null>;
-selectedEndDate$: Observable<Date | null>;
+  selectedStartTime$: Observable<string | null>;
+  selectedEndTime$: Observable<string | null>;
+
 
 
   nom: string;
@@ -54,10 +51,9 @@ selectedEndDate$: Observable<Date | null>;
     this.selectedDescription$ = this.vehicleSelectionService.selectedDescription$;
     this.selectedPhotos$ = this.vehicleSelectionService.selectedPhotos$;
     this.selectedPrice$ = this.vehicleSelectionService.selectedPrice$;
-    this.selectedStartDate$ = this.vehicleSelectionService.selectedStartDate$;
-    this.selectedEndDate$ = this.vehicleSelectionService.selectedEndDate$;
-    
-  
+    this.selectedDays$ = this.vehicleSelectionService.selectedDays$;
+    this.selectedStartTime$ = this.vehicleSelectionService.selectedStartTime$;
+    this.selectedEndTime$ = this.vehicleSelectionService.selectedEndTime$;
   }
 
   ngOnInit() {
@@ -65,7 +61,6 @@ selectedEndDate$: Observable<Date | null>;
     
     this.cdr.detectChanges(); 
 
-     // Fetch logged-in user data
      this.authService.getLoggedInUserObservable().pipe(
       switchMap((userData) => {
         console.log('Raw userData:', userData);
@@ -75,17 +70,15 @@ selectedEndDate$: Observable<Date | null>;
           this.motDePasse = userData.motDePasse;
           console.log('User is logged in:', this.email, this.authService.uid);
   
-          // Connecte le UID et EMAIL
           console.log('Logged-in UID:', this.authService.uid);
           console.log('Logged-in Email:', this.email);
   
-          // Retourne les données supplémentaires de Firestore
           return this.firestore.collection('user_data').doc(this.authService.uid).valueChanges();
         } else {
           this.email = '';
           this.motDePasse = '';
           console.log('User is not logged in');
-          return from([]); // Chaîne qui continue
+          return from([]); 
         }
       }),
       take(1)
@@ -104,11 +97,11 @@ selectedEndDate$: Observable<Date | null>;
   }
 
   ngOnDestroy() {
-    // Aucun besoin de désabonnement car nous utilisons async dans le template
+  
   }
 
   ajouterEmplacement() {
-    // Récupérer les valeurs actuelles des Observables
+
     combineLatest([
       this.selectedParkingType$,
       this.selectedParkingAddress$,
@@ -116,23 +109,22 @@ selectedEndDate$: Observable<Date | null>;
       this.selectedVehicleTypes$,
       this.numberOfPlaces$,
       this.selectedPrice$,
-      this.selectedStartDate$,
-      this.selectedEndDate$,
+      this.selectedDays$,
+      this.selectedStartTime$,
+      this.selectedEndTime$,
   
     ]).pipe(
       take(1)
-    ).subscribe(([selectedParkingType, selectedParkingAddress, selectedDescription, selectedVehicleTypes, numberOfPlaces, selectedPrice, selectedStartDate, selectedEndDate]) => {
-      if (selectedParkingType && selectedParkingAddress && selectedDescription && selectedVehicleTypes && numberOfPlaces && selectedPrice && selectedStartDate && selectedEndDate) {
-        // récupérer l'observable utilisateur
+    ).subscribe(([selectedParkingType, selectedParkingAddress, selectedDescription, selectedVehicleTypes, numberOfPlaces, selectedPrice, selectedDays, selectedStartTime, selectedEndTime]) => {
+      if (selectedParkingType && selectedParkingAddress && selectedDescription && selectedVehicleTypes && numberOfPlaces && selectedPrice && selectedDays && selectedStartTime && selectedEndTime) {
+        
         const userObservable = this.authService.getLoggedInUserObservable();
   
-        // obtenir les données utilisateur
         userObservable.pipe(take(1)).subscribe((userData) => {
           if (userData) {
             const userId = this.authService.uid || userData['uid'];
   
             if (userId) {
-              // Generate a unique ID with prefix 'E-' and random numbers
               const uniqueEmplacementId = `E-${Math.floor(Math.random() * 1000000)}`;
   
               const emplacementData = {
@@ -143,10 +135,11 @@ selectedEndDate$: Observable<Date | null>;
                 VehicleType: selectedVehicleTypes,
                 NombrePlace: numberOfPlaces, 
                 Prix: selectedPrice, 
-                DateDebut: selectedStartDate, 
-                DateFin: selectedEndDate,
+                Jours: selectedDays,
                 isAdPosted: this.isAdPosted,
-                isReserved: false
+                isReserved: false,
+                HeureDebut: selectedStartTime,
+                HeureFin: selectedEndTime,
               };
   
               const userDocRef = this.firestore.collection('user_data').doc(userId).collection('emplacement_data').doc(uniqueEmplacementId);

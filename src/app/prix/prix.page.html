@@ -29,7 +29,7 @@
 </ion-row>
 <ion-row>
   <ion-col size="2" *ngFor="let day of days">
-    <ion-button expand="full" (click)="toggleDay(day.value)" [color]="day.selected ? 'primary' : 'medium'">{{ day.name }}</ion-button>
+    <ion-button expand="full" (click)="toggleDay(day)" [color]="day.selected ? 'primary' : 'medium'" [class.selected]="day.selected">{{ day.name }}</ion-button>
   </ion-col>
 </ion-row>
 
@@ -48,10 +48,6 @@
     <ion-input type="time" [(ngModel)]="heureFin"></ion-input>
   </ion-item>
 </ion-row>
-
-
-
-  
 
   <ion-button (click)="afficherSelections()">Afficher les sélections</ion-button>
 

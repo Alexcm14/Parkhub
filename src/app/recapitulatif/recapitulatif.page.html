@@ -43,14 +43,9 @@
     <ion-note>{{ selectedPrice }}€</ion-note>
   </ion-item>
   
-  <ion-item *ngIf="(selectedStartDate$ | async) as selectedStartDate">
-    <ion-label position="stacked">Date de début</ion-label>
-    <ion-note>{{ selectedStartDate | date: 'dd/MM/yyyy' }}</ion-note>
-  </ion-item>
-  
-  <ion-item *ngIf="(selectedEndDate$ | async) as selectedEndDate">
-    <ion-label position="stacked">Date de fin</ion-label>
-    <ion-note>{{ selectedEndDate | date: 'dd/MM/yyyy' }}</ion-note>
+  <ion-item *ngIf="(selectedDays$ | async) as selectedDays">
+    <ion-label position="stacked">Jours sélectionnés</ion-label>
+    <ion-note>{{ selectedDays$ }}<br></ion-note>
   </ion-item>
 
   <!-- Photos -->

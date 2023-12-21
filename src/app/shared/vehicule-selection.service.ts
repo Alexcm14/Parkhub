@@ -28,23 +28,23 @@ export class VehicleSelectionService {
   private selectedPriceSubject = new BehaviorSubject<number>(0);
 selectedPrice$ = this.selectedPriceSubject.asObservable();
 
-private selectedStartDateSubject = new BehaviorSubject<Date | null>(null);
-selectedStartDate$ = this.selectedStartDateSubject.asObservable();
+private selectedDaysSubject = new BehaviorSubject<string[]>([]);
+selectedDays$ = this.selectedDaysSubject.asObservable();
 
-private selectedEndDateSubject = new BehaviorSubject<Date | null>(null);
-selectedEndDate$ = this.selectedEndDateSubject.asObservable();
+private selectedStartTimeSource = new BehaviorSubject<string | null>(null);
+selectedStartTime$ = this.selectedStartTimeSource.asObservable();
+
+  private selectedEndTimeSource = new BehaviorSubject<string | null>(null);
+  selectedEndTime$ = this.selectedEndTimeSource.asObservable();
+
 
 
 updateSelectedPrice(price: number) {
   this.selectedPriceSubject.next(price);
 }
 
-updateSelectedStartDate(startDate: Date | null) {
-  this.selectedStartDateSubject.next(startDate);
-}
-
-updateSelectedEndDate(endDate: Date | null) {
-  this.selectedEndDateSubject.next(endDate);
+updateSelectedDays(selectedDays: string[]) {
+  this.selectedDaysSubject.next(selectedDays);
 }
 
   updateSelectedVehicleTypes(selectedTypes: string[]) {
@@ -73,7 +73,14 @@ updateSelectedEndDate(endDate: Date | null) {
   updateSelectedPhotos(photos: string[]) {
     this.selectedPhotosSubject.next(photos);
   }
-  
+
+  updateSelectedStartTime(startTime: string) {
+    this.selectedStartTimeSource.next(startTime);
+  }
+
+  updateSelectedEndTime(endTime: string) {
+    this.selectedEndTimeSource.next(endTime);
+  }
   
   getSelectedPhotos(): string[] {
     return this.selectedPhotosSubject.getValue();
