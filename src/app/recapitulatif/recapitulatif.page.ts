@@ -14,6 +14,17 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 })
 export class RecapitulatifPage implements OnInit, OnDestroy {
 
+  days: Array<{id: string, name: string, selected: boolean}> = [
+    {id: 'lundi', name: 'Lundi', selected: false},
+    {id: 'mardi', name: 'Mardi', selected: false},
+    {id: 'mercredi', name: 'Mercredi', selected: false},
+    {id: 'jeudi', name: 'Jeudi', selected: false},
+    {id: 'vendredi', name: 'Vendredi', selected: false},
+    {id: 'samedi', name: 'Samedi', selected: false},
+    {id: 'dimanche', name: 'Dimanche', selected: false}
+  ];
+
+
   selectedDays$: Observable<string[]>;
   selectedParkingType$: Observable<string | null>;
   selectedParkingAddress$: Observable<string | null>;
@@ -34,9 +45,10 @@ export class RecapitulatifPage implements OnInit, OnDestroy {
   motDePasse: string;
   telephone: string;
   
-  days: string[] = [];
+  
   heureDebut: string;
   heureFin: string;
+  
 
   constructor(
     private navCtrl: NavController,
@@ -100,7 +112,15 @@ export class RecapitulatifPage implements OnInit, OnDestroy {
   
   }
 
+  toggleDay(day: {name: string, selected: boolean}): void {
+    day.selected = !day.selected;
+  }
+
+
+
   ajouterEmplacement() {
+
+    const joursSelectionnes = this.days.filter(day => day.selected).map(day => day.id);
 
     combineLatest([
       this.selectedParkingType$,
@@ -135,11 +155,11 @@ export class RecapitulatifPage implements OnInit, OnDestroy {
                 VehicleType: selectedVehicleTypes,
                 NombrePlace: numberOfPlaces, 
                 Prix: selectedPrice, 
-                Jours: selectedDays,
                 isAdPosted: this.isAdPosted,
                 isReserved: false,
-                HeureDebut: selectedStartTime,
-                HeureFin: selectedEndTime,
+                Jours: joursSelectionnes,
+                HeureDebut: this.heureDebut,
+                HeureFin: this.heureFin,
               };
   
               const userDocRef = this.firestore.collection('user_data').doc(userId).collection('emplacement_data').doc(uniqueEmplacementId);

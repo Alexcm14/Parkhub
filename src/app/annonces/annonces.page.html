@@ -30,7 +30,15 @@
       Vehicle Type: {{ emplacement.VehicleType }}<br>
       Nombre de place : {{ emplacement.NombrePlace }}<br>
       Prix :{{ emplacement.Prix }}<br>
-      Période : Du {{emplacement.DateDebut }} au {{emplacement.DateFin}}<br>
+      Jours disponibles : {{ emplacement.Jours.join(', ') }}<br>
+      Heure de début : {{ emplacement.HeureDebut }}<br>
+      Heure de fin : {{ emplacement.HeureFin }}<br>
+      
+      <ion-item>
+        <ion-label>Publier l'annonce</ion-label>
+        <ion-toggle [(ngModel)]="emplacement.isAdPosted" (ionChange)="toggleAdPost(emplacement)"></ion-toggle>
+      </ion-item>
+
 
     </ion-card-content>
   </ion-card>

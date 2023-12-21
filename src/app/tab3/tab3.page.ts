@@ -3,6 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthService } from 'src/app/services/auth.service';
 import { take } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-tab3',
@@ -10,14 +11,16 @@ import { take } from 'rxjs/operators';
   styleUrls: ['tab3.page.scss'],
 })
 export class Tab3Page implements OnInit {
+  emplacements: Observable<any[]>;
 
   nom: string;
   prenom: string;
   email: string;
   motDePasse: string;
   telephone: string;
-  reservationData: any[] = [];
+  
   reservations: any[] = [];
+  reservationData: any[] = [];
 
   constructor(
     private modalController: ModalController,
@@ -59,6 +62,10 @@ export class Tab3Page implements OnInit {
     });
   }
 
+ 
+
+  
+
   loadResData() {
     // récupérer les données de toutes les collections reservation_data
     this.firestore.collection('user_data').doc(this.authService.uid).collection('reservation_data').valueChanges().subscribe((resData: any[]) => {
@@ -67,5 +74,45 @@ export class Tab3Page implements OnInit {
         this.reservations = resData;
       }
     });
+  }
+  confirmerReservation(emplacement: any): void {
+    const updatedStatus = emplacement.isRese;
+
+    // Mise à jour dans l'application
+    emplacement.isAdPosted = updatedStatus;
+
+    // Mise à jour dans Firestore
+    this.firestore.collection('user_data').doc(this.authService.uid)
+      .collection('emplacement_data').doc(emplacement.Id)
+      .update({ isAdPosted: updatedStatus })
+      .then(() => console.log('Update successful'))
+      .catch(error => console.error('Error updating document: ', error));
+  }
+
+  loadEmpData() {
+   
+    this.firestore
+      .collection('user_data')
+      .doc(this.authService.uid)
+      .collection('emplacement_data')
+      .valueChanges()
+      .subscribe(
+        (empData: any) => {
+          if (empData) {
+            console.log('Emp Data:', empData);
+            
+            this.emplacements = of(empData);
+          } else {
+            console.log('Nothing in empData');
+            
+            this.emplacements = of([]);
+          }
+        },
+        (error) => {
+          console.error('Error fetching data:', error);
+          
+          this.emplacements = of([]);
+        }
+      );
   }
 }

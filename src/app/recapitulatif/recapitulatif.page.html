@@ -43,10 +43,7 @@
     <ion-note>{{ selectedPrice }}€</ion-note>
   </ion-item>
   
-  <ion-item *ngIf="(selectedDays$ | async) as selectedDays">
-    <ion-label position="stacked">Jours sélectionnés</ion-label>
-    <ion-note>{{ selectedDays$ }}<br></ion-note>
-  </ion-item>
+
 
   <!-- Photos -->
   <ion-item *ngIf="(selectedPhotos$ | async) as selectedPhotos">
@@ -57,6 +54,33 @@
       </ion-col>
     </ion-row>
   </ion-item>
+
+  <!-- Ajout de la sélection des jours de la semaine -->
+<ion-row class="custom-margin">
+  <ion-text>Choisissez les jours :</ion-text>
+</ion-row>
+<ion-row>
+  <ion-col size="2" *ngFor="let day of days">
+    <ion-button expand="full" (click)="toggleDay(day)" [color]="day.selected ? 'primary' : 'medium'" [class.selected]="day.selected">{{ day.name }}</ion-button>
+  </ion-col>
+</ion-row>
+
+<!-- Sélection de l'heure de début -->
+<ion-row class="custom-margin">
+  <ion-item>
+    <ion-label>Heure de début</ion-label>
+    <ion-input type="time" [(ngModel)]="heureDebut"></ion-input>
+  </ion-item>
+</ion-row>
+
+<!-- Sélection de l'heure de fin -->
+<ion-row class="custom-margin">
+  <ion-item>
+    <ion-label>Heure de fin</ion-label>
+    <ion-input type="time" [(ngModel)]="heureFin"></ion-input>
+  </ion-item>
+</ion-row>
+
 
   <!-- Bouton on/off pour poster l'annonce -->
   <ion-item>

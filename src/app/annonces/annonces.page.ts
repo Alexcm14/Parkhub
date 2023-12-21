@@ -63,6 +63,20 @@ export class AnnoncesPage implements OnInit {
         }
       });
     }
+
+    toggleAdPost(emplacement: any): void {
+      const updatedStatus = emplacement.isAdPosted;
+  
+      // Mise à jour dans l'application
+      emplacement.isAdPosted = updatedStatus;
+  
+      // Mise à jour dans Firestore
+      this.firestore.collection('user_data').doc(this.authService.uid)
+        .collection('emplacement_data').doc(emplacement.Id)
+        .update({ isAdPosted: updatedStatus })
+        .then(() => console.log('Update successful'))
+        .catch(error => console.error('Error updating document: ', error));
+    }
   
     loadEmpData() {
      

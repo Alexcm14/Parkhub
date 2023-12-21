@@ -49,6 +49,7 @@ export class Tab1Page {
   autocompleteItems: any = [];
   geocoder: any;
   
+  
   nom: string;
   prenom: string;
   email: string;
@@ -89,6 +90,8 @@ export class Tab1Page {
 
 ngOnInit() {
   
+
+  
   // Fetch logged-in user data
   this.authService.getLoggedInUserObservable().pipe(
     switchMap((userData) => {
@@ -126,6 +129,8 @@ ngOnInit() {
   });
 }
 
+
+
 loadMarkers() {
   console.log('loadMarkers called');
   
@@ -145,13 +150,20 @@ loadMarkers() {
 
 
 addMarkersToMap() {
+
+  const currentTime = new Date();
+  
+
+  
   console.log('addMarkersToMap called');
   this.zone.run(() => {
     for (const data of this.markers) {
-      if (data.Adresse) {
+      if (data.Adresse && data.isAdPosted) {
         this.geocodeAddress(data.Adresse, data).then((coordinates: any) => {
           console.log('Geocoded coordinates:', coordinates);
           const position = new google.maps.LatLng(coordinates.latitude, coordinates.longitude);
+
+          
 
           const marker = new google.maps.Marker({
             position: position,
@@ -183,6 +195,11 @@ addMarkersToMap() {
                   parkingType: data.ParkingType,
                   vehicleType: data.VehicleType,
                   price: data.Prix,
+                  heureDebut: data.HeureDebut,
+                  heureFin: data.HeureFin,
+                  jours: data.Jours,
+                  
+
                 },
               },
               event: event, // Utilisez l'événement du clic pour déterminer la position du popover

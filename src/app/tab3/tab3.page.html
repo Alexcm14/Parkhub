@@ -17,8 +17,15 @@
       <p><strong>Parking Type:</strong> {{ res.parkingType }}</p>
       <p><strong>Vehicle Type:</strong> {{ res.vehicleType }}</p>
       <p><strong>Price:</strong> {{ res.price }}</p>
-      <p><strong>Departure Time:</strong> {{ res.departureTime }}</p>
-      <p><strong>Number of Hours:</strong> {{ res.numberOfHours }}</p>
+      <p><strong>Début de réservation:</strong> {{ res.departureTime }}</p>
+      <p><strong>Fin de réservation:</strong> {{ res.endTime }}</p>
+
+      <ion-item>
+        <ion-label>Confirmer la réservation</ion-label>
+        <ion-toggle (ionChange)="confirmReservation(res, $event.checked)"></ion-toggle>
+      </ion-item>
+
+        
     </ion-card-content>
   </ion-card>
   
