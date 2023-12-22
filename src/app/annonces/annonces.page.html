@@ -12,25 +12,28 @@
 
 <ion-content [fullscreen]="true">
   <ion-list>
-    <ion-text class="T1">
+    <ion-text class="T1" *ngIf="!aDesAnnonces">
       Nous sommes ravis de vous voir de ce côté de l'application !
     </ion-text>
+    <br>
+    <br>
     <ion-text class="creer">
       Créer une nouvelle annonce
     </ion-text>
     <ion-button class="creation" (click)="redirigerVersConfig1()"><ion-icon name="location"></ion-icon>  Créer une nouvelle annonce  <ion-icon name="arrow-forward"></ion-icon></ion-button>
   </ion-list>
+
+  <ion-text class="creer" *ngIf="aDesAnnonces">Mes annonces</ion-text>
   <ion-card *ngFor="let emplacement of emplacements | async">
+  
     <ion-card-header>
-      {{ emplacement.Description }}
+        <ion-button style="color: primary; margin-right: 8px;" (click)="deleteEmplacement(emplacement)" slot="end"><ion-icon name="close"></ion-icon></ion-button>
     </ion-card-header>
     <ion-card-content>
       Adresse: {{ emplacement.Adresse }}<br>
-      Parking Type: {{ emplacement.ParkingType }}<br>
-      Vehicle Type: {{ emplacement.VehicleType }}<br>
-      Nombre de place : {{ emplacement.NombrePlace }}<br>
-      Prix :{{ emplacement.Prix }}<br>
-      Jours disponibles : {{ emplacement.Jours.join(', ') }}<br>
+      <ion-row *ngIf="emplacement.Jours">
+        Jours disponibles : {{ emplacement.Jours.join(', ') }}<br>
+      </ion-row>
       Heure de début : {{ emplacement.HeureDebut }}<br>
       Heure de fin : {{ emplacement.HeureFin }}<br>
       

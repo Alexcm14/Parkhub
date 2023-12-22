@@ -12,8 +12,8 @@ import { from, of, switchMap, take } from 'rxjs';
   styleUrls: ['./tab4.page.scss'],
 })
 export class Tab4Page implements OnInit {
-  valeur: number = 1;
-  somme: number = 20;
+  valeur: number = 7;
+  somme: number = 48;
 
    
   nom: string;
@@ -60,6 +60,7 @@ export class Tab4Page implements OnInit {
       } else {
         console.log('User data not found in Firestore.');
       }
+      this.calculerSomme();
     });
   }
   afficherEstimation() {
@@ -68,7 +69,7 @@ export class Tab4Page implements OnInit {
   }
 
   calculerSomme() {
-    this.somme = this.valeur * 20 * this.sharedService.nombrePlaces;
+    this.somme = this.valeur * 48 * this.sharedService.nombrePlaces;
   }
 
   redirigerVersAnnonces() {

@@ -4,6 +4,9 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthService } from 'src/app/services/auth.service';
 import { from, take, switchMap, Observable, of } from 'rxjs';
 import { AngularFirestoreDocument } from '@angular/fire/compat/firestore';
+import { map } from 'rxjs/operators';
+
+
 
 @Component({
   selector: 'app-annonces',
@@ -11,6 +14,7 @@ import { AngularFirestoreDocument } from '@angular/fire/compat/firestore';
   styleUrls: ['./annonces.page.scss'],
 })
 export class AnnoncesPage implements OnInit {
+  aDesAnnonces: boolean = false;
   emplacements: Observable<any[]>;
   Description: string;
   NumberOfPlaces: string;
@@ -87,21 +91,56 @@ export class AnnoncesPage implements OnInit {
         .valueChanges()
         .subscribe(
           (empData: any) => {
-            if (empData) {
+            if (empData && empData.length > 0) {
               console.log('Emp Data:', empData);
-              
+              this.aDesAnnonces = true;
               this.emplacements = of(empData);
             } else {
               console.log('Nothing in empData');
-              
+              this.aDesAnnonces = false;
               this.emplacements = of([]);
             }
           },
           (error) => {
             console.error('Error fetching data:', error);
-            
+            this.aDesAnnonces = false;
             this.emplacements = of([]);
           }
         );
     }
+    editEmplacement(emplacement: any): void {
+      const emplacementId = emplacement.Id;
+      this.navCtrl.navigateForward(`/modification/${emplacementId}`);
+    }
+
+    deleteEmplacement(emplacement: any): void {
+      const isConfirmed = window.confirm('Êtes-vous sûr de vouloir supprimer cet emplacement ?');
+    
+      if (isConfirmed) {
+        const emplacementId = emplacement.Id;
+    
+        this.emplacements.pipe(take(1)).subscribe((emplacementsArray: any[]) => {
+          const updatedEmplacements = emplacementsArray.filter((e) => e.Id !== emplacementId);
+          this.emplacements = of(updatedEmplacements);
+          this.deleteEmplacementFromFirestore(emplacementId);
+        });
+      }
+    }
+    
+    deleteEmplacementFromFirestore(emplacementId: string): void {
+      this.firestore
+        .collection('user_data')
+        .doc(this.authService.uid)
+        .collection('emplacement_data')
+        .doc(emplacementId)
+        .delete()
+        .then(() => {
+          console.log('Emplacement deleted successfully from Firestore!');
+        })
+        .catch((error) => {
+          console.error('Error deleting emplacement from Firestore: ', error);
+        });
+    }
+    
+    
   }
