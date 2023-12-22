@@ -25,11 +25,11 @@
   <br>
 
 
-  <ion-button (click)="afficherSelections()">Afficher les sélections</ion-button>
+  <ion-button (click)="afficherSelections()">Afficher la sélection</ion-button>
 
   <ion-card *ngIf="isSelectionsAffichees">
     <ion-card-header *ngIf="isSelectionsAffichees">
-      Sélections
+      Prix sélectionné
     </ion-card-header>
     <ion-card-content *ngIf="isSelectionsAffichees">
       Prix : {{ prix }}€ <br>
@@ -37,7 +37,7 @@
     </ion-card-content>
   </ion-card>
   
-  <ion-label *ngIf="isSelectionsAffichees" class="date-saved">Informations enregistrées</ion-label><br><br>
+  <ion-label *ngIf="isSelectionsAffichees" class="date-saved">Choix du prix enregistré</ion-label><br><br>
   
 
 </ion-content>

@@ -10,22 +10,22 @@
       <ion-title size="large">Ma voiture</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-toolbar>
-    </ion-toolbar>
+  
 
-    
     <ion-card *ngFor="let vehicle of vehicles">
-      <ion-card-header>
-        {{ vehicle.marque }}
-        <ion-button fill="clear" color="danger" (click)="deleteVehicule(vehicle)">
-          <ion-icon name="close"></ion-icon>
-        </ion-button>
-      </ion-card-header>
-      <ion-card-content>
-        Plaque d'immatriculation: {{ vehicle.plaque }}<br>
-        Marque du véhicule: {{ vehicle.marque }}<br>
-      </ion-card-content>
-    </ion-card>
+  <ion-card-header *ngIf="vehicle">
+    {{ vehicle.marque }}
+    <ion-button fill="clear" color="danger" (click)="deleteVehicule(vehicle)">
+      <ion-icon name="close"></ion-icon>
+    </ion-button>
+  </ion-card-header>
+  <ion-card-content *ngIf="vehicle">
+    Plaque d'immatriculation: {{ vehicle.plaque }}<br>
+    Marque du véhicule: {{ vehicle.marque }}<br>
+  </ion-card-content>
+</ion-card>
+
+  
     <ion-item>
       <ion-label position="stacked">Plaque d'immatriculation</ion-label>
       <ion-input type="text" [(ngModel)]="plaque" required></ion-input>

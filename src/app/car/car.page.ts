@@ -19,6 +19,7 @@ export class CarPage {
   telephone: string;
   vehicles: any[] = [];
   selectedVehicle: any;
+  ajoutVehiculeClicked: boolean = false
 
   constructor(private authService: AuthService, private firestore: AngularFirestore) {}
 
@@ -102,6 +103,8 @@ export class CarPage {
                 // Clear the input fields
                 this.plaque = '';
                 this.marque = '';
+                // Set ajoutVehiculeClicked to true
+                this.ajoutVehiculeClicked = true;
                 // Load car data after adding
                 this.loadCarData();
               })
@@ -113,6 +116,7 @@ export class CarPage {
       });
     }
   }
+
   
   // Generate a unique identifier (you may need to use a library for this)
   generateUniqueId(): string {
