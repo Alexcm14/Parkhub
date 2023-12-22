@@ -10,26 +10,26 @@
         Mettez votre place de parking sur ParkHub.
       </ion-text>
 
-    <ion-item>
-      <ion-label class="T2">
-        Vous pourriez gagner jusqu'à 
-      </ion-label>
-    </ion-item>
-
-    <ion-item>
-      <ion-label class="somme">{{ somme }} €</ion-label>
-    </ion-item>
-
-    <ion-item>
-      <ion-label class="estimation">
-        Pour <span class="underline-text">{{ valeur }} {{ valeur === 0 || valeur === 1 ? 'jour' : 'jours' }}</span> de location avec une estimation de 0,84€/heure*
-       </ion-label>
-     </ion-item>
-     
-    <ion-item>
-      <ion-range [(ngModel)]="valeur" min="1" max="30" step ="1" [pin]="true" (ionChange)="calculerSomme()">
-      </ion-range>
-    </ion-item>
+      <ion-item>
+        <ion-label class="T2">
+          Vous pourriez gagner jusqu'à 
+        </ion-label>
+      </ion-item>
+      
+      <ion-item>
+        <ion-label class="somme">{{ somme }} €</ion-label>
+      </ion-item>
+      
+      <ion-item>
+        <ion-label class="estimation">
+          Pour <span class="underline-text">{{ valeur }} {{ valeur === 0 || valeur === 1 ? 'jour' : 'jours' }}</span> de location avec une estimation de 2,00€/heure*
+        </ion-label>
+      </ion-item>
+      
+      <ion-item>
+        <ion-range [(ngModel)]="valeur" min="1" max="30" step="1" [pin]="true" (ionChange)="calculerSomme()">
+        </ion-range>
+      </ion-item>
 
     <ion-button (click)="afficherEstimation()" class ="search" color="light">
       <ion-icon name="search-outline" style="color: #46d1c8;"></ion-icon>

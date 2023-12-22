@@ -90,7 +90,11 @@ const routes: Routes = [
   {
     path: 'cartes',
     loadChildren: () => import('./cartes/cartes.module').then( m => m.CartesPageModule)
+  },  {
+    path: 'modification',
+    loadChildren: () => import('./modification/modification.module').then( m => m.ModificationPageModule)
   },
+
 
 
   
