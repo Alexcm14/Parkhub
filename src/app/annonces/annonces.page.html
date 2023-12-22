@@ -4,7 +4,7 @@
       <ion-back-button slot="start" defaultHref="tabs/tab4">
         <ion-icon name="close"></ion-icon>
       </ion-back-button>
-      <ion-button slot="end" class="questions">Des questions ?</ion-button>
+      <ion-button slot="end" class="questions"><ion-icon name="help"></ion-icon></ion-button>
    
     <ion-title class="title"></ion-title>
   </ion-toolbar>
@@ -27,7 +27,11 @@
   <ion-card *ngFor="let emplacement of emplacements | async">
   
     <ion-card-header>
-        <ion-button style="color: primary; margin-right: 8px;" (click)="deleteEmplacement(emplacement)" slot="end"><ion-icon name="close"></ion-icon></ion-button>
+      <ion-item>
+      <ion-button fill="clear" color="danger" (click)="deleteEmplacement(emplacement)" slot="end">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-item>
     </ion-card-header>
     <ion-card-content>
       Adresse: {{ emplacement.Adresse }}<br>
@@ -39,10 +43,8 @@
       
       <ion-item>
         <ion-label>Publier l'annonce</ion-label>
-        <ion-toggle [(ngModel)]="emplacement.isAdPosted" (ionChange)="toggleAdPost(emplacement)"></ion-toggle>
+        <ion-toggle slot="end" [(ngModel)]="emplacement.isAdPosted" (ionChange)="toggleAdPost(emplacement)" aria-label="Publier l'annonce"></ion-toggle>
       </ion-item>
-
-
     </ion-card-content>
   </ion-card>
   

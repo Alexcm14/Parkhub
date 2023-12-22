@@ -55,13 +55,14 @@
     </ion-row>
   </ion-item>
 
+<br>
   <!-- Ajout de la sélection des jours de la semaine -->
 <ion-row class="custom-margin">
-  <ion-text>Choisissez les jours :</ion-text>
+  <ion-text style="white-space: normal; margin-left: 20px; ">Choisissez les jours de la semaine pendant lesquels votre parking sera disponible :</ion-text>
 </ion-row>
 <ion-row>
   <ion-col size="2" *ngFor="let day of days">
-    <ion-button expand="full" (click)="toggleDay(day)" [color]="day.selected ? 'primary' : 'medium'" [class.selected]="day.selected">{{ day.name }}</ion-button>
+    <ion-button class="jours" expand="full" (click)="toggleDay(day)" [color]="day.selected ? 'primary' : 'medium'" [class.selected]="day.selected">{{ day.name }}</ion-button>
   </ion-col>
 </ion-row>
 
@@ -88,7 +89,7 @@
   </ion-item>
 
   <!-- Bouton de validation -->
-  <ion-button (click)="ajouterEmplacement()" >Valider</ion-button>
+  <ion-button (click)="ajouterEmplacement()">Valider</ion-button>
 </ion-content>
 
 <ion-footer>

@@ -119,28 +119,52 @@ export class AnnoncesPage implements OnInit {
       if (isConfirmed) {
         const emplacementId = emplacement.Id;
     
-        this.emplacements.pipe(take(1)).subscribe((emplacementsArray: any[]) => {
-          const updatedEmplacements = emplacementsArray.filter((e) => e.Id !== emplacementId);
-          this.emplacements = of(updatedEmplacements);
-          this.deleteEmplacementFromFirestore(emplacementId);
+        const userId = this.authService.uid;
+    
+        if (userId) {
+          // Construction du chemin Firestore pour les données d'emplacement
+          const emplacementPath = `user_data/${userId}/emplacement_data`;
+    
+          // Obtenir la référence à l'emplacement spécifique
+          const emplacementRef = this.firestore.collection(emplacementPath).doc(emplacementId);
+    
+          // Supprimer les données d'emplacement de Firestore
+          emplacementRef.delete().then(() => {
+            console.log('Emplacement deleted successfully from Firestore!');
+            
+            // Mise à jour des annonces locales
+            this.loadEmpData();
+          }).catch((error) => {
+            console.error('Error deleting emplacement from Firestore: ', error);
+          });
+        }
+      }
+    }
+    
+    
+    deleteEmplacementFromFirestore(emplacementId: string): void {
+      const userId = this.authService.uid;
+    
+      if (userId) {
+        // Construction du chemin Firestore pour les données d'emplacement
+        const emplacementPath = `user_data/${userId}/emplacement_data`;
+    
+        // Obtenir la référence à l'emplacement spécifique
+        const emplacementRef = this.firestore.collection(emplacementPath).doc(emplacementId);
+    
+        // Supprimer les données d'emplacement de Firestore
+        emplacementRef.delete().then(() => {
+          console.log('Emplacement deleted successfully from Firestore!');
+        }).catch((error) => {
+          console.error('Error deleting emplacement from Firestore: ', error);
         });
       }
     }
     
-    deleteEmplacementFromFirestore(emplacementId: string): void {
-      this.firestore
-        .collection('user_data')
-        .doc(this.authService.uid)
-        .collection('emplacement_data')
-        .doc(emplacementId)
-        .delete()
-        .then(() => {
-          console.log('Emplacement deleted successfully from Firestore!');
-        })
-        .catch((error) => {
-          console.error('Error deleting emplacement from Firestore: ', error);
-        });
-    }
+      
+    
+    
+
     
     
   }

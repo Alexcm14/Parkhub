@@ -15,13 +15,13 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 export class RecapitulatifPage implements OnInit, OnDestroy {
 
   days: Array<{id: string, name: string, selected: boolean}> = [
-    {id: 'lundi', name: 'Lundi', selected: false},
-    {id: 'mardi', name: 'Mardi', selected: false},
-    {id: 'mercredi', name: 'Mercredi', selected: false},
-    {id: 'jeudi', name: 'Jeudi', selected: false},
-    {id: 'vendredi', name: 'Vendredi', selected: false},
-    {id: 'samedi', name: 'Samedi', selected: false},
-    {id: 'dimanche', name: 'Dimanche', selected: false}
+    {id: 'lundi', name: 'Lun', selected: false},
+    {id: 'mardi', name: 'Mar', selected: false},
+    {id: 'mercredi', name: 'Mer', selected: false},
+    {id: 'jeudi', name: 'Jeu', selected: false},
+    {id: 'vendredi', name: 'Ven', selected: false},
+    {id: 'samedi', name: 'Sam', selected: false},
+    {id: 'dimanche', name: 'Dim', selected: false}
   ];
 
 
