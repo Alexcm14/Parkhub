@@ -68,7 +68,17 @@ export class MarkerDetailsPage {
 
    
     ngOnInit() {
-      this.generateAvailableHours();
+      this.authService.getLoggedInUserObservable().pipe(take(1)).subscribe(user => {
+        if (user) {
+          // User is authenticated
+          this.generateAvailableHours();
+      
+        } else {
+          // User is not authenticated
+          console.error('User is not authenticated');
+          // Handle unauthenticated user scenario
+        }
+      });
      
     }
 
@@ -110,43 +120,25 @@ export class MarkerDetailsPage {
       }
     
       try {
-        const user = await this.authService.getLoggedInUserObservable();
+        console.log('Reserving with markerData:', this.markerData);
+        // Ensure markerData includes the UID of the emplacement holder
+        if (this.markerData && this.markerData.userUid && this.markerData.id) {
+          // Define emplacementRef using the UID from markerData
+          const emplacementRef = this.firestore
+            .collection('user_data')
+            .doc(this.markerData.userUid) // Use the UID from markerData
+            .collection('emplacement_data')
+            .doc(this.markerData.id);
     
-        if (user) {
-          const userUid = this.authService.uid || (await this.authService.getLoggedInUserObservable().pipe(take(1)).toPromise())?.uid;
+          // Proceed with your Firestore update
+          await emplacementRef.update({ isReserved: true });
     
-          if (userUid) {
-            if (this.markerData && this.markerData.price !== undefined) {
-              // Update the isReserved property in the emplacement_data collection
-              const emplacementRef = this.firestore.collection('emplacement_data').doc(this.markerData.id); // Accessing the specific document using markerData.id
-    
-              // Updating the isReserved property to true
-              await emplacementRef.update({ isReserved: true });
-    
-              // Adding reservation data to the user's reservation_data collection
-              await this.firestore.collection('user_data').doc(userUid).collection('reservation_data').add({
-                address: this.markerData.address,
-                description: this.markerData.description,
-                parkingType: this.markerData.parkingType,
-                vehicleType: this.markerData.vehicleType,
-                price: this.markerData.price,
-                departureTime: this.departureTime,
-                endTime: this.endTime,
-                emplacementId: this.markerData.id, // Storing the emplacement ID for reference
-              });
-    
-              // Close the Popover after reservation
-              await this.popoverController.dismiss();
-              this.router.navigate(['/tabs/tab3']);
-            } else {
-              console.error('Invalid value for price');
-            }
-          } else {
-            console.error('User is not logged in.');
-          }
+          // ... rest of your code ...
+        } else {
+          console.error('Missing user UID or marker data ID');
         }
       } catch (error) {
-        console.error('Error getting current user:', error);
+        console.error('Error:', error);
       }
     }
   }

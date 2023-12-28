@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthService } from 'src/app/services/auth.service';
-import { from, take, switchMap, Observable, of } from 'rxjs';
+import { from, take, switchMap, Observable, of, BehaviorSubject } from 'rxjs';
 import { AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { map } from 'rxjs/operators';
 
@@ -25,6 +25,8 @@ export class AnnoncesPage implements OnInit {
   nom: any;
   prenom: any;
   telephone: any;
+  private emplacementsSubject = new BehaviorSubject<any[]>([]);
+
 
   constructor(private navCtrl: NavController,private authService: AuthService, private firestore: AngularFirestore) {}
 
@@ -69,8 +71,10 @@ export class AnnoncesPage implements OnInit {
     }
 
     toggleAdPost(emplacement: any): void {
-      const updatedStatus = !emplacement.isAdPosted;
+      console.log('Current status:', emplacement.isAdPosted);
+      const updatedStatus = emplacement.isAdPosted;
     
+      console.log('Updated status:', updatedStatus);
       this.firestore.collection('user_data').doc(this.authService.uid)
         .collection('emplacement_data').doc(emplacement.id)
         .update({ isAdPosted: updatedStatus })

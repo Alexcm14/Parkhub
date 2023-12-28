@@ -13,6 +13,7 @@ import { from, of, switchMap, take } from 'rxjs';
 import { ModalController } from '@ionic/angular';
 import { PopoverController } from '@ionic/angular';
 import { MarkerDetailsPage } from '../marker-details/marker-details.page';
+import { UserBuildConditionals } from 'ionicons/dist/types/stencil-public-runtime';
 
 declare var google: any;
 
@@ -31,6 +32,7 @@ export class Tab1Page {
   chosenStartTime: string = '';
   chosenEndTime: string = '';
   totalPrice: number = 0;
+  
 
   map: any;
   markers: any[] = [];
@@ -133,37 +135,43 @@ ngOnInit() {
 
 loadMarkers() {
   console.log('loadMarkers called');
-  
-  // Mise à jour pour accéder à la sous-collection 'emplacement_data'
-  this.firestore.collectionGroup('emplacement_data').valueChanges().subscribe(
-    (data: any[]) => {
-      console.log('Received data from Firebase:', data);
-      this.markers = data;
-      this.addMarkersToMap();
-    },
-    (error) => {
-      console.error('Error fetching data from Firebase:', error);
-    }
-  );
+
+  // Assuming that 'emplacement_data' collection contains a field 'userUid'
+  this.firestore.collectionGroup('emplacement_data')
+    .snapshotChanges()
+    .subscribe(
+      (snapshotChanges) => {
+        this.markers = snapshotChanges.map(doc => {
+          const data = doc.payload.doc.data() as any;
+          const id = doc.payload.doc.id;
+          // Ensure data includes the userUid
+          if (data && typeof data === 'object') {
+            return { id, userUid: data.userUid, ...data };
+          } else {
+            console.error('Data is not an object:', data);
+            return { id };
+          }
+        });
+        console.log('Received data from Firebase:', this.markers);
+        this.addMarkersToMap();
+      },
+      (error) => {
+        console.error('Error fetching data from Firebase:', error);
+      }
+    );
 }
 
 
 
+
 addMarkersToMap() {
-
-  const currentTime = new Date();
-  
-
-  
   console.log('addMarkersToMap called');
   this.zone.run(() => {
     for (const data of this.markers) {
       if (data.Adresse && data.isAdPosted) {
-        this.geocodeAddress(data.Adresse, data).then((coordinates: any) => {
+        this.geocodeAddress(data.Adresse, data).then(async (coordinates: any) => {
           console.log('Geocoded coordinates:', coordinates);
           const position = new google.maps.LatLng(coordinates.latitude, coordinates.longitude);
-
-          
 
           const marker = new google.maps.Marker({
             position: position,
@@ -175,34 +183,32 @@ addMarkersToMap() {
               fillColor: '#000CFF',
               fillOpacity: 1,
               strokeColor: '#000CFF',
-              strokeWeight: 2 ,
+              strokeWeight: 2,
             },
           });
-          
-
-        
 
           marker.addListener('click', async (event) => {
             this.closeAllInfoWindows();
 
-            // Afficher le Popover
+            const markerData = {
+              address: data.Adresse,
+              description: data.Description,
+              parkingType: data.ParkingType,
+              vehicleType: data.VehicleType,
+              price: data.Prix,
+              heureDebut: data.HeureDebut,
+              heureFin: data.HeureFin,
+              jours: data.Jours,
+              id: data.id,
+              userUid: data.userUid,
+            };
+
+            console.log('Marker Data being sent to popover:', markerData);
+
             const popover = await this.popoverController.create({
               component: MarkerDetailsPage,
-              componentProps: {
-                markerData: {
-                  address: data.Adresse,
-                  description: data.Description,
-                  parkingType: data.ParkingType,
-                  vehicleType: data.VehicleType,
-                  price: data.Prix,
-                  heureDebut: data.HeureDebut,
-                  heureFin: data.HeureFin,
-                  jours: data.Jours,
-                  
-
-                },
-              },
-              event: event, // Utilisez l'événement du clic pour déterminer la position du popover
+              componentProps: { markerData },
+              event: event,
               translucent: true,
               cssClass: 'custom-popover',
             });
