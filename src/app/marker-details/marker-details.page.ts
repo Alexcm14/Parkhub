@@ -98,7 +98,7 @@ export class MarkerDetailsPage {
    
    
     async reserve() {
-      // Vérifier si l'utilisateur a entré une heure de départ et une heure de fin valides
+      // Verifying valid departure and end times
       if (!this.departureTime || !this.endTime) {
         const alert = await this.alertController.create({
           header: 'Erreur',
@@ -110,49 +110,43 @@ export class MarkerDetailsPage {
       }
     
       try {
-        // Obtenir l'utilisateur connecté
         const user = await this.authService.getLoggedInUserObservable();
     
         if (user) {
-          // Obtenir l'ID de l'utilisateur
           const userUid = this.authService.uid || (await this.authService.getLoggedInUserObservable().pipe(take(1)).toPromise())?.uid;
     
           if (userUid) {
-            // Vérifier la validité des valeurs avant d'ajouter à Firestore
             if (this.markerData && this.markerData.price !== undefined) {
-              // Ajouter les données de réservation à Firestore
-              this.firestore.collection('user_data').doc(userUid).collection('reservation_data').add({
+              // Update the isReserved property in the emplacement_data collection
+              const emplacementRef = this.firestore.collection('emplacement_data').doc(this.markerData.id); // Accessing the specific document using markerData.id
+    
+              // Updating the isReserved property to true
+              await emplacementRef.update({ isReserved: true });
+    
+              // Adding reservation data to the user's reservation_data collection
+              await this.firestore.collection('user_data').doc(userUid).collection('reservation_data').add({
                 address: this.markerData.address,
                 description: this.markerData.description,
                 parkingType: this.markerData.parkingType,
                 vehicleType: this.markerData.vehicleType,
                 price: this.markerData.price,
                 departureTime: this.departureTime,
-                endTime: this.endTime, // Utilisation directe de l'heure de fin saisie par l'utilisateur
+                endTime: this.endTime,
+                emplacementId: this.markerData.id, // Storing the emplacement ID for reference
               });
-
-              
-              
-              
     
-              // Fermer le Popover après la réservation
+              // Close the Popover after reservation
               await this.popoverController.dismiss();
               this.router.navigate(['/tabs/tab3']);
             } else {
               console.error('Invalid value for price');
             }
           } else {
-            console.error('L\'utilisateur n\'est pas connecté.');
+            console.error('User is not logged in.');
           }
-          
         }
       } catch (error) {
         console.error('Error getting current user:', error);
       }
-      
     }
-
-    
-
-    
-  }    
+  }

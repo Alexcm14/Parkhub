@@ -69,45 +69,53 @@ export class AnnoncesPage implements OnInit {
     }
 
     toggleAdPost(emplacement: any): void {
-      const updatedStatus = emplacement.isAdPosted;
-  
-      // Mise à jour dans l'application
-      emplacement.isAdPosted = updatedStatus;
-  
-      // Mise à jour dans Firestore
+      const updatedStatus = !emplacement.isAdPosted;
+    
       this.firestore.collection('user_data').doc(this.authService.uid)
-        .collection('emplacement_data').doc(emplacement.Id)
+        .collection('emplacement_data').doc(emplacement.id)
         .update({ isAdPosted: updatedStatus })
-        .then(() => console.log('Update successful'))
+        .then(() => {
+          console.log('Update successful, new status:', updatedStatus);
+          this.loadEmpData(); // Refresh data to update UI
+        })
         .catch(error => console.error('Error updating document: ', error));
+        
     }
+    
+    
+    
   
     loadEmpData() {
-     
       this.firestore
         .collection('user_data')
         .doc(this.authService.uid)
         .collection('emplacement_data')
-        .valueChanges()
-        .subscribe(
-          (empData: any) => {
-            if (empData && empData.length > 0) {
-              console.log('Emp Data:', empData);
-              this.aDesAnnonces = true;
-              this.emplacements = of(empData);
-            } else {
-              console.log('Nothing in empData');
-              this.aDesAnnonces = false;
-              this.emplacements = of([]);
-            }
-          },
-          (error) => {
-            console.error('Error fetching data:', error);
+        .snapshotChanges()
+        .pipe(
+          map(actions => actions.map(a => {
+            const data = a.payload.doc.data();
+            const id = a.payload.doc.id;
+            return { id, ...data }; // Combining the Firestore-generated ID with emplacement data
+          }))
+        )
+        .subscribe(empData => {
+          if (empData && empData.length > 0) {
+            console.log('Emp Data:', empData);
+            this.aDesAnnonces = true;
+            this.emplacements = of(empData);
+          } else {
+            console.log('Nothing in empData');
             this.aDesAnnonces = false;
             this.emplacements = of([]);
           }
-        );
+        },
+        error => {
+          console.error('Error fetching data:', error);
+          this.aDesAnnonces = false;
+          this.emplacements = of([]);
+        });
     }
+    
     editEmplacement(emplacement: any): void {
       const emplacementId = emplacement.Id;
       this.navCtrl.navigateForward(`/modification/${emplacementId}`);

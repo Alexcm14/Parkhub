@@ -145,10 +145,10 @@ export class RecapitulatifPage implements OnInit, OnDestroy {
             const userId = this.authService.uid || userData['uid'];
   
             if (userId) {
-              const uniqueEmplacementId = `E-${Math.floor(Math.random() * 1000000)}`;
+              
   
               const emplacementData = {
-                Id: uniqueEmplacementId,
+                
                 Description: selectedDescription,
                 Adresse: selectedParkingAddress,
                 ParkingType: selectedParkingType,
@@ -162,16 +162,14 @@ export class RecapitulatifPage implements OnInit, OnDestroy {
                 HeureFin: this.heureFin,
               };
   
-              const userDocRef = this.firestore.collection('user_data').doc(userId).collection('emplacement_data').doc(uniqueEmplacementId);
-  
-              userDocRef.set(emplacementData)
-                .then(() => {
-                  console.log('Emplacement with unique ID added to Firestore successfully!');
-                  this.navCtrl.navigateForward('/annonces');
-                })
-                .catch((error) => {
-                  console.error('Error adding emplacement with unique ID to Firestore: ', error);
-                });
+              const userDocRef =  this.firestore.collection('user_data').doc(userId).collection('emplacement_data').add(emplacementData)
+              .then((docRef) => {
+                console.log('Emplacement added to Firestore successfully with ID:', docRef.id);
+                this.navCtrl.navigateForward('/annonces');
+              })
+              .catch((error) => {
+                console.error('Error adding emplacement to Firestore: ', error);
+              });
             }
           }
         });
