@@ -121,19 +121,47 @@ export class MarkerDetailsPage {
     
       try {
         console.log('Reserving with markerData:', this.markerData);
+    
         // Ensure markerData includes the UID of the emplacement holder
         if (this.markerData && this.markerData.userUid && this.markerData.id) {
           // Define emplacementRef using the UID from markerData
           const emplacementRef = this.firestore
             .collection('user_data')
-            .doc(this.markerData.userUid) // Use the UID from markerData
+            .doc(this.markerData.userUid.trim()) // Use the UID from markerData and trim it
             .collection('emplacement_data')
             .doc(this.markerData.id);
     
           // Proceed with your Firestore update
           await emplacementRef.update({ isReserved: true });
     
-          // ... rest of your code ...
+          // Adding reservation data to the user's reservation_data collection
+          const userUid = this.authService.uid || (await this.authService.getLoggedInUserObservable().pipe(take(1)).toPromise())?.uid;
+        if (userUid) {
+          // Create a new document reference
+          const reservationRef = this.firestore.collection('user_data').doc(userUid).collection('reservation_data').doc();
+          
+          // Get the automatically generated ID from the DocumentReference
+          const reservationId = reservationRef.ref.id;
+
+          // Now use set() to add data to this new document
+          await reservationRef.set({
+            address: this.markerData.address,
+            description: this.markerData.description,
+            parkingType: this.markerData.parkingType,
+            vehicleType: this.markerData.vehicleType,
+            price: this.markerData.price,
+            departureTime: this.departureTime,
+            endTime: this.endTime,
+            emplacementId: this.markerData.id,
+            reservationId: reservationId,
+          });
+        }
+
+
+    
+          // Close the Popover after reservation
+          await this.popoverController.dismiss();
+          this.router.navigate(['/tabs/tab3']);
         } else {
           console.error('Missing user UID or marker data ID');
         }
@@ -141,4 +169,4 @@ export class MarkerDetailsPage {
         console.error('Error:', error);
       }
     }
-  }
+  }    
