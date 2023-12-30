@@ -52,15 +52,7 @@ export class AuthService {
         telephone: '',
       });
   
-      // Reference to the car_data subcollection
-      const carDataRef = userDocRef.collection('car_data').doc(uid);
-  
-      // Set car data
-      await carDataRef.set({
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        plaque: '',
-        marque: '',
-      });
+      
 
       return userCredential.user;
     } catch (error) {

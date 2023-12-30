@@ -12,6 +12,7 @@ import { AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 export class CarPage {
   plaque: string = '';
   marque: string = '';
+  type: string ='';
   nom: string;
   prenom: string;
   email: string;
@@ -70,7 +71,7 @@ export class CarPage {
   }
 
   ajouterVehicule() {
-    if (this.plaque && this.marque) {
+    if (this.plaque && this.marque && this.type) {
       // Get the user observable
       const userObservable = this.authService.getLoggedInUserObservable();
   
@@ -85,6 +86,7 @@ export class CarPage {
             const user = {
               marque: this.marque,
               plaque: this.plaque,
+              type: this.type,
             };
   
             // Generate a unique identifier for the vehicle (e.g., using a UUID library)
@@ -103,6 +105,7 @@ export class CarPage {
                 // Clear the input fields
                 this.plaque = '';
                 this.marque = '';
+                this.type='';
                 // Set ajoutVehiculeClicked to true
                 this.ajoutVehiculeClicked = true;
                 // Load car data after adding

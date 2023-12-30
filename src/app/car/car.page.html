@@ -22,6 +22,7 @@
   <ion-card-content *ngIf="vehicle">
     Plaque d'immatriculation: {{ vehicle.plaque }}<br>
     Marque du véhicule: {{ vehicle.marque }}<br>
+    Type du véhicule: {{vehicle.type}}<br>
   </ion-card-content>
 </ion-card>
 
@@ -65,6 +66,21 @@
         
       </ion-select>
     </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Type du véhicule</ion-label>
+      <ion-select placeholder="Sélectionnez le type de véhicule" [(ngModel)]="type" required interface="popover">
+      
+        <ion-select-option value="Berline">Berline </ion-select-option>
+        <ion-select-option value="BMW">2 roues</ion-select-option>
+        <ion-select-option value="Citadine">Citadine</ion-select-option>
+        <ion-select-option value="4x4">4x4</ion-select-option>
+        <ion-select-option value="Camionette">Camionette</ion-select-option>
+        <ion-select-option value="Pick-up">Pick-up</ion-select-option>
+        
+        
+      </ion-select>
+    </ion-item>
+
 
 
     <ion-button expand="full" (click)="ajouterVehicule()">Ajouter véhicule</ion-button>
