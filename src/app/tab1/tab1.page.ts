@@ -36,6 +36,7 @@ export class Tab1Page {
 
   map: any;
   markers: any[] = [];
+  vehicles: any;
 
   formatTime(date: Date): string {
     const hours = date.getHours().toString().padStart(2, '0');
@@ -131,6 +132,16 @@ ngOnInit() {
   });
 }
 
+loadCarData() {
+  // Retrieve data from the 'car_data' collection
+  this.firestore.collection('user_data').doc(this.authService.uid).collection('car_data').valueChanges().subscribe((carData: any) => {
+    if (carData) {
+      console.log('Car Data:', carData);
+      // Update the list of vehicles
+      this.vehicles = carData;
+    }
+  });
+}
 
 
 loadMarkers() {
@@ -180,9 +191,10 @@ addMarkersToMap() {
             icon: {
               path: google.maps.SymbolPath.CIRCLE,
               scale: 10,
-              fillColor: '#000CFF',
-              fillOpacity: 1,
-              strokeColor: '#000CFF',
+              fillColor: '#87CEEB', // Couleur bleue pour tous les marqueurs
+              fillOpacity: data.isReserved ? 0.3 : 1, // Semi-transparent si réservé, sinon pleine couleur
+              strokeColor: '#000000', // Couleur bleue pour la bordure de tous les marqueurs
+              strokeOpacity: data.isReserved ? 0.3 : 1, // Semi-transparent si réservé, sinon pleine couleur
               strokeWeight: 2,
             },
           });

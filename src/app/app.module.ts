@@ -21,6 +21,7 @@ import { provideStorage, getStorage } from '@angular/fire/storage';
 
 
 import { CardDetailsModalModule } from './cards/card.component/card.component.component.module';
+import { FormatTimerPipe } from './format-timer.pipe';
 
 @NgModule({
   declarations: [AppComponent],

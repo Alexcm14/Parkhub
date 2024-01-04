@@ -160,7 +160,8 @@ export class RecapitulatifPage implements OnInit, OnDestroy {
                 Jours: joursSelectionnes,
                 HeureDebut: this.heureDebut,
                 HeureFin: this.heureFin,
-                userUid:this.authService.uid
+                userUid:this.authService.uid,
+                
               };
   
               const userDocRef =  this.firestore.collection('user_data').doc(userId).collection('emplacement_data').add(emplacementData)
@@ -177,4 +178,5 @@ export class RecapitulatifPage implements OnInit, OnDestroy {
       }
     });
   }
+  
 }

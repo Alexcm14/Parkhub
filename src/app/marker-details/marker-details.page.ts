@@ -28,6 +28,8 @@ import { take } from 'rxjs/operators';
       <p><strong>Heure de Début:</strong> {{ markerData.heureDebut }}</p>
       <p><strong>Heure de Fin:</strong> {{ markerData.heureFin }}</p>
 
+      
+
       <!-- Ajoutez d'autres détails du marqueur selon vos besoins -->
 
 
@@ -61,6 +63,7 @@ export class MarkerDetailsPage {
   numberOfHours: number;
   endTime: string;
   availableEndHours: string[] = [];
+  
   
 
   constructor(  private firestore: AngularFirestore,
@@ -118,6 +121,8 @@ export class MarkerDetailsPage {
         await alert.present();
         return;
       }
+
+      
     
       try {
         console.log('Reserving with markerData:', this.markerData);

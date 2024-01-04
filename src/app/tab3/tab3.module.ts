@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
+import { FormatTimerPipe } from 'src/app/format-timer.pipe';
 import { Tab3Page } from './tab3.page';
 
 @NgModule({
@@ -19,6 +20,6 @@ import { Tab3Page } from './tab3.page';
       }
     ])
   ],
-  declarations: [Tab3Page]
+  declarations: [Tab3Page, FormatTimerPipe]
 })
 export class Tab3PageModule {}

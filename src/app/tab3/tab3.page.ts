@@ -2,8 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthService } from 'src/app/services/auth.service';
-import { take } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
+import { switchMap, take } from 'rxjs/operators';
+import { Observable, from, of } from 'rxjs';
+import { AlertController } from '@ionic/angular';
+import { Pipe, PipeTransform } from '@angular/core';
+import { NgModule } from '@angular/core';
+import { ChangeDetectorRef } from '@angular/core';
+
+
+
+
 
 @Component({
   selector: 'app-tab3',
@@ -21,14 +29,55 @@ export class Tab3Page implements OnInit {
   
   reservations: any[] = [];
   reservationData: any[] = [];
+  vehicles: any[] = [];
+  selectedCar: any; // Ajoutez cette propriété dans votre composant
+  countdownTimers: { [reservationId: string]: number } = {};
+  
+
 
   constructor(
+    private cdr: ChangeDetectorRef,
+    private alertController: AlertController,
     private modalController: ModalController,
     private authService: AuthService,
     private firestore: AngularFirestore
   ) {}
 
   ngOnInit() {
+
+     // Fetch logged-in user data
+     this.authService.getLoggedInUserObservable().pipe(
+      switchMap((userData) => {
+        console.log('Raw userData:', userData);
+
+        if (userData) {
+          const userId = this.authService.uid || userData['uid']; // Access the UID property
+
+          console.log('User ID:', userId);
+
+          // Retrieve additional data from Firestore
+          return this.firestore.collection('user_data').doc(userId).valueChanges();
+        } else {
+          console.log('User is not logged in');
+          return from([]); // Empty observable
+        }
+      }),
+      take(1)
+    ).subscribe((additionalData: any) => {
+      console.log('Processed additionalData:', additionalData);
+
+      if (additionalData) {
+        this.nom = additionalData.nom;
+        this.prenom = additionalData.prenom;
+        this.telephone = additionalData.telephone;
+
+        // Load car data
+        this.loadCarData();
+      } else {
+        console.log('User data not found in Firestore.');
+      }
+    });
+    
     // Fetch logged-in user data
     this.authService.getLoggedInUserObservable().pipe(
       take(1)
@@ -60,10 +109,116 @@ export class Tab3Page implements OnInit {
         console.log('User is not logged in');
       }
     });
+
+
+
+
+
+   
   }
+
+
+ 
+  
+  
+  
+
+
+
+
 
  
 
+  loadCarData() {
+    // Retrieve data from the 'car_data' collection
+    this.firestore.collection('user_data').doc(this.authService.uid).collection('car_data').valueChanges().subscribe((carData: any) => {
+      if (carData) {
+        console.log('Car Data:', carData);
+        // Update the list of vehicles
+        this.vehicles = carData;
+      }
+    });
+  }
+  
+
+
+
+
+
+
+ 
+  async confirmReservation(reservation) {
+    const alert = await this.alertController.create({
+      header: 'Confirmation de la réservation',
+      inputs: [
+        {
+          name: 'selectedCar',
+          type: 'text', // Vous pouvez changer cela en 'hidden' si vous ne voulez pas afficher le véhicule sélectionné.
+          value: this.selectedCar, // Assurez-vous que this.selectedCar contient la valeur que vous voulez enregistrer.
+          disabled: true // Rendre le champ non modifiable.
+        }
+      ],
+      message: `Confirmez-vous la réservation de ${reservation.address} avec le véhicule ${this.selectedCar ? this.selectedCar.marque + ' ' + this.selectedCar.plaque : ''} ?`,
+      buttons: [
+        {
+          text: 'Annuler',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirmation annulée');
+          },
+        },
+        {
+          text: 'Payer',
+          handler: () => {
+            console.log('Redirection vers paiement');
+            this.addCarToReservation(reservation, this.selectedCar);
+          },
+        },
+      ],
+    });
+  
+    await alert.present();
+
+    
+  }
+
+
+ 
+
+
+  
+  addCarToReservation(reservation, selectedCar) {
+    const userId = this.authService.uid; // Assurez-vous que l'UID est correctement récupéré.
+    if (!userId) {
+      console.error('Error: User ID is not available.');
+      return;
+    }
+  
+    // Préparez l'objet de réservation avec les données du véhicule.
+    const reservationWithCar = {
+      ...reservation,
+      vehicleId: selectedCar.id,
+      vehicleMarque: selectedCar.marque,
+      vehiclePlaque: selectedCar.plaque,
+    };
+  
+    // Ajoutez le véhicule sélectionné à la collection reservation_data de l'utilisateur.
+    this.firestore.collection('user_data').doc(userId).collection('reservation_data').add(reservationWithCar)
+      .then(() => {
+        console.log('Vehicle added to reservation successfully!');
+        // Effectuez d'autres actions si nécessaire, par exemple rediriger vers une page de paiement.
+      })
+      .catch((error) => {
+        console.error('Error adding vehicle to reservation:', error);
+      });
+  }
+  
+  onCarChange(event: any) {
+    this.selectedCar = event.detail.value; // ou event.target.value selon votre cas
+    // Logique supplémentaire si nécessaire
+  }
+  
   
 
   loadResData() {

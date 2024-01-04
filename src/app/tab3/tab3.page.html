@@ -15,15 +15,25 @@
     <ion-card-content>
       <p><strong>Description:</strong> {{ res.description }}</p>
       <p><strong>Parking Type:</strong> {{ res.parkingType }}</p>
-      <p><strong>Vehicle Type:</strong> {{ res.vehicleType }}</p>
-      <p><strong>Price:</strong> {{ res.price }}</p>
+      
+      <p><strong>Prix/heure:</strong> {{ res.price }} EUR</p>
       <p><strong>Début de réservation:</strong> {{ res.departureTime }}</p>
       <p><strong>Fin de réservation:</strong> {{ res.endTime }}</p>
+      
+      
+      <ion-select placeholder="Sélectionnez un véhicule" [(ngModel)]="selectedCar" (ionChange)="onCarChange($event)">
+        <ion-select-option *ngFor="let vehicle of vehicles" [value]="vehicle">
+          {{ vehicle.marque }} - {{ vehicle.plaque }}
+        </ion-select-option>
+      </ion-select>
 
-      <ion-item>
-        <ion-label>Confirmer la réservation</ion-label>
-        <ion-toggle (ionChange)="confirmReservation(res, $event.checked)"></ion-toggle>
-      </ion-item>
+      
+      
+
+      
+
+
+      <ion-button (click)="confirmReservation(res)">Confirmer la réservation</ion-button>
 
         
     </ion-card-content>
