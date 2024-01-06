@@ -198,23 +198,46 @@ export class Tab3Page implements OnInit {
             console.log('Redirection vers paiement');
             this.addCarToReservation(reservation, this.selectedCar);
   
-            // Update reservation to show it's confirmed
+            // Update reservation properties
             reservation.isConfirmed = true;
+            reservation.isPayed = true;
+            reservation.countdown = 'Réservé!';
   
-            // Optionally, stop the countdown for this reservation
-            const now = new Date().getTime();
-            const createdAtTime = new Date(reservation.createdAt.seconds * 1000).getTime();
-            const timeDiff = createdAtTime + 5 * 60000 - now;
-            reservation.countdown = timeDiff > 0 ? 'Réservé!' : 'Expired';
+            // Update Firestore and stop the countdown timer if it exists
+            this.updateReservationStatus(reservation);
+  
+            if (reservation.timerSubscription) {
+              reservation.timerSubscription.unsubscribe();
+            }
+  
+            this.cdr.detectChanges(); // Trigger change detection to update the view
           },
         },
       ],
     });
   
     await alert.present();
-
+  }
+  
+  updateReservationStatus(reservation) {
+    const userId = this.authService.uid;
+    if (!userId || !reservation.id) {
+      console.error('Error: Missing user ID or reservation ID.');
+      return;
+    }
+  
+    this.firestore.collection('user_data').doc(userId).collection('reservation_data').doc(reservation.id).update({
+      isConfirmed: reservation.isConfirmed,
+      isPayed: reservation.isPayed
+    })
+    .then(() => {
+      console.log('Reservation updated successfully!');
+    })
+    .catch((error) => {
+      console.error('Error updating reservation:', error);
     
   }
+  )}
 
 
  
