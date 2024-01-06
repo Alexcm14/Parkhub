@@ -129,7 +129,7 @@ export class Tab3Page implements OnInit {
         const seconds = Math.floor((timeDiff / 1000) % 60);
         res.countdown = `${minutes}m ${seconds}s`;
       } else {
-        res.countdown = 'Expired';
+        res.countdown = 'temps écoulé';
       }
     });
   }
