@@ -9,6 +9,7 @@ import { NavigationExtras } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthService } from 'src/app/services/auth.service';
 import { take } from 'rxjs/operators';
+import firebase from 'firebase/compat/app';
 
 
 
@@ -150,6 +151,7 @@ export class MarkerDetailsPage {
 
           // Now use set() to add data to this new document
           await reservationRef.set({
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             address: this.markerData.address,
             description: this.markerData.description,
             parkingType: this.markerData.parkingType,
@@ -159,6 +161,7 @@ export class MarkerDetailsPage {
             endTime: this.endTime,
             emplacementId: this.markerData.id,
             reservationId: reservationId,
+
             
           });
         }

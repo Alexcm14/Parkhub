@@ -21,11 +21,14 @@
       <p><strong>Fin de réservation:</strong> {{ res.endTime }}</p>
       
       
+      
       <ion-select placeholder="Sélectionnez un véhicule" [(ngModel)]="selectedCar" (ionChange)="onCarChange($event)">
         <ion-select-option *ngFor="let vehicle of vehicles" [value]="vehicle">
           {{ vehicle.marque }} - {{ vehicle.plaque }}
         </ion-select-option>
       </ion-select>
+      <p><strong>Time Remaining:</strong> {{ res.countdown }}</p>
+
 
       
       

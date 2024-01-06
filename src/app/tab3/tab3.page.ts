@@ -8,6 +8,7 @@ import { AlertController } from '@ionic/angular';
 import { Pipe, PipeTransform } from '@angular/core';
 import { NgModule } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
+import { interval, Subscription } from 'rxjs';
 
 
 
@@ -31,7 +32,7 @@ export class Tab3Page implements OnInit {
   reservationData: any[] = [];
   vehicles: any[] = [];
   selectedCar: any; // Ajoutez cette propriété dans votre composant
-  countdownTimers: { [reservationId: string]: number } = {};
+  timerSubscription: Subscription;
   
 
 
@@ -44,6 +45,8 @@ export class Tab3Page implements OnInit {
   ) {}
 
   ngOnInit() {
+    
+    this.timerSubscription = interval(1000).subscribe(() => this.updateCountdowns());
 
      // Fetch logged-in user data
      this.authService.getLoggedInUserObservable().pipe(
@@ -115,6 +118,25 @@ export class Tab3Page implements OnInit {
 
 
    
+  }
+  updateCountdowns() {
+    const now = new Date().getTime();
+    this.reservationData.forEach(res => {
+      const createdAtTime = new Date(res.createdAt.seconds * 1000).getTime();
+      const timeDiff = createdAtTime + 5 * 60000 - now; // 5 minutes in milliseconds
+      if (timeDiff > 0) {
+        const minutes = Math.floor((timeDiff / (1000 * 60)) % 60);
+        const seconds = Math.floor((timeDiff / 1000) % 60);
+        res.countdown = `${minutes}m ${seconds}s`;
+      } else {
+        res.countdown = 'Expired';
+      }
+    });
+  }
+  ngOnDestroy() {
+    if (this.timerSubscription) {
+      this.timerSubscription.unsubscribe();
+    }
   }
 
 
