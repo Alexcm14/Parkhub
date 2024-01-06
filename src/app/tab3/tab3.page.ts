@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthService } from 'src/app/services/auth.service';
-import { switchMap, take } from 'rxjs/operators';
+import { map, switchMap, take } from 'rxjs/operators';
 import { Observable, from, of } from 'rxjs';
 import { AlertController } from '@ionic/angular';
 import { Pipe, PipeTransform } from '@angular/core';
 import { NgModule } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
-import { interval, Subscription } from 'rxjs';
+import { interval, Subscription, } from 'rxjs';
 
 
 
@@ -47,7 +47,6 @@ export class Tab3Page implements OnInit {
   ngOnInit() {
     
     this.timerSubscription = interval(1000).subscribe(() => this.updateCountdowns());
-
      // Fetch logged-in user data
      this.authService.getLoggedInUserObservable().pipe(
       switchMap((userData) => {
@@ -96,15 +95,18 @@ export class Tab3Page implements OnInit {
         console.log('Logged-in UID:', this.authService.uid);
         console.log('Logged-in Email:', this.email);
 
-        // Return the data from the subcollection reservation_data
-        this.firestore.collection('user_data').doc(this.authService.uid).collection('reservation_data').valueChanges().pipe(
-          take(1)
+        this.firestore.collection('user_data').doc(this.authService.uid).collection('reservation_data').snapshotChanges().pipe(
+          take(1),
+          map(actions => actions.map(a => {
+            const data = a.payload.doc.data();
+            const id = a.payload.doc.id;
+            return { id, ...data };
+          }))
         ).subscribe((reservationData: any[]) => {
           console.log('Processed reservationData:', reservationData);
-
-          // Now reservationData contains data from the 'reservation_data' subcollection for the user
-          // Assign it to the property for use in the template
           this.reservationData = reservationData;
+      
+        
         });
       } else {
         this.email = '';
@@ -195,6 +197,15 @@ export class Tab3Page implements OnInit {
           handler: () => {
             console.log('Redirection vers paiement');
             this.addCarToReservation(reservation, this.selectedCar);
+  
+            // Update reservation to show it's confirmed
+            reservation.isConfirmed = true;
+  
+            // Optionally, stop the countdown for this reservation
+            const now = new Date().getTime();
+            const createdAtTime = new Date(reservation.createdAt.seconds * 1000).getTime();
+            const timeDiff = createdAtTime + 5 * 60000 - now;
+            reservation.countdown = timeDiff > 0 ? 'Réservé!' : 'Expired';
           },
         },
       ],
@@ -211,28 +222,32 @@ export class Tab3Page implements OnInit {
 
   
   addCarToReservation(reservation, selectedCar) {
-    const userId = this.authService.uid; // Assurez-vous que l'UID est correctement récupéré.
+    const userId = this.authService.uid;
     if (!userId) {
       console.error('Error: User ID is not available.');
       return;
     }
   
-    // Préparez l'objet de réservation avec les données du véhicule.
-    const reservationWithCar = {
-      ...reservation,
+    if (!reservation.id) {
+      console.error('Error: Reservation ID is not available.');
+      return;
+    }
+  
+    // Prepare the reservation update object with vehicle data
+    const reservationUpdate = {
       vehicleId: selectedCar.id,
       vehicleMarque: selectedCar.marque,
       vehiclePlaque: selectedCar.plaque,
     };
   
-    // Ajoutez le véhicule sélectionné à la collection reservation_data de l'utilisateur.
-    this.firestore.collection('user_data').doc(userId).collection('reservation_data').add(reservationWithCar)
+    // Update the selected vehicle in the user's reservation_data collection
+    this.firestore.collection('user_data').doc(userId).collection('reservation_data').doc(reservation.id).update(reservationUpdate)
       .then(() => {
-        console.log('Vehicle added to reservation successfully!');
-        // Effectuez d'autres actions si nécessaire, par exemple rediriger vers une page de paiement.
+        console.log('Vehicle updated in reservation successfully!');
+        // Perform other actions if necessary, such as redirecting to a payment page
       })
       .catch((error) => {
-        console.error('Error adding vehicle to reservation:', error);
+        console.error('Error updating vehicle in reservation:', error);
       });
   }
   
