@@ -5,6 +5,8 @@ import { AuthService } from 'src/app/services/auth.service';
 import { from, take, switchMap, Observable, of, BehaviorSubject } from 'rxjs';
 import { AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { map } from 'rxjs/operators';
+import { Router } from '@angular/router';
+
 
 
 
@@ -28,12 +30,14 @@ export class AnnoncesPage implements OnInit {
   private emplacementsSubject = new BehaviorSubject<any[]>([]);
 
 
-  constructor(private navCtrl: NavController,private authService: AuthService, private firestore: AngularFirestore) {}
+  constructor(private navCtrl: NavController,private authService: AuthService, private firestore: AngularFirestore, private router: Router) {}
 
   redirigerVersConfig1() {
     this.navCtrl.navigateForward('/config1');
   }
-
+  goRes(){
+    this.router.navigate(['/res'])
+  }
   ngOnInit() {
     this.loadEmpData();
     this.authService

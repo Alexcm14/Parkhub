@@ -95,6 +95,10 @@ const routes: Routes = [
     path: 'modification',
     loadChildren: () => import('./modification/modification.module').then( m => m.ModificationPageModule)
   },
+  {
+    path: 'res',
+    loadChildren: () => import('./res/res.module').then( m => m.ResPageModule)
+  },
   
 
 

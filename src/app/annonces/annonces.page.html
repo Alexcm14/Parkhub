@@ -28,6 +28,7 @@
   
     <ion-card-header>
       <ion-item>
+        <ion-label> Id:{{ emplacement.id }}</ion-label>
       <ion-button fill="clear" color="danger" (click)="deleteEmplacement(emplacement)" slot="end">
         <ion-icon name="close"></ion-icon>
       </ion-button>
@@ -47,6 +48,9 @@
       </ion-item>
     </ion-card-content>
   </ion-card>
+  <ion-button class="reservations-button" (click)="goRes()">
+    <ion-icon name="list"></ion-icon> Réservations <ion-icon name="arrow-forward"></ion-icon>
+  </ion-button>
   
   
 </ion-content>
