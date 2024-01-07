@@ -35,9 +35,9 @@ import firebase from 'firebase/compat/app';
 
       <ion-item>
   <ion-label position="stacked">Jour de la réservation</ion-label>
-  <ion-select placeholder="Sélectionnez un jour" [(ngModel)]="selectedDay" >
-    <ion-select-option *ngFor="let day of markerData.jours" [value]="day">{{ day }}</ion-select-option>
-  </ion-select>
+  <ion-select placeholder="Sélectionnez un jour" [(ngModel)]="selectedDay" (ionChange)="onDayChange(selectedDay)">
+  <ion-select-option *ngFor="let day of markerData.jours" [value]="day">{{ day }}</ion-select-option>
+</ion-select>
 </ion-item> 
 
 
@@ -74,6 +74,7 @@ export class MarkerDetailsPage {
   reservedTimes: Array<{ departureTime: string; endTime: string; }> = [];
   reservedHours: string[] = [];
   selectedDay: string;
+  reservedHoursByDay: { [day: string]: string[] } = {};
   
 
   constructor(  private firestore: AngularFirestore,
@@ -88,7 +89,8 @@ export class MarkerDetailsPage {
       this.authService.getLoggedInUserObservable().pipe(take(1)).subscribe(user => {
         if (user) {
           // User is authenticated
-          this.generateAvailableHours();
+          const dayToGenerate = this.selectedDay || this.markerData.jours[0]; // Default to the first day if selectedDay is not set
+          this.generateAvailableHours(dayToGenerate);
       
         } else {
           // User is not authenticated
@@ -107,37 +109,35 @@ export class MarkerDetailsPage {
         .where('emplacementId', '==', emplacementId))
         .get()
         .subscribe(querySnapshot => {
-          this.reservedHours = []; // Reset the reserved hours array
-          console.log(`Found ${querySnapshot.docs.length} reservation(s) for the specified emplacement.`);
+          this.reservedHoursByDay = {}; // Reset the reserved hours by day
     
           querySnapshot.docs.forEach(doc => {
             const reservation = doc.data();
-            console.log(`Processing reservation:`, reservation);
+            const day = reservation['day']; // Fetch the 'day' field
     
-            const reservationStartHour = reservation['departureTime'];
+            if (!this.reservedHoursByDay[day]) {
+              this.reservedHoursByDay[day] = [];
+            }
+    
+            let currentHour = reservation['departureTime'];
             const reservationEndHour = reservation['endTime'];
-            console.log(`Reservation times: Start - ${reservationStartHour}, End - ${reservationEndHour}`);
     
-            let currentHour = reservationStartHour;
             while (currentHour !== reservationEndHour) {
-              this.reservedHours.push(currentHour);
+              this.reservedHoursByDay[day].push(currentHour);
               let hourNumber = parseInt(currentHour.split(':')[0], 10);
               currentHour = `${(hourNumber + 1).toString().padStart(2, '0')}:00`;
             }
           });
     
-          console.log(`Reserved hours for this emplacement:`, this.reservedHours);
-    
-          // After fetching reserved hours, update the available hours
-          this.generateAvailableHours();
-    
-          console.log(`Updated available hours:`, this.availableHours);
+          console.log(`Reserved hours by day:`, this.reservedHoursByDay);
+          this.generateAvailableHours(this.selectedDay || this.markerData.jours[0]);
         }, error => {
           console.error('Error fetching reservations:', error);
         });
     }
     
-    generateAvailableHours() {
+    
+    generateAvailableHours(selectedDay: string) {
       const startHour = parseInt(this.markerData.heureDebut.split(':')[0]);
       const endHour = parseInt(this.markerData.heureFin.split(':')[0]);
       let tempAvailableHours = [];
@@ -151,15 +151,23 @@ export class MarkerDetailsPage {
         }
       }
     
-      // Filter out the reserved hours from availableHours
-      this.availableHours = tempAvailableHours.filter(hour => !this.reservedHours.includes(hour));
-      
-      // Adjust availableEndHours based on the updated availableHours
+      const reservedHoursForDay = this.reservedHoursByDay[selectedDay] || [];
+      this.availableHours = tempAvailableHours.filter(hour => !reservedHoursForDay.includes(hour));
       this.availableEndHours = tempAvailableEndHours.filter(endHour => 
         this.availableHours.includes(`${(parseInt(endHour.split(':')[0], 10) - 1).toString().padStart(2, '0')}:00`)
       );
     
-      console.log(`Updated available end hours:`, this.availableEndHours);
+      console.log(`Updated available hours for ${selectedDay}:`, this.availableHours);
+      console.log(`Updated available end hours for ${selectedDay}:`, this.availableEndHours);
+    }
+    
+    
+    
+      
+    onDayChange(newDay: string) {
+      this.selectedDay = newDay;
+      console.log(`Day changed to: ${newDay}`);
+      this.generateAvailableHours(newDay);
     }
     
     onDepartureTimeChange() {
