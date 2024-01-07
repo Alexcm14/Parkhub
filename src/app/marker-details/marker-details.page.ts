@@ -33,6 +33,13 @@ import firebase from 'firebase/compat/app';
 
       <!-- Ajoutez d'autres détails du marqueur selon vos besoins -->
 
+      <ion-item>
+  <ion-label position="stacked">Jour de la réservation</ion-label>
+  <ion-select placeholder="Sélectionnez un jour" [(ngModel)]="selectedDay" >
+    <ion-select-option *ngFor="let day of markerData.jours" [value]="day">{{ day }}</ion-select-option>
+  </ion-select>
+</ion-item> 
+
 
     
 
@@ -66,6 +73,7 @@ export class MarkerDetailsPage {
   availableEndHours: string[] = [];
   reservedTimes: Array<{ departureTime: string; endTime: string; }> = [];
   reservedHours: string[] = [];
+  selectedDay: string;
   
 
   constructor(  private firestore: AngularFirestore,
@@ -166,7 +174,7 @@ export class MarkerDetailsPage {
    
     async reserve() {
       // Verifying valid departure and end times
-      if (!this.departureTime || !this.endTime) {
+      if (!this.departureTime || !this.endTime || !this.selectedDay) {
         const alert = await this.alertController.create({
           header: 'Erreur',
           message: 'Veuillez entrer une heure de départ et une heure de fin valides.',
@@ -214,6 +222,7 @@ export class MarkerDetailsPage {
             endTime: this.endTime,
             emplacementId: this.markerData.id,
             reservationId: reservationId,
+            day: this.selectedDay,
 
             
           });
