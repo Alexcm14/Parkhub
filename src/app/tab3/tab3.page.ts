@@ -199,7 +199,6 @@ export class Tab3Page implements OnInit {
             this.addCarToReservation(reservation, this.selectedCar);
   
             // Update reservation properties
-            reservation.isConfirmed = true;
             reservation.isPayed = true;
             reservation.countdown = 'Réservé!';
   
