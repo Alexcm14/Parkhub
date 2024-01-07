@@ -75,6 +75,7 @@ export class MarkerDetailsPage {
   reservedHours: string[] = [];
   selectedDay: string;
   reservedHoursByDay: { [day: string]: string[] } = {};
+  reservations: any;
   
 
   constructor(  private firestore: AngularFirestore,
@@ -84,7 +85,12 @@ export class MarkerDetailsPage {
     ngOnInit() {
   
       this.fetchAndLockReservedHours();
-      
+
+      setInterval(() => {
+        this.checkReservationsAndUpdateStatus();
+      }, 60000);
+  
+    
   
       this.authService.getLoggedInUserObservable().pipe(take(1)).subscribe(user => {
         if (user) {
@@ -97,9 +103,35 @@ export class MarkerDetailsPage {
           console.error('User is not authenticated');
           // Handle unauthenticated user scenario
         }
+        
       });
-     
+      
     }
+    logCurrentTime() {
+      const currentDateTime = new Date().toLocaleString(); 
+      console.log(`Current DateTime: ${currentDateTime}`);
+    }
+    getCurrentTimestamp() {
+      return new Date(); // Gets the current date and time
+    }
+    checkReservationsAndUpdateStatus() {
+      const currentTime = new Date(); // Gets the current date and time
+      this.reservations.forEach(reservation => {
+        const reservationEndTime = new Date(reservation.endTime);
+    
+        if (currentTime > reservationEndTime && !reservation.isDone) {
+          this.updateReservationStatus(reservation.id, true);
+        }
+      });
+    }
+    
+    updateReservationStatus(reservationId: string, isDone: boolean) {
+      // Update the reservation status in Firestore
+      this.firestore.collection('reservations').doc(reservationId).update({ isDone })
+        .then(() => console.log(`Reservation ${reservationId} status updated to isDone: ${isDone}`))
+        .catch(error => console.error('Error updating reservation status:', error));
+    }
+    
     fetchAndLockReservedHours() {
       const emplacementId = this.markerData.id;
       console.log(`Fetching reservations for emplacement ID: ${emplacementId}`);
@@ -231,6 +263,8 @@ export class MarkerDetailsPage {
             emplacementId: this.markerData.id,
             reservationId: reservationId,
             day: this.selectedDay,
+            isDone: false
+            
 
             
           });
