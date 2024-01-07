@@ -64,7 +64,7 @@ export class MarkerDetailsPage {
   numberOfHours: number;
   endTime: string;
   availableEndHours: string[] = [];
-  
+  reservedTimes: Array<{ departureTime: string; endTime: string; }> = [];
   
 
   constructor(  private firestore: AngularFirestore,
@@ -72,6 +72,10 @@ export class MarkerDetailsPage {
 
    
     ngOnInit() {
+  
+      this.fetchAndLockReservedHours();
+      
+  
       this.authService.getLoggedInUserObservable().pipe(take(1)).subscribe(user => {
         if (user) {
           // User is authenticated
@@ -85,6 +89,54 @@ export class MarkerDetailsPage {
       });
      
     }
+    fetchAndLockReservedHours() {
+      const emplacementId = this.markerData.id; // The ID of the emplacement you want to check
+      console.log(`Fetching reservations for emplacement ID: ${emplacementId}`);
+    
+      // Adjusted query to check across all users
+      this.firestore.collectionGroup('reservation_data', ref => ref
+        .where('isPayed', '==', true)
+        .where('emplacementId', '==', emplacementId)) // Ensure matching emplacementId
+        .get()
+        .subscribe(querySnapshot => {
+          const reservedHours = [];
+          console.log(`Found ${querySnapshot.docs.length} reservation(s) for the specified emplacement.`);
+    
+          querySnapshot.docs.forEach(doc => {
+            const reservation = doc.data();
+            console.log(`Processing reservation:`, reservation);
+    
+            // Ensure that reservation is for the correct emplacement
+            if (reservation['emplacementId'] === emplacementId) {
+              const reservationStartHour = reservation['departureTime'];
+              const reservationEndHour = reservation['endTime'];
+              console.log(`Reservation times: Start - ${reservationStartHour}, End - ${reservationEndHour}`);
+    
+              let currentHour = reservationStartHour;
+              while (currentHour !== reservationEndHour) {
+                reservedHours.push(currentHour);
+                let hourNumber = parseInt(currentHour.split(':')[0], 10);
+                currentHour = `${(hourNumber + 1).toString().padStart(2, '0')}:00`;
+              }
+            }
+          });
+    
+          console.log(`Reserved hours for this emplacement:`, reservedHours);
+    
+          // Update availableHours to exclude reserved hours
+          this.availableHours = this.availableHours.filter(hour => !reservedHours.includes(hour));
+          console.log(`Updated available hours:`, this.availableHours);
+    
+          // Manually trigger change detection if necessary
+          // this.changeDetectorRef.detectChanges(); // Uncomment if you use ChangeDetectorRef
+        }, error => {
+          console.error('Error fetching reservations:', error);
+        });
+    }
+    
+    
+    
+    
 
     generateAvailableHours() {
       const startHour = parseInt(this.markerData.heureDebut.split(':')[0]);
