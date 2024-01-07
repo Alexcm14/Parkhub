@@ -34,29 +34,65 @@ export class ResPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.authService.getLoggedInUserObservable().pipe(
-      switchMap((userData) => {
-        if (userData) {
-          const userId = this.authService.uid || userData['uid'];
-          return this.firestore.collection('user_data').doc(userId).valueChanges();
-        } else {
-          return from([]);
-        }
-      }),
-      take(1)
-    ).subscribe((additionalData: any) => {
-      if (additionalData) {
-        this.nom = additionalData.nom;
-        this.prenom = additionalData.prenom;
-        this.telephone = additionalData.telephone;
-      }
-    });
+    // Fetch logged-in user data
+  this.authService.getLoggedInUserObservable().pipe(
+    switchMap((userData) => {
+      console.log('Raw userData:', userData);
 
-    this.authService.getLoggedInUserObservable().pipe(take(1)).subscribe((userData) => {
       if (userData) {
         this.email = userData.email;
         this.motDePasse = userData.motDePasse;
+        console.log('User is logged in:', this.email, this.authService.uid);
+
+        // Connecte le UID et EMAIL
+        console.log('Logged-in UID:', this.authService.uid);
+        console.log('Logged-in Email:', this.email);
+
+        // Retourne les données supplémentaires de Firestore
+        return this.firestore.collection('user_data').doc(this.authService.uid).valueChanges();
+      } else {
+        this.email = '';
+        this.motDePasse = '';
+        console.log('User is not logged in');
+        return from([]); // Chaîne qui continue
       }
+    }),
+    take(1)
+  ).subscribe((additionalData: any) => {
+    console.log('Processed additionalData:', additionalData);
+
+    if (additionalData) {
+      this.nom = additionalData.nom;
+      this.prenom = additionalData.prenom;
+      this.telephone = additionalData.telephone;
+    } else {
+      console.log('User data not found in Firestore.');
+  }});
+  }
+
+
+  
+  
+
+  
+  
+  
+   processReservations(reservations: any[]) {
+    return reservations.map(reservation => {
+      const startTime = new Date(reservation.departureTime);
+      const endTime = new Date(reservation.endTime);
+      const durationHours = (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60);
+      const subtotal = reservation.price * durationHours;
+      const total = subtotal * 0.8; // Apply discount
+
+      return {
+        ...reservation,
+        startTime: startTime.toLocaleString(),
+        endTime: endTime.toLocaleString(),
+        durationHours,
+        subtotal,
+        total
+      };
     });
   }
 }

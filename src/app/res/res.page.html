@@ -11,6 +11,22 @@
     </ion-toolbar>
   </ion-header>
 </ion-content>
+<ion-content>
+  <!-- Loop over the reservations -->
+  <ion-card *ngFor="let reservation of reservations">
+    <ion-card-header>
+      <ion-card-title>Reservation ID: {{ reservation.reservationId }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Start Time: {{ reservation.startTime }}</p>
+      <p>End Time: {{ reservation.endTime }}</p>
+      <p>Vehicle: {{ reservation.vehicleMarque }} - {{ reservation.vehiclePlaque }}</p>
+      <p>Duration: {{ reservation.durationHours }} hours</p>
+      <p>Subtotal: {{ reservation.subtotal | currency }}</p>
+      <p>Total: {{ reservation.total | currency }}</p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
 
 
 <ion-footer>
