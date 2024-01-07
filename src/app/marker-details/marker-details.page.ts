@@ -65,6 +65,7 @@ export class MarkerDetailsPage {
   endTime: string;
   availableEndHours: string[] = [];
   reservedTimes: Array<{ departureTime: string; endTime: string; }> = [];
+  reservedHours: string[] = [];
   
 
   constructor(  private firestore: AngularFirestore,
@@ -90,69 +91,69 @@ export class MarkerDetailsPage {
      
     }
     fetchAndLockReservedHours() {
-      const emplacementId = this.markerData.id; // The ID of the emplacement you want to check
+      const emplacementId = this.markerData.id;
       console.log(`Fetching reservations for emplacement ID: ${emplacementId}`);
     
-      // Adjusted query to check across all users
       this.firestore.collectionGroup('reservation_data', ref => ref
         .where('isPayed', '==', true)
-        .where('emplacementId', '==', emplacementId)) // Ensure matching emplacementId
+        .where('emplacementId', '==', emplacementId))
         .get()
         .subscribe(querySnapshot => {
-          const reservedHours = [];
+          this.reservedHours = []; // Reset the reserved hours array
           console.log(`Found ${querySnapshot.docs.length} reservation(s) for the specified emplacement.`);
     
           querySnapshot.docs.forEach(doc => {
             const reservation = doc.data();
             console.log(`Processing reservation:`, reservation);
     
-            // Ensure that reservation is for the correct emplacement
-            if (reservation['emplacementId'] === emplacementId) {
-              const reservationStartHour = reservation['departureTime'];
-              const reservationEndHour = reservation['endTime'];
-              console.log(`Reservation times: Start - ${reservationStartHour}, End - ${reservationEndHour}`);
+            const reservationStartHour = reservation['departureTime'];
+            const reservationEndHour = reservation['endTime'];
+            console.log(`Reservation times: Start - ${reservationStartHour}, End - ${reservationEndHour}`);
     
-              let currentHour = reservationStartHour;
-              while (currentHour !== reservationEndHour) {
-                reservedHours.push(currentHour);
-                let hourNumber = parseInt(currentHour.split(':')[0], 10);
-                currentHour = `${(hourNumber + 1).toString().padStart(2, '0')}:00`;
-              }
+            let currentHour = reservationStartHour;
+            while (currentHour !== reservationEndHour) {
+              this.reservedHours.push(currentHour);
+              let hourNumber = parseInt(currentHour.split(':')[0], 10);
+              currentHour = `${(hourNumber + 1).toString().padStart(2, '0')}:00`;
             }
           });
     
-          console.log(`Reserved hours for this emplacement:`, reservedHours);
+          console.log(`Reserved hours for this emplacement:`, this.reservedHours);
     
-          // Update availableHours to exclude reserved hours
-          this.availableHours = this.availableHours.filter(hour => !reservedHours.includes(hour));
+          // After fetching reserved hours, update the available hours
+          this.generateAvailableHours();
+    
           console.log(`Updated available hours:`, this.availableHours);
-    
-          // Manually trigger change detection if necessary
-          // this.changeDetectorRef.detectChanges(); // Uncomment if you use ChangeDetectorRef
         }, error => {
           console.error('Error fetching reservations:', error);
         });
     }
     
-    
-    
-    
-
     generateAvailableHours() {
       const startHour = parseInt(this.markerData.heureDebut.split(':')[0]);
       const endHour = parseInt(this.markerData.heureFin.split(':')[0]);
-      this.availableHours = [];
-      this.availableEndHours = [];
+      let tempAvailableHours = [];
+      let tempAvailableEndHours = [];
     
       for (let hour = startHour; hour <= endHour; hour++) {
         const formattedHour = hour.toString().padStart(2, '0') + ':00';
-        this.availableHours.push(formattedHour);
-        if (hour < endHour) { // L'heure de fin doit être après l'heure de début
-          this.availableEndHours.push((hour + 1).toString().padStart(2, '0') + ':00');
+        tempAvailableHours.push(formattedHour);
+        if (hour < endHour) {
+          tempAvailableEndHours.push((hour + 1).toString().padStart(2, '0') + ':00');
         }
       }
+    
+      // Filter out the reserved hours from availableHours
+      this.availableHours = tempAvailableHours.filter(hour => !this.reservedHours.includes(hour));
+      
+      // Adjust availableEndHours based on the updated availableHours
+      this.availableEndHours = tempAvailableEndHours.filter(endHour => 
+        this.availableHours.includes(`${(parseInt(endHour.split(':')[0], 10) - 1).toString().padStart(2, '0')}:00`)
+      );
+    
+      console.log(`Updated available end hours:`, this.availableEndHours);
     }
-
+    
     onDepartureTimeChange() {
       const selectedStartHour = parseInt(this.departureTime.split(':')[0]);
       this.availableEndHours = this.availableHours.filter(hour => {
