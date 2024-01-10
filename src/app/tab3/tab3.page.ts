@@ -260,15 +260,10 @@ export class Tab3Page implements OnInit {
   }
 
   
-  addCarToReservation(reservation, selectedCar) {
+  addCarToReservation(reservation: any, selectedCar: any) {
     const userId = this.authService.uid;
-    if (!userId) {
-      console.error('Error: User ID is not available.');
-      return;
-    }
-  
-    if (!reservation.id) {
-      console.error('Error: Reservation ID is not available.');
+    if (!userId || !reservation || !reservation.id || !selectedCar || !selectedCar.id) {
+      console.error('Error: Invalid data provided.');
       return;
     }
   
@@ -281,14 +276,10 @@ export class Tab3Page implements OnInit {
   
     // Update the selected vehicle in the user's reservation_data collection
     this.firestore.collection('user_data').doc(userId).collection('reservation_data').doc(reservation.id).update(reservationUpdate)
-      .then(() => {
-        console.log('Vehicle updated in reservation successfully!');
-        // Perform other actions if necessary, such as redirecting to a payment page
-      })
-      .catch((error) => {
-        console.error('Error updating vehicle in reservation:', error);
-      });
+      .then(() => console.log('Vehicle updated in reservation successfully!'))
+      .catch((error) => console.error('Error updating vehicle in reservation:', error));
   }
+  
   
   onCarChange(event: any, reservation: any) {
     reservation.selectedCar = event.detail.value; // or event.target.value
@@ -298,14 +289,24 @@ export class Tab3Page implements OnInit {
   
 
   loadResData() {
-    // récupérer les données de toutes les collections reservation_data
-    this.firestore.collection('user_data').doc(this.authService.uid).collection('reservation_data').valueChanges().subscribe((resData: any[]) => {
-      if (resData) {
+    // Assuming `this.authService.uid` is the current user's ID
+    this.firestore.collection('user_data').doc(this.authService.uid)
+      .collection('reservation_data')
+      .snapshotChanges() // Listen for real-time updates
+      .pipe(
+        map(actions => actions.map(a => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        }))
+      )
+      .subscribe((resData: any[]) => {
         console.log('Reservation Data:', resData);
-        this.reservations = resData;
-      }
-    });
+        this.reservationData = resData;
+      });
   }
+  
+  
   confirmerReservation(emplacement: any): void {
     const updatedStatus = emplacement.isRese;
 
