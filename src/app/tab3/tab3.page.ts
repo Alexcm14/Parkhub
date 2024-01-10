@@ -33,6 +33,8 @@ export class Tab3Page implements OnInit {
   vehicles: any[] = [];
   selectedCar: any; // Ajoutez cette propriété dans votre composant
   timerSubscription: Subscription;
+  selectedDay:any;
+  departureTime: any;
   
 
 
@@ -156,33 +158,35 @@ export class Tab3Page implements OnInit {
   }
 
   initializeTimer(reservation) {
-    const now = new Date().getTime();
-    const startTime = new Date(reservation.startTime).getTime();
-    const endTime = new Date(reservation.endTime).getTime();
+    const now = new Date();
+    const selectedDay = this.selectedDay; // Replace with your selected day
+    const selectedTime = this.departureTime; // Replace with your selected time
+    const selectedDateTime = new Date(`${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()} ${selectedTime}`);
+    const selectedDateTimeWithDay = new Date(selectedDateTime);
   
-    if (now < startTime) {
-      const timeUntilStart = startTime - now;
-      console.log(`Timer for Reservation ${reservation.id} will start in ${timeUntilStart / 1000} seconds.`);
+    // Calculate the time difference in milliseconds
+    const timeDifference = selectedDateTimeWithDay.getTime() - now.getTime();
+  
+    if (timeDifference > 0) {
+      console.log(`Timer for Reservation ${reservation.id} will start in ${timeDifference / 1000} seconds.`);
       setTimeout(() => {
-        this.startTimer(reservation, endTime);
-      }, timeUntilStart);
-    } else if (now >= startTime && now < endTime) {
-      this.startTimer(reservation, endTime);
+        this.startTimer(reservation, selectedDateTimeWithDay);
+      }, timeDifference);
     } else {
-      // Handle case where the current time is past the end time
+      // Handle case where the selected time is in the past
       console.log(`Reservation ${reservation.id} time has passed.`);
     }
   }
   
   startTimer(reservation, endTime) {
     const interval = setInterval(() => {
-      const now = new Date().getTime();
+      const now = new Date();
       if (now >= endTime) {
         clearInterval(interval);
         console.log(`Timer for Reservation ${reservation.id} has ended.`);
         // Handle reservation expiration here
       } else {
-        const remainingTime = endTime - now;
+        const remainingTime = endTime.getTime() - now.getTime();
         const minutes = Math.floor((remainingTime / (1000 * 60)) % 60);
         const seconds = Math.floor((remainingTime / 1000) % 60);
         reservation.countdown = `${minutes}m ${seconds}s`;
@@ -192,14 +196,6 @@ export class Tab3Page implements OnInit {
   }
   
   
- 
-  
-  
-  
-
-
-
-
 
  
 
