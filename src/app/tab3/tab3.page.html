@@ -17,6 +17,7 @@
       <p><strong>Parking Type:</strong> {{ res.parkingType }}</p>
       
       <p><strong>Prix/heure:</strong> {{ res.price }} EUR</p>
+      <p><strong>jour:</strong> {{ res.day }} </p>
       <p><strong>Début de réservation:</strong> {{ res.departureTime }}</p>
       <p><strong>Fin de réservation:</strong> {{ res.endTime }}</p>
       
@@ -27,7 +28,9 @@
           {{ vehicle.marque }} - {{ vehicle.plaque }}
         </ion-select-option>
       </ion-select>
-      <p *ngIf="!res.isPayed" style="color: red;"><strong>Temps restant:</strong> {{ res.countdown }}</p>
+      <p *ngIf="!res.isPayed && !res.isCancelled" style="color: red;"><strong>Temps restant:</strong> {{ res.countdown }}</p>
+      <p *ngIf="res.isCancelled && !res.isReserved" style="color: red;"><strong>Réservation annulée</strong></p>
+
       <p *ngIf="res.isPayed" style="color: green;"><strong>Réservé!</strong></p>
 
 
@@ -37,9 +40,9 @@
       
 
 
-      <button *ngIf="!res.isPayed" (click)="confirmReservation(res)">
+      <ion-button *ngIf="!res.isPayed && !res.isCancelled" (click)="confirmReservation(res)">
         Confirmer la reservation
-      </button>
+      </ion-button>
         
     </ion-card-content>
   </ion-card>

@@ -197,7 +197,13 @@ addMarkersToMap() {
               strokeOpacity: data.isReserved ? 0.3 : 1, // Semi-transparent si réservé, sinon pleine couleur
               strokeWeight: 2,
             },
-          });
+            label: {
+              text: `${data.Prix} €`,  // Afficher le prix sur le marqueur
+              color: 'black',  // Couleur du texte
+              fontSize: '9px',  // Taille de la police
+              fontWeight: 'bold',  // Poids de la police
+         } });
+        
 
           marker.addListener('click', async (event) => {
             this.closeAllInfoWindows();

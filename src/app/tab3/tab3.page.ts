@@ -126,15 +126,29 @@ export class Tab3Page implements OnInit {
     this.reservationData.forEach(res => {
       const createdAtTime = new Date(res.createdAt.seconds * 1000).getTime();
       const timeDiff = createdAtTime + 5 * 60000 - now; // 5 minutes in milliseconds
+  
       if (timeDiff > 0) {
         const minutes = Math.floor((timeDiff / (1000 * 60)) % 60);
         const seconds = Math.floor((timeDiff / 1000) % 60);
         res.countdown = `${minutes}m ${seconds}s`;
+        res.isCancelled = false;
       } else {
-        res.countdown = 'temps écoulé';
+        if (!res.isCancelled) { // Check to prevent repeated Firestore updates
+          res.countdown = 'réservation annulée';
+          res.isCancelled = true;
+  
+          // Update the reservation status in Firestore
+          this.firestore.collection('user_data').doc(this.authService.uid)
+            .collection('reservation_data').doc(res.id)
+            .update({ isCancelled: true })
+            .then(() => console.log(`Reservation ${res.id} cancelled and updated in Firestore`))
+            .catch(error => console.error(`Error updating reservation ${res.id}:`, error));
+        }
       }
     });
   }
+  
+  
   ngOnDestroy() {
     if (this.timerSubscription) {
       this.timerSubscription.unsubscribe();
@@ -241,7 +255,9 @@ export class Tab3Page implements OnInit {
 
 
  
-
+  ionViewDidEnter() {
+    this.loadResData(); // Call the method that fetches reservation data
+  }
 
   
   addCarToReservation(reservation, selectedCar) {
