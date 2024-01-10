@@ -212,7 +212,11 @@ export class MarkerDetailsPage {
   
    
    
-   
+    getDayOfWeek(date: Date): string {
+      const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      return daysOfWeek[date.getDay()];
+    }
+    
     async reserve() {
       // Verifying valid departure and end times
       if (!this.departureTime || !this.endTime || !this.selectedDay) {
@@ -225,23 +229,23 @@ export class MarkerDetailsPage {
         return;
       }
     
-      // Get the current time
-      const currentTime = new Date();
+      // Get the current day of the week (0 = Sunday, 1 = Monday, etc.)
+      const currentDayOfWeek = new Date().getDay();
+      const selectedDayOfWeek = this.convertDayToIndex(this.selectedDay);
     
-      // Convert selected start and end times to Date objects
-      const selectedStartTime = new Date(currentTime.toDateString() + ' ' + this.departureTime);
-      const selectedEndTime = new Date(currentTime.toDateString() + ' ' + this.endTime);
-    
-      // Check if the current time is greater than or equal to the selected start time
-      if (currentTime >= selectedStartTime) {
-        const alert = await this.alertController.create({
-          header: 'Erreur',
-          message: 'L\'heure de départ est déjà passée. Veuillez sélectionner une heure de départ ultérieure.',
-          buttons: ['OK'],
-        });
-        await alert.present();
-        return;
+      // Calculate the number of days until the selected day of the week
+      let daysUntilSelectedDay = selectedDayOfWeek - currentDayOfWeek;
+      if (daysUntilSelectedDay <= 0) {
+        // If the selected day is on or before the current day, add 7 days to get the next occurrence
+        daysUntilSelectedDay += 7;
       }
+    
+      // Calculate the reservation date by adding the days until the selected day to the current date
+      const reservationDate = new Date();
+      reservationDate.setDate(reservationDate.getDate() + daysUntilSelectedDay);
+    
+      // Convert the reservation date to the format you need (e.g., as a string)
+      const formattedReservationDate = this.formatDate(reservationDate);
     
       try {
         console.log('Reserving with markerData:', this.markerData);
@@ -279,7 +283,7 @@ export class MarkerDetailsPage {
               endTime: this.endTime,
               emplacementId: this.markerData.id,
               reservationId: reservationId,
-              day: this.selectedDay,
+              day: formattedReservationDate, // Use the calculated reservation date
               isDone: false
             });
     
@@ -293,5 +297,22 @@ export class MarkerDetailsPage {
       } catch (error) {
         console.error('Error:', error);
       }
+    }
+    
+    convertDayToIndex(day: string): number {
+      // Define the order of days of the week (e.g., Sunday is the first day)
+      const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      
+      // Find the index of the selected day in the daysOfWeek array
+      const index = daysOfWeek.indexOf(day);
+      
+      // Return the index (0 for Sunday, 1 for Monday, etc.)
+      return index;
+    }
+    
+    formatDate(date: Date): string {
+      // Convert the date to the desired format (you can adjust the format as needed)
+      const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+      return formattedDate;
     }
   }    
