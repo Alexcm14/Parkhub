@@ -37,8 +37,9 @@
       
 
 
-      <ion-button (click)="confirmReservation(res)">Confirmer la réservation</ion-button>
-
+      <button *ngIf="!res.isPayed" (click)="confirmReservation(res)">
+        Confirmer la reservation
+      </button>
         
     </ion-card-content>
   </ion-card>
