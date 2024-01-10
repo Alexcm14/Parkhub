@@ -1,7 +1,7 @@
 <!-- recapitulatif.page.html -->
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Récapitulatif de l'annonce</ion-title>
+    <ion-title>Récapitulatif</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -42,18 +42,6 @@
     <ion-label position="stacked">Prix</ion-label>
     <ion-note>{{ selectedPrice }}€</ion-note>
   </ion-item>
-  
-
-
-  <!-- Photos -->
-  <ion-item *ngIf="(selectedPhotos$ | async) as selectedPhotos">
-    <ion-label position="stacked">Photos</ion-label>
-    <ion-row>
-      <ion-col *ngFor="let photo of selectedPhotos">
-        <img [src]="photo" alt="Selected Photo" class="selected-photo" />
-      </ion-col>
-    </ion-row>
-  </ion-item>
 
 <br>
   <!-- Ajout de la sélection des jours de la semaine -->
@@ -80,6 +68,22 @@
     <ion-label>Heure de fin</ion-label>
     <ion-input type="time" [(ngModel)]="heureFin"></ion-input>
   </ion-item>
+</ion-row>
+
+
+<ion-text class="T-desc">
+  Ajouter des photos.
+</ion-text>
+
+<div class="upload-button">
+  <input type="file" (change)="handleFileInput($event)" accept="image/*" multiple />
+  <ion-icon name="add-circle" (click)="ajouterPhoto()"></ion-icon>
+</div>
+
+<ion-row>
+  <ion-col *ngFor="let photo of photos">
+    <img [src]="photo" alt="Uploaded Photo" class="uploaded-photo" />
+  </ion-col>
 </ion-row>
 
 

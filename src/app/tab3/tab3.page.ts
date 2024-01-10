@@ -124,17 +124,20 @@ export class Tab3Page implements OnInit {
   updateCountdowns() {
     const now = new Date().getTime();
     this.reservationData.forEach(res => {
-      const createdAtTime = new Date(res.createdAt.seconds * 1000).getTime();
-      const timeDiff = createdAtTime + 5 * 60000 - now; // 5 minutes in milliseconds
-      if (timeDiff > 0) {
-        const minutes = Math.floor((timeDiff / (1000 * 60)) % 60);
-        const seconds = Math.floor((timeDiff / 1000) % 60);
-        res.countdown = `${minutes}m ${seconds}s`;
-      } else {
-        res.countdown = 'temps écoulé';
+      if (res.createdAt && typeof res.createdAt.seconds === 'number') {
+        const createdAtTime = new Date(res.createdAt.seconds * 1000).getTime();
+        const timeDiff = createdAtTime + 5 * 60000 - now; // 5 minutes en millisecondes
+        if (timeDiff > 0) {
+          const minutes = Math.floor((timeDiff / (1000 * 60)) % 60);
+          const seconds = Math.floor((timeDiff / 1000) % 60);
+          res.countdown = `${minutes}m ${seconds}s`;
+        } else {
+          res.countdown = 'temps écoulé';
+        }
       }
     });
   }
+  
   ngOnDestroy() {
     if (this.timerSubscription) {
       this.timerSubscription.unsubscribe();

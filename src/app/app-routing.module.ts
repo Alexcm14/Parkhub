@@ -92,9 +92,9 @@ const routes: Routes = [
     loadChildren: () => import('./cartes/cartes.module').then( m => m.CartesPageModule)
   },
   {
-    path: 'modification',
+    path: 'modification/:id',
     loadChildren: () => import('./modification/modification.module').then( m => m.ModificationPageModule)
-  },
+  },  
   {
     path: 'res',
     loadChildren: () => import('./res/res.module').then( m => m.ResPageModule)

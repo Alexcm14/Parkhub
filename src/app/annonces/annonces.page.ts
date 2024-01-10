@@ -124,8 +124,7 @@ export class AnnoncesPage implements OnInit {
         });
     }
     
-    editEmplacement(emplacement: any): void {
-      const emplacementId = emplacement.Id;
+    editEmplacement(emplacementId: string) {
       this.navCtrl.navigateForward(`/modification/${emplacementId}`);
     }
 
@@ -133,23 +132,19 @@ export class AnnoncesPage implements OnInit {
       const isConfirmed = window.confirm('Êtes-vous sûr de vouloir supprimer cet emplacement ?');
     
       if (isConfirmed) {
-        const emplacementId = emplacement.Id;
+        // Utilisez emplacement.id (et non emplacement.Id)
+        const emplacementId = emplacement.id;
+        console.log('Deleting emplacement with ID:', emplacementId); // Pour déboguer
     
         const userId = this.authService.uid;
     
         if (userId) {
-          // Construction du chemin Firestore pour les données d'emplacement
           const emplacementPath = `user_data/${userId}/emplacement_data`;
-    
-          // Obtenir la référence à l'emplacement spécifique
           const emplacementRef = this.firestore.collection(emplacementPath).doc(emplacementId);
     
-          // Supprimer les données d'emplacement de Firestore
           emplacementRef.delete().then(() => {
             console.log('Emplacement deleted successfully from Firestore!');
-            
-            // Mise à jour des annonces locales
-            this.loadEmpData();
+            this.loadEmpData(); // Mise à jour des données
           }).catch((error) => {
             console.error('Error deleting emplacement from Firestore: ', error);
           });
@@ -158,17 +153,15 @@ export class AnnoncesPage implements OnInit {
     }
     
     
+    
     deleteEmplacementFromFirestore(emplacementId: string): void {
       const userId = this.authService.uid;
     
       if (userId) {
-        // Construction du chemin Firestore pour les données d'emplacement
         const emplacementPath = `user_data/${userId}/emplacement_data`;
     
-        // Obtenir la référence à l'emplacement spécifique
         const emplacementRef = this.firestore.collection(emplacementPath).doc(emplacementId);
     
-        // Supprimer les données d'emplacement de Firestore
         emplacementRef.delete().then(() => {
           console.log('Emplacement deleted successfully from Firestore!');
         }).catch((error) => {

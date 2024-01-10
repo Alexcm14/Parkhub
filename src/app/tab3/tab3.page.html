@@ -27,7 +27,7 @@
           {{ vehicle.marque }} - {{ vehicle.plaque }}
         </ion-select-option>
       </ion-select>
-      <p *ngIf="!res.isPayed" style="color: red;"><strong>Temps restant:</strong> {{ res.countdown }}</p>
+      <p *ngIf="!res.isPayed" style="color: red;"><strong>Temps restant:</strong>{{ res.countdown }}</p>
       <p *ngIf="res.isPayed" style="color: green;"><strong>Réservé!</strong></p>
 
 

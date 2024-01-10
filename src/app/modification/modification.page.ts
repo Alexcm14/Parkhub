@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NavController } from '@ionic/angular';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable } from 'rxjs';
+import { NavController } from '@ionic/angular';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-modification',
@@ -10,35 +10,40 @@ import { Observable } from 'rxjs';
   styleUrls: ['./modification.page.scss'],
 })
 export class ModificationPage implements OnInit {
+  emplacement: any = {};
   emplacementId: string;
-  emplacement: Observable<any>;
 
   constructor(
     private route: ActivatedRoute,
+    private firestore: AngularFirestore,
     private navCtrl: NavController,
-    private firestore: AngularFirestore
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
-    this.route.paramMap.subscribe((paramMap) => {
-      this.emplacementId = paramMap.get('emplacementId');
-      this.loadEmplacementData();
-    });
+    this.emplacementId = this.route.snapshot.paramMap.get('id');
+    this.loadEmplacementData();
+    
   }
 
   loadEmplacementData() {
-    if (this.emplacementId) {
-      this.emplacement = this.firestore
-        .collection('user_data')
-        .doc(/* L'ID de l'utilisateur actuel */)
-        .collection('emplacement_data')
-        .doc(this.emplacementId)
-        .valueChanges();
-    }
+    this.firestore.collection('user_data').doc(this.authService.uid)
+      .collection('emplacement_data').doc(this.emplacementId)
+      .valueChanges().subscribe(emplacementData => {
+        this.emplacement = emplacementData;
+      });
   }
 
-  retournerAnnonces() {
-    this.navCtrl.navigateBack('/annonces');
+  updateEmplacement() {
+    this.firestore.collection('user_data').doc(this.authService.uid)
+      .collection('emplacement_data').doc(this.emplacementId)
+      .update(this.emplacement)
+      .then(() => {
+        console.log('Emplacement updated successfully!');
+        this.navCtrl.navigateBack('/annonces');
+      })
+      .catch(error => console.error('Error updating emplacement:', error));
   }
+  
 }
 

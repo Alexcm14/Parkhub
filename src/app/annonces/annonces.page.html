@@ -24,11 +24,13 @@
   </ion-list>
 
   <ion-text class="creer" *ngIf="aDesAnnonces">Mes annonces</ion-text>
+
   <ion-card *ngFor="let emplacement of emplacements | async">
   
     <ion-card-header>
       <ion-item>
         <ion-label> Id:{{ emplacement.id }}</ion-label>
+
       <ion-button fill="clear" color="danger" (click)="deleteEmplacement(emplacement)" slot="end">
         <ion-icon name="close"></ion-icon>
       </ion-button>
@@ -46,6 +48,13 @@
         <ion-label>Publier l'annonce</ion-label>
         <ion-toggle slot="end" [(ngModel)]="emplacement.isAdPosted" (ionChange)="toggleAdPost(emplacement)" aria-label="Publier l'annonce"></ion-toggle>
       </ion-item>
+
+      <ion-item>
+      <ion-button fill="clear" (click)="editEmplacement(emplacement.id)" slot="start">
+        Modifier l'annonce<ion-icon name="create"></ion-icon>
+      </ion-button>
+    </ion-item>
+
     </ion-card-content>
   </ion-card>
   <ion-button class="reservations-button" (click)="goRes()">

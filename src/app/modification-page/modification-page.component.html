@@ -1,0 +1,9 @@
+<!-- modification-page.component.html -->
+<div *ngIf="locationDetails">
+  <form (ngSubmit)="updateLocation()">
+
+    <input [(ngModel)]="locationDetails.adresse" name="adresse" />
+
+    <button type="submit">Mettre à jour</button>
+  </form>
+</div>

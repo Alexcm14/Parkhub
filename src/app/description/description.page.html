@@ -16,7 +16,7 @@
   </ion-text>
 
   <ion-text class="T-desc">
-    Maintenant, rédigez une description et ajoutez des photos de votre parking.
+    Maintenant, rédigez une description de votre parking.
   </ion-text>
 
   <ion-text class="description">
@@ -51,21 +51,6 @@
   <!-- Message "Description enregistrée" -->
   <ion-label *ngIf="isDescriptionSaved" class="description-saved">Description enregistrée</ion-label>
 
-  <ion-text class="T-desc">
-    Ajouter des photos.
-  </ion-text>
-
-  <div class="upload-button">
-    <input type="file" (change)="handleFileInput($event)" accept="image/*" multiple />
-    <ion-icon name="add-circle" (click)="ajouterPhoto()"></ion-icon>
-  </div>
-
-  <ion-row>
-    <ion-col *ngFor="let photo of photos">
-      <img [src]="photo" alt="Uploaded Photo" class="uploaded-photo" />
-    </ion-col>
-  </ion-row>
-  
 </ion-content>
 
 <ion-footer>
