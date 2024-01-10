@@ -210,7 +210,8 @@ export class Tab3Page implements OnInit {
           text: 'Payer',
           handler: () => {
             console.log('Redirection vers paiement');
-            this.addCarToReservation(reservation, this.selectedCar);
+            this.addCarToReservation(reservation);
+
   
             // Update reservation properties
             reservation.isConfirmed = true;
@@ -260,30 +261,34 @@ export class Tab3Page implements OnInit {
   }
 
   
-  addCarToReservation(reservation: any, selectedCar: any) {
+  addCarToReservation(reservation: any) {
+    console.log('Received reservation:', reservation);
+    console.log('Received selectedCar:', reservation.selectedCar);
     const userId = this.authService.uid;
-    if (!userId || !reservation || !reservation.id || !selectedCar || !selectedCar.id) {
+
+    if (!userId || !reservation || !reservation.id || !reservation.selectedCar || !reservation.selectedCar.id) {
       console.error('Error: Invalid data provided.');
       return;
     }
   
     // Prepare the reservation update object with vehicle data
     const reservationUpdate = {
-      vehicleId: selectedCar.id,
-      vehicleMarque: selectedCar.marque,
-      vehiclePlaque: selectedCar.plaque,
+      vehicleId: reservation.selectedCar.id,
+      vehicleMarque: reservation.selectedCar.marque,
+      vehiclePlaque: reservation.selectedCar.plaque,
     };
   
     // Update the selected vehicle in the user's reservation_data collection
     this.firestore.collection('user_data').doc(userId).collection('reservation_data').doc(reservation.id).update(reservationUpdate)
       .then(() => console.log('Vehicle updated in reservation successfully!'))
       .catch((error) => console.error('Error updating vehicle in reservation:', error));
-  }
+}
+
   
   
   onCarChange(event: any, reservation: any) {
-    reservation.selectedCar = event.detail.value; // or event.target.value
-    // Additional logic if necessary
+    console.log('Vehicle selected:', event.detail.value); // Debug log
+  reservation.selectedCar = event.detail.value;
   }
   
   
