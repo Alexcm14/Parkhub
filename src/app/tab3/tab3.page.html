@@ -23,7 +23,7 @@
       
       
       
-      <ion-select placeholder="Sélectionnez un véhicule" [(ngModel)]="selectedCar" (ionChange)="onCarChange($event)">
+      <ion-select *ngIf="!res.isPayed && !res.isCancelled" placeholder="Sélectionnez un véhicule" [(ngModel)]="res.selectedCar" (ionChange)="onCarChange($event, res)">
         <ion-select-option *ngFor="let vehicle of vehicles" [value]="vehicle">
           {{ vehicle.marque }} - {{ vehicle.plaque }}
         </ion-select-option>

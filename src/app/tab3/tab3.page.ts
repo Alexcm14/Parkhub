@@ -290,9 +290,9 @@ export class Tab3Page implements OnInit {
       });
   }
   
-  onCarChange(event: any) {
-    this.selectedCar = event.detail.value; // ou event.target.value selon votre cas
-    // Logique supplémentaire si nécessaire
+  onCarChange(event: any, reservation: any) {
+    reservation.selectedCar = event.detail.value; // or event.target.value
+    // Additional logic if necessary
   }
   
   
