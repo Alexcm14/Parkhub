@@ -155,7 +155,43 @@ export class Tab3Page implements OnInit {
     }
   }
 
-
+  initializeTimer(reservation) {
+    const now = new Date().getTime();
+    const startTime = new Date(reservation.startTime).getTime();
+    const endTime = new Date(reservation.endTime).getTime();
+  
+    if (now < startTime) {
+      const timeUntilStart = startTime - now;
+      console.log(`Timer for Reservation ${reservation.id} will start in ${timeUntilStart / 1000} seconds.`);
+      setTimeout(() => {
+        this.startTimer(reservation, endTime);
+      }, timeUntilStart);
+    } else if (now >= startTime && now < endTime) {
+      this.startTimer(reservation, endTime);
+    } else {
+      // Handle case where the current time is past the end time
+      console.log(`Reservation ${reservation.id} time has passed.`);
+    }
+  }
+  
+  startTimer(reservation, endTime) {
+    const interval = setInterval(() => {
+      const now = new Date().getTime();
+      if (now >= endTime) {
+        clearInterval(interval);
+        console.log(`Timer for Reservation ${reservation.id} has ended.`);
+        // Handle reservation expiration here
+      } else {
+        const remainingTime = endTime - now;
+        const minutes = Math.floor((remainingTime / (1000 * 60)) % 60);
+        const seconds = Math.floor((remainingTime / 1000) % 60);
+        reservation.countdown = `${minutes}m ${seconds}s`;
+        reservation.isCancelled = false;
+      }
+    }, 1000); // Update every second
+  }
+  
+  
  
   
   
@@ -308,8 +344,14 @@ export class Tab3Page implements OnInit {
       .subscribe((resData: any[]) => {
         console.log('Reservation Data:', resData);
         this.reservationData = resData;
+        
+        // Initialize timers for each reservation
+        this.reservationData.forEach((reservation) => {
+          this.initializeTimer(reservation);
+        });
       });
   }
+  
   
   
   confirmerReservation(emplacement: any): void {

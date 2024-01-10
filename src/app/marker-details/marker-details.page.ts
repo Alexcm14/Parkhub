@@ -75,7 +75,8 @@ export class MarkerDetailsPage {
   reservedHours: string[] = [];
   selectedDay: string;
   reservedHoursByDay: { [day: string]: string[] } = {};
-  reservations: any;
+  reservations: any[] = []; 
+
   
 
   constructor(  private firestore: AngularFirestore,
@@ -223,8 +224,24 @@ export class MarkerDetailsPage {
         await alert.present();
         return;
       }
-
-      
+    
+      // Get the current time
+      const currentTime = new Date();
+    
+      // Convert selected start and end times to Date objects
+      const selectedStartTime = new Date(currentTime.toDateString() + ' ' + this.departureTime);
+      const selectedEndTime = new Date(currentTime.toDateString() + ' ' + this.endTime);
+    
+      // Check if the current time is greater than or equal to the selected start time
+      if (currentTime >= selectedStartTime) {
+        const alert = await this.alertController.create({
+          header: 'Erreur',
+          message: 'L\'heure de départ est déjà passée. Veuillez sélectionner une heure de départ ultérieure.',
+          buttons: ['OK'],
+        });
+        await alert.present();
+        return;
+      }
     
       try {
         console.log('Reserving with markerData:', this.markerData);
@@ -243,40 +260,35 @@ export class MarkerDetailsPage {
     
           // Adding reservation data to the user's reservation_data collection
           const userUid = this.authService.uid || (await this.authService.getLoggedInUserObservable().pipe(take(1)).toPromise())?.uid;
-        if (userUid) {
-          // Create a new document reference
-          const reservationRef = this.firestore.collection('user_data').doc(userUid).collection('reservation_data').doc();
-          
-          // Get the automatically generated ID from the DocumentReference
-          const reservationId = reservationRef.ref.id;
-
-          // Now use set() to add data to this new document
-          await reservationRef.set({
-            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-            address: this.markerData.address,
-            description: this.markerData.description,
-            parkingType: this.markerData.parkingType,
-            vehicleType: this.markerData.vehicleType,
-            price: this.markerData.price,
-            departureTime: this.departureTime,
-            endTime: this.endTime,
-            emplacementId: this.markerData.id,
-            reservationId: reservationId,
-            day: this.selectedDay,
-            isDone: false
+          if (userUid) {
+            // Create a new document reference
+            const reservationRef = this.firestore.collection('user_data').doc(userUid).collection('reservation_data').doc();
             
-
-            
-          });
-        }
-
-
+            // Get the automatically generated ID from the DocumentReference
+            const reservationId = reservationRef.ref.id;
     
-          // Close the Popover after reservation
-          await this.popoverController.dismiss();
-          this.router.navigate(['/tabs/tab3']);
-        } else {
-          console.error('Missing user UID or marker data ID');
+            // Now use set() to add data to this new document
+            await reservationRef.set({
+              createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+              address: this.markerData.address,
+              description: this.markerData.description,
+              parkingType: this.markerData.parkingType,
+              vehicleType: this.markerData.vehicleType,
+              price: this.markerData.price,
+              departureTime: this.departureTime,
+              endTime: this.endTime,
+              emplacementId: this.markerData.id,
+              reservationId: reservationId,
+              day: this.selectedDay,
+              isDone: false
+            });
+    
+            // Close the Popover after reservation
+            await this.popoverController.dismiss();
+            this.router.navigate(['/tabs/tab3']);
+          } else {
+            console.error('Missing user UID or marker data ID');
+          }
         }
       } catch (error) {
         console.error('Error:', error);
