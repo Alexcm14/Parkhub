@@ -19,15 +19,15 @@ import firebase from 'firebase/compat/app';
 
     <ion-content>
       <!-- Affichez les détails du marqueur ici -->
-      <p><strong>Adresse:</strong> {{ markerData.address }}</p>
+      <p><strong >Adresse:</strong> {{ markerData.address }} - {{ markerData.parkingType }}</p>
       <p><strong>Description:</strong> {{ markerData.description }}</p>
-      <p><strong>Parking Type:</strong> {{ markerData.parkingType }}</p>
-      <p><strong>Vehicle Type:</strong> {{ markerData.vehicleType }}</p>
+      
+      <p><strong>Autorisé aux </strong> {{ markerData.vehicleType }}</p>
       <p><strong>Prix:</strong> {{ markerData.price }} €</p>
 
       <p><strong>Jours Disponibles:</strong> {{ markerData.jours.join(', ') }}</p>
-      <p><strong>Heure de Début:</strong> {{ markerData.heureDebut }}</p>
-      <p><strong>Heure de Fin:</strong> {{ markerData.heureFin }}</p>
+      <p><strong>Disponible de </strong> {{ markerData.heureDebut }}<strong> à</strong> {{ markerData.heureFin }}</p>
+      
 
       
 
@@ -46,10 +46,11 @@ import firebase from 'firebase/compat/app';
     <!-- Ajouter des champs de formulaire pour l'heure de départ et la durée -->
     <ion-item>
   <ion-label position="stacked">Heure de départ</ion-label>
-  <ion-select placeholder="Sélectionnez l'heure de départ" [(ngModel)]="departureTime">
+  <ion-select placeholder="Sélectionnez l'heure de départ" [(ngModel)]="departureTime" (ionChange)="handleDepartureTimeChange(departureTime)">
     <ion-select-option *ngFor="let hour of availableHours" [value]="hour">{{ hour }}</ion-select-option>
   </ion-select>
 </ion-item>
+
 
 <ion-item>
   <ion-label position="stacked">Heure de fin</ion-label>
@@ -76,13 +77,15 @@ export class MarkerDetailsPage {
   selectedDay: string;
   reservedHoursByDay: { [day: string]: string[] } = {};
   reservations: any;
-  
+  daysOfWeek = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
 
   constructor(  private firestore: AngularFirestore,
     private authService: AuthService, private router: Router, private popoverController: PopoverController, private alertController: AlertController) {}
 
    
     ngOnInit() {
+      console.log('Component initialized');
+      this.logCurrentDateTime();
   
       this.fetchAndLockReservedHours();
 
@@ -107,13 +110,41 @@ export class MarkerDetailsPage {
       });
       
     }
-    logCurrentTime() {
-      const currentDateTime = new Date().toLocaleString(); 
-      console.log(`Current DateTime: ${currentDateTime}`);
+
+    logCurrentDateTime() {
+      const now = new Date();
+      const daysOfWeek = [ 'dimanche','lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
+      const dayOfWeek = daysOfWeek[now.getDay()];
+      const formattedDate = now.toLocaleDateString();
+      const formattedTime = now.toLocaleTimeString();
+  
+      console.log(`Current Date: ${formattedDate}`);
+      console.log(`Day of the Week: ${dayOfWeek}`);
+      console.log(`Current Time: ${formattedTime}`);
     }
-    getCurrentTimestamp() {
-      return new Date(); // Gets the current date and time
+
+    onDayChange(newDay: string) {
+      const currentDate = new Date();
+      const currentDayIndex = currentDate.getDay();
+      const selectedDayIndex = this.daysOfWeek.indexOf(newDay);
+    
+      if (selectedDayIndex < currentDayIndex || 
+          (selectedDayIndex === currentDayIndex && currentDate.getHours() >= parseInt(this.markerData.heureFin.split(':')[0]))) {
+        this.alertController.create({
+          header: 'Erreur',
+          message: 'Le jour sélectionné ne peut pas être avant le jour actuel ou après l\'heure de fin de disponibilité.',
+          buttons: ['OK']
+        }).then(alert => alert.present());
+        return;
+      }
+    
+      this.selectedDay = newDay;
+      console.log(`Day changed to: ${newDay}`);
+      this.generateAvailableHours(newDay);
     }
+  
+
+  
     checkReservationsAndUpdateStatus() {
       const currentTime = new Date(); // Gets the current date and time
       this.reservations.forEach(reservation => {
@@ -194,22 +225,48 @@ export class MarkerDetailsPage {
     }
     
     
-    
+    handleDepartureTimeChange(selectedTime: string) {
+      const currentDateTime = new Date();
+      const currentDayOfWeek = this.daysOfWeek[currentDateTime.getDay()];
       
-    onDayChange(newDay: string) {
-      this.selectedDay = newDay;
-      console.log(`Day changed to: ${newDay}`);
-      this.generateAvailableHours(newDay);
+      if (this.selectedDay === currentDayOfWeek) {
+        const selectedTimestamp = this.convertSelectedTimeToTimestamp(selectedTime);
+    
+        if (selectedTimestamp < currentDateTime.getTime()) {
+          // L'heure sélectionnée est déjà passée pour le jour actuel
+          console.error('L\'heure de départ choisie est déjà passée pour aujourd\'hui.');
+          this.alertController.create({
+            header: 'Erreur',
+            message: 'L\'heure de départ choisie est déjà passée pour aujourd\'hui.',
+            buttons: ['OK']
+          }).then(alert => alert.present());
+          this.departureTime = ''; // Réinitialiser l'heure de départ
+        } else {
+          console.log(`Heure sélectionnée pour aujourd'hui : ${selectedTime}, Timestamp : ${selectedTimestamp}`);
+        }
+      } else {
+        // Si le jour sélectionné n'est pas aujourd'hui, continuez normalement
+        console.log(`Heure sélectionnée pour ${this.selectedDay} : ${selectedTime}, Timestamp : ${this.convertSelectedTimeToTimestamp(selectedTime)}`);
+      }
     }
     
-    onDepartureTimeChange() {
-      const selectedStartHour = parseInt(this.departureTime.split(':')[0]);
-      this.availableEndHours = this.availableHours.filter(hour => {
-        return parseInt(hour.split(':')[0]) > selectedStartHour;
-      });
+    
+    convertSelectedTimeToTimestamp(selectedTime: string): number {
+      const currentTime = new Date();
+      const [selectedHour, selectedMinute] = selectedTime.split(':').map(Number);
+      currentTime.setHours(selectedHour, selectedMinute, 0, 0);
+      return currentTime.getTime();
     }
-  
-   
+    
+    
+
+
+    onDepartureTimeChange() {
+    
+    }
+    
+    
+    
    
    
     async reserve() {

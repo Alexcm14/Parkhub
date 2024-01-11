@@ -190,10 +190,10 @@ addMarkersToMap() {
             map: this.map,
             icon: {
               path: google.maps.SymbolPath.CIRCLE,
-              scale: 10,
+              scale: 14,
               fillColor: '#87CEEB', // Couleur bleue pour tous les marqueurs
               fillOpacity: data.isReserved ? 0.3 : 1, // Semi-transparent si réservé, sinon pleine couleur
-              strokeColor: '#000000', // Couleur bleue pour la bordure de tous les marqueurs
+              strokeColor: '#000000', // Couleur noir pour la bordure de tous les marqueurs
               strokeOpacity: data.isReserved ? 0.3 : 1, // Semi-transparent si réservé, sinon pleine couleur
               strokeWeight: 2,
             },
