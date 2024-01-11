@@ -3,6 +3,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthService } from 'src/app/services/auth.service';
 import { from, take, switchMap } from 'rxjs';
 import { AngularFirestoreDocument } from '@angular/fire/compat/firestore';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-car',
@@ -22,7 +23,7 @@ export class CarPage {
   selectedVehicle: any;
   ajoutVehiculeClicked: boolean = false
 
-  constructor(private authService: AuthService, private firestore: AngularFirestore) {}
+  constructor(private authService: AuthService, private firestore: AngularFirestore, private toastController: ToastController) {}
 
   ngOnInit() {
     // Fetch logged-in user data
@@ -70,6 +71,15 @@ export class CarPage {
     });
   }
 
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Données enregistrées',
+      duration: 2500,
+      color: 'primary'
+    });
+    toast.present();
+  }
+
   ajouterVehicule() {
     if (this.plaque && this.marque && this.type) {
       // Get the user observable
@@ -110,6 +120,7 @@ export class CarPage {
                 this.ajoutVehiculeClicked = true;
                 // Load car data after adding
                 this.loadCarData();
+                this.presentToast();
               })
               .catch((error) => {
                 console.error('Error adding vehicle to Firestore: ', error);

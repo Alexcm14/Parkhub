@@ -1,6 +1,9 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title><ion-icon name="car"></ion-icon> Mes véhicules</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button slot="start" defaultHref="../tab5"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
  
@@ -79,13 +82,5 @@
 
     <ion-button class="custom-button" (click)="ajouterVehicule()">Ajouter véhicule</ion-button>
 </ion-content>
-
-<ion-footer>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button slot="start" defaultHref="../tab5"></ion-back-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-footer>
 
  
