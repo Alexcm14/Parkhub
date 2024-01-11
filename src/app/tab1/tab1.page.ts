@@ -245,9 +245,10 @@ addMarkersToMap() {
 
 
 navigateToTab3() {
-  // You can navigate to tab3 using the router
   console.log('Navigating to tab3');
-  this.router.navigate(['./tab3']);
+  this.router.navigate(['./tab3']).then(() => {
+    window.location.reload();
+})
 }
 
 

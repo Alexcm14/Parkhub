@@ -1,3 +1,48 @@
+/* Style général pour la page */
+ion-content {
+  --background: #f2f2f7; /* Couleur de fond, ajustez selon votre thème */
+}
+
+/* Style des ion-item (champs de saisie) */
+ion-item {
+  --border-color: #e0e0e0;
+  --border-style: solid;
+  --border-width: 1px;
+  --border-radius: 8px;
+  --background: #ffffff;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  --inner-padding-end: 12px;
+  --inner-border-width: 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+}
+
+/* Style des étiquettes (labels) */
+ion-label {
+  --color: #333;
+}
+
+/* Style des boutons */
+ion-button {
+  --border-radius: 8px;
+  --padding-vertical: 10px;
+  --padding-horizontal: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 15px;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+}
+
+/* Style du bouton de retour */
 ion-back-button {
-    --color: lightblue;
+  --color: #4a8cff; /* Couleur primaire */
+}
+
+/* Adaptation pour les grands écrans */
+@media (min-width: 768px) {
+  ion-content {
+    padding: 15px 30px;
   }
+}

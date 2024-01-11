@@ -1,36 +1,30 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>car</ion-title>
+    <ion-title><ion-icon name="car"></ion-icon> Mes véhicules</ion-title>
   </ion-toolbar>
 </ion-header>
  
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Ma voiture</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-list>
+    <ion-card *ngFor="let vehicle of vehicles" class="custom-card">
+      <ion-card-header *ngIf="vehicle">
+        {{ vehicle.marque }}
+        <ion-button fill="clear" color="danger" (click)="deleteVehicule(vehicle)">
+          <ion-icon name="close"></ion-icon>
+        </ion-button>
+      </ion-card-header>
+      <ion-card-content *ngIf="vehicle">
+        <p>Plaque: {{ vehicle.plaque }}</p>
+        <p>Marque: {{ vehicle.marque }}</p>
+        <p>Type: {{vehicle.type}}</p>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
   
-
-    <ion-card *ngFor="let vehicle of vehicles">
-  <ion-card-header *ngIf="vehicle">
-    {{ vehicle.marque }}
-    <ion-button fill="clear" color="danger" (click)="deleteVehicule(vehicle)">
-      <ion-icon name="close"></ion-icon>
-    </ion-button>
-  </ion-card-header>
-  <ion-card-content *ngIf="vehicle">
-    Plaque d'immatriculation: {{ vehicle.plaque }}<br>
-    Marque du véhicule: {{ vehicle.marque }}<br>
-    Type du véhicule: {{vehicle.type}}<br>
-  </ion-card-content>
-</ion-card>
-
-  
-    <ion-item>
-      <ion-label position="stacked">Plaque d'immatriculation</ion-label>
-      <ion-input type="text" [(ngModel)]="plaque" required></ion-input>
-    </ion-item>
+  <ion-item class="custom-item">
+    <ion-label position="stacked">Plaque d'immatriculation</ion-label>
+    <ion-input type="text" [(ngModel)]="plaque" required></ion-input>
+  </ion-item>
   
     <ion-item>
       <ion-label position="stacked">Marque du véhicule</ion-label>
@@ -83,15 +77,15 @@
 
 
 
-    <ion-button expand="full" (click)="ajouterVehicule()">Ajouter véhicule</ion-button>
+    <ion-button class="custom-button" (click)="ajouterVehicule()">Ajouter véhicule</ion-button>
 </ion-content>
 
 <ion-footer>
-  <ion-label>
-  <ion-buttons slot="start">
-    <ion-back-button slot="start" defaultHref="../tab5"></ion-back-button>
-  </ion-buttons>
-</ion-label>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button slot="start" defaultHref="../tab5"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
 </ion-footer>
 
  

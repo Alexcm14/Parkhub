@@ -1,27 +1,57 @@
-ion-back-button {
-    --color: lightblue; 
+
+  ion-header {
+    background-color: #f8f8f8;
   }
 
-  ion-card {
-    position: relative;
-  
-    ion-button {
-      position: absolute;
-      top: 8px; 
-      right: 8px;
-    }
-  }
-  .avatar {
-    width: 100px; /* Adjust the size as needed */
-    height: 100px; /* Adjust the size as needed */
-    border-radius: 50%;
-    background-color: #0074e4; /* Background color for the circle */
+  ion-icon{
+    font-size : 20px;
   }
   
-  .initials {
-    font-size: 32px; /* Adjust the font size as needed */
-    color: #ffffff; /* Text color for the initials */
-    text-align: center;
-    line-height: 100px; /* Should match the avatar's height for vertical alignment */
+  ion-toolbar {
+    --background: transparent;
+  }
+  
+  ion-title {
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .custom-card {
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  ion-card-header {
+    background-color: #e9e9e9;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+  
+  ion-card-content {
+    padding: 15px;
+    font-size: 0.9rem;
+  }
+  
+  .custom-item {
+    --background: #fff;
+    --border-radius: 8px;
+    --box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    margin-bottom: 10px;
+  }
+  
+  .custom-button {
+    --border-radius: 8px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  ion-footer {
+    --background: #f8f8f8;
+  }
+  
+  ion-back-button {
+    --color: lightblue;
   }
   

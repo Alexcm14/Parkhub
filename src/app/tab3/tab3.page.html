@@ -8,6 +8,15 @@
 
 <ion-content fullscreen="true">
   <h1>Réservation(s) en cours</h1>
+
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="chevron-down-circle-outline"
+      refreshingSpinner="circles"
+    >
+    </ion-refresher-content>
+  </ion-refresher>
+
   <ion-card *ngFor="let res of reservationData">
     <ion-card-header>
       {{ res.address }}

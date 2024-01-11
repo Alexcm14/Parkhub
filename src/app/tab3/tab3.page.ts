@@ -44,6 +44,12 @@ export class Tab3Page implements OnInit {
     private firestore: AngularFirestore
   ) {}
 
+  handleRefresh(event) {
+    setTimeout(() => {
+      event.target.complete();
+    }, 2000);
+  }
+
   ngOnInit() {
     
     this.timerSubscription = interval(1000).subscribe(() => this.updateCountdowns());

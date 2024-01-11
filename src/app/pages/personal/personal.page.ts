@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { from, of, switchMap, take } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
+import { ToastController } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-personal',
@@ -15,7 +17,7 @@ export class PersonalPage implements OnInit {
   motDePasse: string;
   telephone: string;
 
-  constructor(private authService: AuthService, private firestore: AngularFirestore) {}
+  constructor(private authService: AuthService, private firestore: AngularFirestore, private toastController: ToastController ) {}
 
   ngOnInit() {
     // Fetch logged-in user data
@@ -55,7 +57,15 @@ export class PersonalPage implements OnInit {
     });
   }
   
-
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Données enregistrées',
+      duration: 2500,
+      color: 'primary'
+    });
+    toast.present();
+  }
+  
   
   enregistrer() {
     if (this.nom && this.prenom && this.email && this.telephone) {
@@ -86,6 +96,7 @@ export class PersonalPage implements OnInit {
                 userDocRef.set(user, { merge: true })
                   .then(() => {
                     console.log('User data updated in Firestore successfully!');
+                    this.presentToast();
                   })
                   .catch((error) => {
                     console.error('Error updating user data in Firestore: ', error);

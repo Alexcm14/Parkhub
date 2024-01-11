@@ -1,6 +1,9 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>personal</ion-title>
+    <ion-title style="white-space: normal;">Données personnelles</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button slot="start" defaultHref="../tab5" color="primary"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -25,15 +28,7 @@
     <ion-input type="tel" [(ngModel)]="telephone"></ion-input>
   </ion-item>
 
-  
-
-  <ion-button expand="full" (click)="enregistrer()">Enregistrer</ion-button>
+  <ion-button color="primary" (click)="enregistrer()">Enregistrer</ion-button>
 </ion-content>
 
-<ion-footer>
-  <ion-label>
-    <ion-buttons slot="start">
-      <ion-back-button slot="start" defaultHref="../tab5"></ion-back-button>
-    </ion-buttons>
-  </ion-label>
-</ion-footer>
+
