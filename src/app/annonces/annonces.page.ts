@@ -30,6 +30,7 @@ export class AnnoncesPage implements OnInit {
   private emplacementsSubject = new BehaviorSubject<any[]>([]);
 
 
+
   constructor(private navCtrl: NavController,private authService: AuthService, private firestore: AngularFirestore, private router: Router) {}
 
   redirigerVersConfig1() {
@@ -90,9 +91,6 @@ export class AnnoncesPage implements OnInit {
         
     }
     
-    
-    
-  
     loadEmpData() {
       this.firestore
         .collection('user_data')
@@ -169,11 +167,5 @@ export class AnnoncesPage implements OnInit {
         });
       }
     }
-    
-      
-    
-    
-
-    
     
   }

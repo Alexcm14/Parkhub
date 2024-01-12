@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { NavController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-modification',
@@ -17,7 +18,8 @@ export class ModificationPage implements OnInit {
     private route: ActivatedRoute,
     private firestore: AngularFirestore,
     private navCtrl: NavController,
-    private authService: AuthService
+    private authService: AuthService,
+    private toastController: ToastController,
   ) {}
 
   ngOnInit() {
@@ -34,6 +36,15 @@ export class ModificationPage implements OnInit {
       });
   }
 
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Données mises à jour',
+      duration: 2500,
+      color: 'primary'
+    });
+    toast.present();
+  }
+
   updateEmplacement() {
     this.firestore.collection('user_data').doc(this.authService.uid)
       .collection('emplacement_data').doc(this.emplacementId)
@@ -41,6 +52,7 @@ export class ModificationPage implements OnInit {
       .then(() => {
         console.log('Emplacement updated successfully!');
         this.navCtrl.navigateBack('/annonces');
+        this.presentToast();
       })
       .catch(error => console.error('Error updating emplacement:', error));
   }

@@ -28,8 +28,9 @@
   <ion-card *ngFor="let emplacement of emplacements | async">
   
     <ion-card-header>
+      <img [src]="emplacement.Photos" alt="Image de l'emplacement">
+
       <ion-item>
-        <ion-label> Id:{{ emplacement.id }}</ion-label>
 
       <ion-button fill="clear" color="danger" (click)="deleteEmplacement(emplacement)" slot="end">
         <ion-icon name="close"></ion-icon>
@@ -54,6 +55,7 @@
         Modifier l'annonce<ion-icon name="create"></ion-icon>
       </ion-button>
     </ion-item>
+    <ion-label> Id:{{ emplacement.id }}</ion-label>
 
     </ion-card-content>
   </ion-card>

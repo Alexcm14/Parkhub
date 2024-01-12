@@ -75,9 +75,5 @@ export class Tab4Page implements OnInit {
   redirigerVersAnnonces() {
     this.navCtrl.navigateForward('/annonces');
   }
-
-
-
-
  
 }

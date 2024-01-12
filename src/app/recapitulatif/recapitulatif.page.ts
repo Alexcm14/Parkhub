@@ -7,6 +7,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { finalize } from 'rxjs';
 
 
 @Component({
@@ -133,16 +134,24 @@ export class RecapitulatifPage implements OnInit, OnDestroy {
     if (files && files.length > 0) {
       console.log('Selected files:', files);
       for (let i = 0; i < files.length; i++) {
-        this.selectedFiles.push(files[i]);
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          this.photos.push(e.target?.result as string);
-          this.cdr.detectChanges();
-        };
-        reader.readAsDataURL(files[i]);
+        const file = files[i];
+        const filePath = `profile_images/${new Date().getTime()}_${file.name}`;
+        const fileRef = this.storage.ref(filePath);
+        const task = this.storage.upload(filePath, file);
+  
+        // Obtenir l'URL de l'image après le téléchargement
+        task.snapshotChanges().pipe(
+          finalize(() => {
+            fileRef.getDownloadURL().subscribe(url => {
+              this.photos.push(url); // Stocker l'URL de Firebase Storage
+              this.cdr.detectChanges();
+            });
+          })
+        ).subscribe();
       }
     }
   }
+  
 
 
   ajouterEmplacement() {
@@ -157,55 +166,52 @@ export class RecapitulatifPage implements OnInit, OnDestroy {
       this.selectedVehicleTypes$,
       this.numberOfPlaces$,
       this.selectedPrice$,
-      this.selectedDays$,
       this.selectedStartTime$,
       this.selectedEndTime$,
     ]).pipe(
       take(1) // Prendre la première émission de valeurs combinées
-    ).subscribe(([selectedParkingType, selectedParkingAddress, selectedDescription, selectedVehicleTypes, numberOfPlaces, selectedPrice, selectedDays, selectedStartTime, selectedEndTime]) => {
+    ).subscribe(([selectedParkingType, selectedParkingAddress, selectedDescription, selectedVehicleTypes, numberOfPlaces, selectedPrice, selectedStartTime, selectedEndTime]) => {
       // Vérifier si toutes les valeurs sont présentes
-      if (selectedParkingType && selectedParkingAddress && selectedDescription && selectedVehicleTypes && numberOfPlaces && selectedPrice && selectedDays && selectedStartTime && selectedEndTime) {
-        
-        // Obtenir les données de l'utilisateur connecté
-        const userObservable = this.authService.getLoggedInUserObservable();
-  
-        userObservable.pipe(take(1)).subscribe((userData) => {
-          if (userData) {
-            const userId = this.authService.uid || userData['uid'];
-  
-            if (userId) {
-              // Préparer les données de l'emplacement à ajouter
-              const emplacementData = {
-                Description: selectedDescription,
-                Adresse: selectedParkingAddress,
-                ParkingType: selectedParkingType,
-                VehicleType: selectedVehicleTypes,
-                NombrePlace: numberOfPlaces, 
-                Prix: selectedPrice, 
-                isAdPosted: this.isAdPosted,
-                isReserved: false,
-                Jours: joursSelectionnes,
-                HeureDebut: this.heureDebut,
-                HeureFin: this.heureFin,
-                userUid: this.authService.uid,
+      if (selectedParkingType && selectedParkingAddress && selectedDescription && selectedVehicleTypes && numberOfPlaces && selectedPrice && selectedStartTime && selectedEndTime) {
+      // Obtenir les données de l'utilisateur connecté
+      const userObservable = this.authService.getLoggedInUserObservable();
 
-              };
+      userObservable.pipe(take(1)).subscribe((userData) => {
+        if (userData) {
+          const userId = this.authService.uid || userData['uid'];
   
-              // Ajouter l'emplacement dans Firestore
-              this.firestore.collection('user_data').doc(userId).collection('emplacement_data').add(emplacementData)
-              .then((docRef) => {
-                console.log('Emplacement added to Firestore successfully with ID:', docRef.id);
-                this.navCtrl.navigateForward('/annonces');
-              })
-              .catch((error) => {
-                console.error('Error adding emplacement to Firestore: ', error);
-              });
-            }
+          if (userId) {
+            // Préparer les données de l'emplacement à ajouter
+            const emplacementData = {
+              Description: selectedDescription,
+              Adresse: selectedParkingAddress,
+              ParkingType: selectedParkingType,
+              VehicleType: selectedVehicleTypes,
+              NombrePlace: numberOfPlaces, 
+              Prix: selectedPrice, 
+              Jours: joursSelectionnes,
+              HeureDebut: selectedStartTime,
+              HeureFin: selectedEndTime,
+              userUid: userId,
+              isAdPosted: this.isAdPosted,
+              isReserved: false,
+              Photos: this.photos
+            };
+  
+            // Ajouter l'emplacement dans Firestore
+            this.firestore.collection('user_data').doc(userId).collection('emplacement_data').add(emplacementData)
+            .then((docRef) => {
+              console.log('Emplacement added to Firestore successfully with ID:', docRef.id);
+              this.navCtrl.navigateForward('/annonces');
+            })
+            .catch((error) => {
+              console.error('Error adding emplacement to Firestore: ', error);
+            });
           }
-        });
-      }
-    });
-  }
-  
+        }
+      });
+    }
+  });
+}
   
 }

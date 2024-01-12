@@ -47,5 +47,13 @@ ion-back-button {
     color: black; 
     margin: 10px; 
   }
+
+  .header-image {
+    width: 100%; // Taille à 100% de la largeur du parent
+    height: auto; // Hauteur automatique pour maintenir le rapport d'aspect
+    border-radius: 4px; // Coins arrondis (facultatif)
+    object-fit: cover; // Pour couvrir l'espace disponible sans déformer l'image
+  }
+  
   
 
