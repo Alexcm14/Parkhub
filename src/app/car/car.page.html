@@ -26,8 +26,12 @@
   
   <ion-item class="custom-item">
     <ion-label position="stacked">Plaque d'immatriculation</ion-label>
-    <ion-input type="text" [(ngModel)]="plaque" required></ion-input>
-  </ion-item>
+    <ion-input type="text" [(ngModel)]="plaque" required [class.invalid]="!validatePlate(plaque)" placeholder="1-ABC-123"></ion-input>
+    <ion-text color="danger" *ngIf="!validatePlate(plaque) && plaque">
+      Format invalide. Le format doit être : 1-ABC-123
+    </ion-text>
+    </ion-item>
+  
   
     <ion-item>
       <ion-label position="stacked">Marque du véhicule</ion-label>

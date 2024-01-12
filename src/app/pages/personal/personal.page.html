@@ -1,3 +1,4 @@
+
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title style="white-space: normal;">Données personnelles</ion-title>
@@ -10,22 +11,22 @@
 <ion-content [fullscreen]="true" class="ion-padding">
   <ion-item>
     <ion-label position="floating">Nom</ion-label>
-    <ion-input type="text" [(ngModel)]="nom"></ion-input>
+    <ion-input type="text" [(ngModel)]="nom" pattern="[a-zA-Z ]*" required></ion-input>
   </ion-item>
 
   <ion-item>
     <ion-label position="floating">Prénom</ion-label>
-    <ion-input type="text" [(ngModel)]="prenom"></ion-input>
+    <ion-input type="text" [(ngModel)]="prenom" pattern="[a-zA-Z ]*" required></ion-input>
   </ion-item>
 
   <ion-item>
     <ion-label position="floating">Email</ion-label>
-    <ion-input type="email" [(ngModel)]="email"></ion-input>
+    <ion-input type="email" [(ngModel)]="email" required></ion-input>
   </ion-item>
 
   <ion-item>
     <ion-label position="floating">Téléphone</ion-label>
-    <ion-input type="tel" [(ngModel)]="telephone"></ion-input>
+    <ion-input type="tel" [(ngModel)]="telephone" pattern="[0-9]*" required value="+32"></ion-input>
   </ion-item>
 
   <ion-button color="primary" (click)="enregistrer()">Enregistrer</ion-button>

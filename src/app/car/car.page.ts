@@ -60,6 +60,12 @@ export class CarPage {
     });
   }
 
+  validatePlate(plate: string): boolean {
+    const platePattern = /^\d-[A-Za-z]{3}-\d{3}$/;
+    return platePattern.test(plate);
+  }
+  
+
   loadCarData() {
     // Retrieve data from the 'car_data' collection
     this.firestore.collection('user_data').doc(this.authService.uid).collection('car_data').valueChanges().subscribe((carData: any) => {
