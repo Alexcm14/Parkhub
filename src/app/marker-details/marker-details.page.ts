@@ -307,6 +307,8 @@ export class MarkerDetailsPage {
             reservationId: reservationId,
             day: this.selectedDay,
             isDone: false,
+            isPayed:false,
+            isCancelled:false,
             Photos: this.markerData.Photos,
           });
         }

@@ -132,17 +132,23 @@ export class Tab3Page implements OnInit {
     this.reservationData.forEach(res => {
       if (res.createdAt && typeof res.createdAt.seconds === 'number') {
         const createdAtTime = new Date(res.createdAt.seconds * 1000).getTime();
-        const timeDiff = createdAtTime + 5 * 60000 - now; // 5 minutes en millisecondes
+        const timeDiff = createdAtTime + 5 * 60000 - now; // 5 minutes in milliseconds
+  
         if (timeDiff > 0) {
           const minutes = Math.floor((timeDiff / (1000 * 60)) % 60);
           const seconds = Math.floor((timeDiff / 1000) % 60);
           res.countdown = `${minutes}m ${seconds}s`;
-        } else {
+        } else if (!res.updateCalled) {
+          // Only proceed if the update hasn't been called yet
           res.countdown = 'temps écoulé';
+          res.isCancelled = true;
+          res.updateCalled = true; // Set a flag to indicate that update has been called
+          this.updateReservationStatus(res);
         }
       }
     });
   }
+  
   
   ngOnDestroy() {
     if (this.timerSubscription) {
@@ -236,8 +242,8 @@ export class Tab3Page implements OnInit {
     }
   
     this.firestore.collection('user_data').doc(userId).collection('reservation_data').doc(reservation.id).update({
-      isConfirmed: reservation.isConfirmed,
-      isPayed: reservation.isPayed
+    isPayed: reservation.isPayed,
+    isCancelled: reservation.isCancelled
     })
     .then(() => {
       console.log('Reservation updated successfully!');
