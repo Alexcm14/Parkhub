@@ -18,14 +18,13 @@ import firebase from 'firebase/compat/app';
   template: `
   <ion-content style="padding: 20px; max-width: 600px ; margin: auto; font-family: Arial, sans-serif;">
     <!-- Affichez les détails du marqueur ici -->
+    <img [src]="markerData.Photos" alt="Image de l'emplacement">
     <p style="font-size: 16px; color: #333; margin-bottom: 20px;"><strong style="color: #46d1c8;"><ion-icon name="location"></ion-icon> Adresse:</strong> {{ markerData.address }} - {{ markerData.parkingType }}</p>
     <p style="font-size: 16px; color: #333; margin-bottom: 20px;"><strong style="color: #46d1c8;"><ion-icon name="pencil"></ion-icon> Description:</strong> {{ markerData.description }}</p>
     
     <p style="font-size: 16px; color: #333; margin-bottom: 20px;"><strong style="color: #46d1c8;"><ion-icon name="car"></ion-icon> Autorisé aux:</strong> {{ markerData.vehicleType }} </p>
     <p style="font-size: 16px; color: #333; margin-bottom: 20px;"><strong style="color: #46d1c8;"><ion-icon name="card"></ion-icon> Prix:</strong> {{ markerData.price }} €</p>
 
-    <p style="font-size: 16px; color: #333; margin-bottom: 20px;"><strong style="color: #46d1c8;"><ion-icon name="calendar"></ion-icon> Jours Disponibles:</strong> {{ markerData.jours.join(', ') }}</p>
-    <p style="font-size: 16px; color: #333; margin-bottom: 20px;"><strong style="color: #46d1c8;"><ion-icon name="time"></ion-icon> Disponible de:</strong> {{ markerData.heureDebut }}<strong> à</strong> {{ markerData.heureFin }}</p>
 
     <ion-item style="margin-bottom: 15px;">
       <ion-label position="stacked" style="color: #32a39b;"><ion-icon name="calendar-number"></ion-icon> Jour de la réservation</ion-label>
@@ -48,7 +47,7 @@ import firebase from 'firebase/compat/app';
       </ion-select>
     </ion-item>
 
-    <ion-button style="font-size: 16px; height: 50px; --background: #46d1c8;; margin-top: 20px; display: flex; text-align : center: justify-content: center;">Réserver</ion-button>
+    <ion-button (click)="reserve()" style="font-size: 16px; height: 50px; --background: #46d1c8;; margin-top: 20px; display: flex; text-align : center: justify-content: center;">Réserver</ion-button>
   </ion-content>
 `,
 })
@@ -307,10 +306,8 @@ export class MarkerDetailsPage {
             emplacementId: this.markerData.id,
             reservationId: reservationId,
             day: this.selectedDay,
-            isDone: false
-            
-
-            
+            isDone: false,
+            Photos: this.markerData.Photos,
           });
         }
 

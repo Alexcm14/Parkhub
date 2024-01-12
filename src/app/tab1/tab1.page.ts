@@ -218,6 +218,7 @@ addMarkersToMap() {
               jours: data.Jours,
               id: data.id,
               userUid: data.userUid,
+              Photos : data.Photos,
             };
 
             console.log('Marker Data being sent to popover:', markerData);

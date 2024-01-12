@@ -1,11 +1,3 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Réservation(s)
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content fullscreen="true">
   <h1>Réservation(s) en cours</h1>
 
@@ -17,52 +9,30 @@
     </ion-refresher-content>
   </ion-refresher>
 
-  <ion-card *ngFor="let res of reservationData">
+  <ion-card *ngFor="let res of reservationData" class="custom-card">
     <ion-card-header>
-      {{ res.address }}
+      <img [src]="res.Photos" alt="Image de l'emplacement">
+      <h2>{{ res.address }}</h2>
     </ion-card-header>
     <ion-card-content>
       <p><strong>Description:</strong> {{ res.description }}</p>
       <p><strong>Parking Type:</strong> {{ res.parkingType }}</p>
-      
       <p><strong>Prix/heure:</strong> {{ res.price }} EUR</p>
       <p><strong>Jour:</strong> {{ res.day }}</p>
       <p><strong>Début de réservation:</strong> {{ res.departureTime }}</p>
       <p><strong>Fin de réservation:</strong> {{ res.endTime }}</p>
-      
-      
       
       <ion-select placeholder="Sélectionnez un véhicule" [(ngModel)]="selectedCar" (ionChange)="onCarChange($event)">
         <ion-select-option *ngFor="let vehicle of vehicles" [value]="vehicle">
           {{ vehicle.marque }} - {{ vehicle.plaque }}
         </ion-select-option>
       </ion-select>
-      <p *ngIf="!res.isPayed" style="color: red;"><strong>Temps restant:</strong>{{ res.countdown }}</p>
-      <p *ngIf="res.isPayed" style="color: green;"><strong>Réservé!</strong></p>
+      <p *ngIf="!res.isPayed" class="countdown"><strong>Temps restant:</strong> {{ res.countdown }}</p>
+      <p *ngIf="res.isPayed" class="reserved"><strong>Réservé!</strong></p>
 
-
-      
-      
-
-      
-
-
-      <ion-button (click)="confirmReservation(res)">Confirmer la réservation</ion-button>
-
-        
+      <ion-button (click)="confirmReservation(res)" class="custom-button">Confirmer la réservation</ion-button>
     </ion-card-content>
   </ion-card>
-  
-  
- 
-  
-
-  
-  
-
-  
-  
 </ion-content>
-
 
   
