@@ -9,6 +9,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { NgModule } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
 import { interval, Subscription, } from 'rxjs';
+import { NavController } from '@ionic/angular';
 
 
 
@@ -41,8 +42,13 @@ export class Tab3Page implements OnInit {
     private alertController: AlertController,
     private modalController: ModalController,
     private authService: AuthService,
-    private firestore: AngularFirestore
+    private firestore: AngularFirestore,
+    private navCtrl: NavController,
   ) {}
+
+  navigateToTab2() {
+    this.navCtrl.navigateForward('tabs/tab2');
+  }
 
   handleRefresh(event) {
     setTimeout(() => {
