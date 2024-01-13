@@ -1,24 +1,4 @@
-ion-content{
-    ion-list{
-        ion-list-header{
-            font-weight: 600;
-            font-size: 1rem;
-        }
-        ion-item{
-            margin-top: 2vh;
-            ion-label {
-                font-size: 1.2rem;
-                p{
-                    margin-top: 3px;
-                }
-            }
-            ion-text{
-                font-size: 0.9rem;
-            }
-        }
-    }
-}
-
+/* Styles existants */
 ion-avatar {
     margin-right: 10px;
   }
@@ -31,6 +11,81 @@ ion-avatar {
     border-bottom: 1px solid #ccc;
   }
   
-  .title{
+  .title {
     font-size: 1.5rem;
   }
+  
+  ion-title {
+    font-weight: bold;
+    color: #46d1c8; /* Utilisez la couleur bleue que vous avez mentionnée */
+    margin-bottom: 20px;
+  }
+  
+  ion-content {
+    ion-list {
+      ion-list-header {
+        font-weight: 600;
+        font-size: 1rem;
+      }
+      ion-item {
+        margin-top: 2vh;
+        ion-label {
+          font-size: 1.2rem;
+          p {
+            margin-top: 3px;
+          }
+        }
+        ion-text {
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+  
+  /* Styles pour la réactivité */
+  @media screen and (max-width: 768px) {
+    .title {
+      font-size: 1.2rem;
+    }
+  
+    ion-item {
+      ion-label {
+        font-size: 1rem;
+        p {
+          font-size: 0.8rem;
+        }
+      }
+    }
+  
+    ion-title {
+      font-size: 1rem;
+    }
+  }
+  
+  @media screen and (max-width: 480px) {
+    .title {
+      font-size: 1rem;
+    }
+  
+    ion-item {
+      ion-label {
+        font-size: 0.9rem;
+        p {
+          font-size: 0.7rem;
+        }
+      }
+    }
+  
+    ion-title {
+      font-size: 0.9rem;
+    }
+  
+    ion-avatar {
+      margin-right: 5px;
+    }
+  
+    ion-list {
+      margin: 5px;
+    }
+  }
+  

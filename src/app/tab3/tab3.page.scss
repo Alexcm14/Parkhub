@@ -1,10 +1,11 @@
-.strong1{
-  color:red;
+/* Styles existants */
+.strong1 {
+  color: red;
 }
-.title{
+
+.title {
   font-size: 1.5rem;
 }
-  
 
 ion-content {
   text-align: center;
@@ -12,11 +13,11 @@ ion-content {
 
 h1 {
   font-weight: bold;
-  color: #46d1c8; /* Utilisez la couleur bleue que vous avez mentionnée */
-  margin-bottom: 20px; /* Pour ajouter un espace entre le titre et les cartes */
+  color: #46d1c8;
+  margin-bottom: 20px;
 }
 
-h2{
+h2 {
   font-weight: bold;
   color: #46d1c8;
   margin-bottom: 20px;
@@ -35,19 +36,6 @@ h2{
     flex-direction: column;
     align-items: center;
     text-align: center;
-  }
-
-  .location-address {
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
-
-  img {
-    width: auto; /* Conserve la taille originale de l'image */
-    height: auto; /* Conserve la taille originale de l'image */
-    border-radius: 20px; /* Bords arrondis */
-    object-fit: cover; /* Pour maintenir les proportions de l'image */
-  }
 }
 
 .custom-card ion-card-content {
@@ -73,6 +61,49 @@ h2{
   position: absolute;
   top: 10px;
   right: 10px;
-  --ion-color-base: transparent; /* Rend le fond du bouton transparent */
+  --ion-color-base: transparent;
 }
 
+/* Styles pour la réactivité */
+@media screen and (max-width: 768px) {
+  .title, h1, h2 {
+    font-size: 1.2rem;
+  }
+
+  .custom-card {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .custom-card ion-card-header img {
+    width: 100%;
+    height: auto;
+  }
+
+  .custom-button {
+    font-size: 14px;
+    height: 35px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .title, h1, h2 {
+    font-size: 1rem;
+  }
+
+  .custom-card {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+
+  .custom-card ion-card-header img {
+    width: 100%;
+    height: auto;
+  }
+
+  .custom-button {
+    font-size: 12px;
+    height: 30px;
+  }
+}
+}

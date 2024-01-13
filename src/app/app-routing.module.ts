@@ -99,6 +99,10 @@ const routes: Routes = [
     path: 'res',
     loadChildren: () => import('./res/res.module').then( m => m.ResPageModule)
   },
+  {
+    path: 'proprio',
+    loadChildren: () => import('./proprio/proprio.module').then( m => m.ProprioPageModule)
+  },
   
 
 

@@ -22,7 +22,7 @@ export class DescriptionPage implements OnInit {
   constructor(private navCtrl: NavController, private vehicleSelectionService: VehicleSelectionService, private cdr: ChangeDetectorRef) { }
 
   fermerPage() {
-    this.navCtrl.navigateForward('tabs/tab4');
+    this.navCtrl.navigateForward('tabs/annonces');
   }
   
   handleFileInput(event: any): void {

@@ -1,46 +1,37 @@
-ion-header
- 
-ion-toolbar {
+ion-header ion-toolbar {
   margin-top: 0; /* Réduit la marge supérieure à zéro */
   margin-bottom: 0;
 }
- 
- 
- 
-  ion-item {
- 
-    margin-top: 20px;
- 
-    h3 {
-      font-weight: 700;
-      font-size: 14px;
-    }
- 
-    p {
-      font-weight: 500;
-      font-size: 14px;
-    }
- 
-    ion-avatar {
-      --border-radius: 40%;
-    }
+
+ion-item {
+  margin-top: 20px;
+
+  h3 {
+    font-weight: 700;
+    font-size: 14px;
   }
- 
+
+  p {
+    font-weight: 500;
+    font-size: 14px;
+  }
+
+  ion-avatar {
+    --border-radius: 40%;
+  }
+}
+
 #container a {
   text-decoration: none;
 }
- 
- 
+
 ion-content {
- 
- 
   .slides {
     background: #f1f5f8;
-    padding: 4px 20x 20px 4px;
+    padding: 4px 20px 20px 4px;
     border-radius: 0 0 28px 28px;
-   
   }
- 
+
   ion-card {
     width: 90%;
     box-shadow: none;
@@ -51,74 +42,64 @@ ion-content {
     display: flex;
     align-items: center;
     justify-content: center;
-  
+
     .main {
-      width: 100%; // Définir la largeur de la div .main à 100%
-      height: 100%; // Définir la hauteur de la div .main à 100%
+      width: 100%; /* Définir la largeur de la div .main à 100% */
+      height: 100%; /* Définir la hauteur de la div .main à 100% */
       border-radius: 50%;
-      overflow: hidden; // Masquer le contenu débordant
+      overflow: hidden; /* Masquer le contenu débordant */
       img {
-        width: 100%; // Définir la largeur de l'image à 100%
-        height: 100%; // Définir la hauteur de l'image à 100%
-        object-fit: cover; // Remplir complètement la div parente tout en préservant le ratio d'aspect de l'image
+        width: 100%; /* Définir la largeur de l'image à 100% */
+        height: 100%; /* Définir la hauteur de l'image à 100% */
+        object-fit: cover; /* Remplir complètement la div parente tout en préservant le ratio d'aspect de l'image */
       }
     }
-  }}
- 
-  .ios {
-    ion-searchbar {
-      padding: 8px 12px;
-     
-    }
   }
- 
+
+  .ios ion-searchbar {
+    padding: 8px 12px;
+  }
+
   #map {
-   
     display: inline-block;
     width: 100%;
     height: 500px;
     border-radius: 25px;
   }
- 
- .bouttonquestion{
-  width: 30px;
-  height: 30px;
-  margin-top: 20px;
- }
 
- ion-toolbar {
-  --background-color: transparent;
-  --ion-color-base: transparent !important;
+  .bouttonquestion {
+    width: 30px;
+    height: 30px;
+    margin-top: 20px;
+  }
+
+  ion-toolbar {
+    --background-color: transparent;
+    --ion-color-base: transparent !important;
+  }
+
+  .prediction-list ion-item {
+    padding: 1px; /* Ajoutez un espace de remplissage */
+    border-bottom: 1px solid #ccc; /* Ajoutez une bordure inférieure */
+  }
+
+  .prediction-list ion-item:last-child {
+    border-bottom: none; /* Supprime la bordure inférieure pour le dernier élément */
+  }
+
+  .prediction-list ion-item:hover {
+    background-color: #3293b1; /* Change la couleur de fond lorsqu'un élément est survolé */
+  }
+
+  .info-window-container .reserveButton {
+    background-color: #46d1c8; /* Couleur bleue */
+    color: #fff; /* Texte blanc */
+    padding: 10px 20px; /* Rembourrage pour définir la taille */
+    border-radius: 15px; /* Coins arrondis */
+    display: block; /* Pour centrer le bouton */
+    margin: 0 auto; /* Pour centrer le bouton */
+    font-size: 18px; /* Taille de la police */
+  }
 }
-
-
-
-.prediction-list ion-item {
-  padding: 1px; /* Ajoutez un espace de remplissage */
-  border-bottom: 1px solid #ccc; /* Ajoutez une bordure inférieure */
-}
-
-.prediction-list ion-item:last-child {
-  border-bottom: none; /* Supprime la bordure inférieure pour le dernier élément */
-}
-
-.prediction-list ion-item:hover {
-  background-color: #3293b1; /* Change la couleur de fond lorsqu'un élément est survolé */
-}
-
-
-.info-window-container {
-  /* Styles pour le conteneur de l'info-bulle */
-
-
-.reserveButton {
-  background-color: #46d1c8; /* Couleur bleue */
-  color: #fff; /* Texte blanc */
-  padding: 10px 20px; /* Rembourrage pour définir la taille */
-  border-radius: 15px; /* Coins arrondis */
-  display: block; /* Pour centrer le bouton */
-  margin: 0 auto; /* Pour centrer le bouton */
-  font-size: 18px; /* Taille de la police */
-}}
 
 

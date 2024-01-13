@@ -35,7 +35,7 @@ export class LocalisationPage implements OnInit {
   }
 
   fermerPage() {
-    this.navCtrl.navigateForward('tabs/tab4');
+    this.navCtrl.navigateForward('tabs/annonces');
   }
 
   redirigerVersNbplaces() {

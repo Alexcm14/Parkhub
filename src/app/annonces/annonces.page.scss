@@ -29,6 +29,12 @@
     border-color: black;
 }
 
+ion-title{
+  font-weight: bold;
+  color: #46d1c8; /* Utilisez la couleur bleue que vous avez mentionnée */
+  margin-bottom: 20px;
+}
+
 ion-back-button {
     --color: lightblue; 
   }
@@ -46,6 +52,7 @@ ion-back-button {
     background-color: yellow;
     color: black; 
     margin: 10px; 
+    margin-bottom: 65px;
   }
 
   .header-image {
@@ -54,6 +61,71 @@ ion-back-button {
     border-radius: 4px; // Coins arrondis (facultatif)
     object-fit: cover; // Pour couvrir l'espace disponible sans déformer l'image
   }
+
+/* Styles existants */
+/* ... Vos styles CSS existants ... */
+
+/* Styles pour smartphones */
+@media screen and (max-width: 480px) {
+  .T1 {
+    font-size: 1.5rem; /* Taille de police plus petite pour les écrans étroits */
+    margin: 15px; /* Ajustement des marges */
+  }
+
+  .questions {
+    font-size: 0.8rem; /* Réduction de la taille de la police pour le bouton d'aide */
+    border-radius: 20px; /* Ajustement du rayon de la bordure */
+  }
+
+  .creer {
+    margin: 15px; /* Ajustement des marges */
+    font-size: 1rem; /* Taille de police réduite */
+  }
+
+  .creation {
+    margin: 15px; /* Ajustement des marges */
+    font-size: 0.9rem; /* Réduction de la taille de la police du bouton */
+  }
+
+  ion-title {
+    font-size: 1.2rem; /* Taille de police réduite pour le titre */
+  }
+
+  ion-card {
+    margin: 5px; /* Réductiondes marges autour des cartes pour mieux s'adapter aux petits écrans */
+  }
+  
+  ion-card-content {
+  font-size: 0.9rem; /* Taille de police réduite pour le contenu des cartes */
+  }
+  
+  .reservations-button {
+  font-size: 0.9rem; /* Réduction de la taille de la police du bouton /
+  padding: 10px; / Ajustement du rembourrage pour une meilleure prise en main /
+  margin: 10px 5px; / Ajustement des marges */
+  }
+  
+  ion-button {
+  font-size: 0.8rem; /* Réduction de la taille de la police pour tous les boutons */
+  }
+  
+  ion-item {
+  --padding-start: 5px; /* Réduction du padding pour les ion-item */
+  --padding-end: 5px;
+  }
+  
+  ion-card-header img {
+  width: 100%; /* Assure que l'image occupe toute la largeur de la carte /
+  height: auto; / Maintient le rapport hauteur/largeur de l'image */
+  }
+  
+  ion-card-header ion-button {
+  top: 4px; /* Ajustement de la position du bouton dans l'en-tête de la carte /
+  right: 4px;
+  font-size: 0.7rem; / Réduction de la taille de la police pour le bouton dans l'en-tête */
+  }
+  }
+
   
   
 

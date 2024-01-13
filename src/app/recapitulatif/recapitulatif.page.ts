@@ -202,7 +202,7 @@ export class RecapitulatifPage implements OnInit, OnDestroy {
             this.firestore.collection('user_data').doc(userId).collection('emplacement_data').add(emplacementData)
             .then((docRef) => {
               console.log('Emplacement added to Firestore successfully with ID:', docRef.id);
-              this.navCtrl.navigateForward('/annonces');
+              this.navCtrl.navigateForward('tabs/annonces');
             })
             .catch((error) => {
               console.error('Error adding emplacement to Firestore: ', error);

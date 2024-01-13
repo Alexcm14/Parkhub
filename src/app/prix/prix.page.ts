@@ -64,7 +64,7 @@ export class PrixPage implements OnInit {
   }
 
   fermerPage() {
-    this.navCtrl.navigateForward('tabs/tab4');
+    this.navCtrl.navigateForward('tabs/annonces');
   }
 
   private formatTime(date: Date): string {

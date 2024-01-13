@@ -59,6 +59,11 @@ export class Tab5Page implements OnInit {
   goPay() {
     this.router.navigate(['/pay']);
   }
+
+  goProprio() {
+    this.router.navigate(['/proprio']);
+  }
+
   onHover(status: boolean): void {
     this.hovering = status;
   }

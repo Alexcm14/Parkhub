@@ -9,6 +9,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { NgModule } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
 import { interval, Subscription, } from 'rxjs';
+import { Url } from 'url';
 @Component({
   selector: 'app-res',
   templateUrl: './res.page.html',
@@ -24,6 +25,7 @@ export class ResPage implements OnInit {
   reservations: any[] = [];
   reservationData: any[] = [];
   vehicles: any[] = [];
+  Photos: Url;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -67,32 +69,46 @@ export class ResPage implements OnInit {
       this.telephone = additionalData.telephone;
     } else {
       console.log('User data not found in Firestore.');
-  }});
+  }
+  this.fetchReservations();
+  });
   }
 
+  fetchReservations() {
+    this.firestore.collection('reservations', ref => ref.where('userId', '==', this.authService.uid))
+      .valueChanges({ idField: 'reservationId' })
+      .pipe(
+        map(reservations => this.processReservations(reservations))
+      )
+      .subscribe(processedReservations => {
+        console.log('Réservations récupérées:', processedReservations); // Ajoutez cette ligne
+        this.reservations = processedReservations;
+        this.cdr.detectChanges();
+      });
+  }
+  
 
-  
-  
-
-  
-  
-  
-   processReservations(reservations: any[]) {
+  processReservations(reservations: any[]) {
     return reservations.map(reservation => {
       const startTime = new Date(reservation.departureTime);
       const endTime = new Date(reservation.endTime);
       const durationHours = (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60);
       const subtotal = reservation.price * durationHours;
-      const total = subtotal * 0.8; // Apply discount
-
+      const total = subtotal * 0.8;
+  
       return {
-        ...reservation,
+        reservationId: reservation.reservationId,
         startTime: startTime.toLocaleString(),
         endTime: endTime.toLocaleString(),
+        vehicleMarque: reservation.vehicleMarque, // Assurez-vous que ces champs existent
+        vehiclePlaque: reservation.vehiclePlaque, // dans l'objet de réservation
         durationHours,
         subtotal,
-        total
+        total: reservation.total,
       };
     });
   }
+  
+  
+  
 }

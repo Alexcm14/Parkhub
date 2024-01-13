@@ -13,6 +13,7 @@
     border-radius: 50%;
     margin-top: 40px;
     margin-bottom: 25px;
+    border: 2px solid #46d1c8;
   }
   
   .overlay {
@@ -39,29 +40,40 @@
     color: #46d1c8;
     font-size: 30px;
   }
+
+ion-title{
+  font-weight: bold;
+  color: #46d1c8; /* Utilisez la couleur bleue que vous avez mentionnée */
+  margin-bottom: 20px;
+}
   
 
 
 .perso{
-    margin-top: 30px;
-    margin-bottom: 15px;
+    margin-top: 20px;
+    margin-bottom: 10px;
 }
 
 .car{
-    margin-top: 30px;
-    margin-bottom: 15px;
+    margin-top: 20px;
+    margin-bottom: 10px;
 }
 
 .pay{
-    margin-top: 30px;
-    margin-bottom: 15px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.proprio{
+  margin-top: 20px;
+  margin-bottom: 10px;
 }
 
 .FAQ{
-    margin-top: 30px;
-    margin-bottom: 15px;
+    margin-top: 20px;
+    margin-bottom: 10px;
 }
 
 .deco{
-  margin-top: 120px;
+  margin-top: 50px;
 }

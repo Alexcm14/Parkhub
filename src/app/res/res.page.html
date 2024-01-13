@@ -1,21 +1,15 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>res</ion-title>
+    <ion-title>Mes réservations</ion-title>
+    <ion-back-button slot="start" defaultHref="tabs/annonces"></ion-back-button>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">res</ion-title>
-    </ion-toolbar>
-  </ion-header>
-</ion-content>
-<ion-content>
-  <!-- Loop over the reservations -->
+<ion-content fullscreen="true">
+
   <ion-card *ngFor="let reservation of reservations">
     <ion-card-header>
-      <ion-card-title>Reservation ID: {{ reservation.reservationId }}</ion-card-title>
+      <ion-card-title>Numéro de réservation: {{ reservation.reservationId }}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
       <p>Start Time: {{ reservation.startTime }}</p>
@@ -26,13 +20,6 @@
       <p>Total: {{ reservation.total | currency }}</p>
     </ion-card-content>
   </ion-card>
-</ion-content>
+  
 
-
-<ion-footer>
-  <ion-label>
-  <ion-buttons slot="start">
-    <ion-back-button style="color:red" slot="start" defaultHref="../tab5"></ion-back-button>
-  </ion-buttons>
-</ion-label>
-</ion-footer>
+  </ion-content>

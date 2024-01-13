@@ -33,6 +33,13 @@
         Mes véhicules
       </ion-label>
     </ion-item>
+
+    <ion-item lines="full" detail class="proprio" (click)="goProprio()">
+      <ion-icon slot="start" name="home"></ion-icon>
+      <ion-label>
+           Louer mon parking
+      </ion-label>
+    </ion-item>
   
     <ion-item lines="full" detail class="pay" (click)="goPay()">
       <ion-icon slot="start" name="card"></ion-icon>
@@ -42,7 +49,7 @@
     </ion-item>
   
     <ion-item lines="full" detail class="FAQ">
-      <ion-icon slot="start" name="tablet-landscape"></ion-icon>
+      <ion-icon slot="start" name="help-circle"></ion-icon>
       <ion-label>
         FAQ
       </ion-label>

@@ -1,12 +1,9 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-   
-      <ion-back-button slot="start" defaultHref="tabs/tab4">
-        <ion-icon name="close"></ion-icon>
-      </ion-back-button>
+    
       <ion-button slot="end" class="questions"><ion-icon name="help"></ion-icon></ion-button>
    
-    <ion-title class="title"></ion-title>
+    <ion-title class="title">Annonces</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -53,9 +50,9 @@
       <ion-item>
       <ion-button fill="clear" (click)="editEmplacement(emplacement.id)" slot="start">
         Modifier l'annonce<ion-icon name="create"></ion-icon>
-      </ion-button>
+     </ion-button>
     </ion-item>
-    <ion-label> Id:{{ emplacement.id }}</ion-label>
+    <ion-label style="font-size: 12px; margin-top: 5px;"> Numéro de réservation : {{ emplacement.id }}</ion-label>
 
     </ion-card-content>
   </ion-card>

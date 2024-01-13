@@ -19,35 +19,35 @@ import firebase from 'firebase/compat/app';
   <ion-content style="padding: 20px; max-width: 600px ; margin: auto; font-family: Arial, sans-serif;">
     <!-- Affichez les détails du marqueur ici -->
     <img [src]="markerData.Photos" alt="Image de l'emplacement">
-    <p style="font-size: 16px; color: #333; margin-bottom: 20px;"><strong style="color: #46d1c8;"><ion-icon name="location"></ion-icon> Adresse:</strong> {{ markerData.address }} - {{ markerData.parkingType }}</p>
-    <p style="font-size: 16px; color: #333; margin-bottom: 20px;"><strong style="color: #46d1c8;"><ion-icon name="pencil"></ion-icon> Description:</strong> {{ markerData.description }}</p>
+    <p style="font-size: 13px; color: #333; margin-bottom: 12px;"><strong style="color: #46d1c8;"><ion-icon name="location"></ion-icon> Adresse:</strong> {{ markerData.address }} - {{ markerData.parkingType }}</p>
+    <p style="font-size: 13px; color: #333; margin-bottom: 12px;"><strong style="color: #46d1c8;"><ion-icon name="pencil"></ion-icon> Description:</strong> {{ markerData.description }}</p>
     
-    <p style="font-size: 16px; color: #333; margin-bottom: 20px;"><strong style="color: #46d1c8;"><ion-icon name="car"></ion-icon> Autorisé aux:</strong> {{ markerData.vehicleType }} </p>
-    <p style="font-size: 16px; color: #333; margin-bottom: 20px;"><strong style="color: #46d1c8;"><ion-icon name="card"></ion-icon> Prix:</strong> {{ markerData.price }} €</p>
+    <p style="font-size: 13px; color: #333; margin-bottom: 12px;"><strong style="color: #46d1c8;"><ion-icon name="car"></ion-icon> Autorisé aux:</strong> {{ markerData.vehicleType }} </p>
+    <p style="font-size: 13px; color: #333; margin-bottom: 12px;"><strong style="color: #46d1c8;"><ion-icon name="card"></ion-icon> Prix:</strong> {{ markerData.price }} €</p>
 
 
-    <ion-item style="margin-bottom: 15px;">
+    <ion-item style="margin-bottom: 8px;">
       <ion-label position="stacked" style="color: #32a39b;"><ion-icon name="calendar-number"></ion-icon> Jour de la réservation</ion-label>
-      <ion-select placeholder="Sélectionnez un jour" [(ngModel)]="selectedDay" (ionChange)="onDayChange(selectedDay)" style="font-size: 16px;">
+      <ion-select placeholder="Sélectionnez un jour" [(ngModel)]="selectedDay" (ionChange)="onDayChange(selectedDay)" style="font-size: 13px;">
         <ion-select-option *ngFor="let day of markerData.jours" [value]="day">{{ day }}</ion-select-option>
       </ion-select>
     </ion-item> 
 
-    <ion-item style="margin-bottom: 15px;">
+    <ion-item style="margin-bottom: 8px;">
       <ion-label position="stacked" style="color: #32a39b;"><ion-icon name="time"></ion-icon> Heure de départ</ion-label>
-      <ion-select placeholder="Sélectionnez l'heure de départ" [(ngModel)]="departureTime" (ionChange)="handleDepartureTimeChange(departureTime)" style="font-size: 16px;">
+      <ion-select placeholder="Sélectionnez l'heure de départ" [(ngModel)]="departureTime" (ionChange)="handleDepartureTimeChange(departureTime)" style="font-size: 13px;">
         <ion-select-option *ngFor="let hour of availableHours" [value]="hour">{{ hour }}</ion-select-option>
       </ion-select>
     </ion-item>
 
-    <ion-item style="margin-bottom: 15px;">
+    <ion-item style="margin-bottom: 8px;">
       <ion-label position="stacked" style="color: #32a39b;"><ion-icon name="time"></ion-icon> Heure de fin</ion-label>
-      <ion-select placeholder="Sélectionnez l'heure de fin" [(ngModel)]="endTime" style="font-size: 16px;">
+      <ion-select placeholder="Sélectionnez l'heure de fin" [(ngModel)]="endTime" style="font-size: 13px;">
         <ion-select-option *ngFor="let hour of availableEndHours" [value]="hour">{{ hour }}</ion-select-option>
       </ion-select>
     </ion-item>
 
-    <ion-button (click)="reserve()" style="font-size: 16px; height: 50px; --background: #46d1c8;; margin-top: 20px; display: flex; text-align : center: justify-content: center;">Réserver</ion-button>
+    <ion-button (click)="reserve()" style="font-size: 16px; height: 50px; --background: #46d1c8; margin-top: 10px; display: flex; text-align : center: justify-content: center; margin-bottom: 20px; ">Réserver</ion-button>
   </ion-content>
 `,
 })

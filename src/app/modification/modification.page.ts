@@ -51,7 +51,7 @@ export class ModificationPage implements OnInit {
       .update(this.emplacement)
       .then(() => {
         console.log('Emplacement updated successfully!');
-        this.navCtrl.navigateBack('/annonces');
+        this.navCtrl.navigateBack('tabs/annonces');
         this.presentToast();
       })
       .catch(error => console.error('Error updating emplacement:', error));
