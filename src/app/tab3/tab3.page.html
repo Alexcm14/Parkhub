@@ -20,10 +20,8 @@
       <h2>{{ res.address }}</h2>
     </ion-card-header>
     <ion-card-content>
-      <p><strong>Description:</strong> {{ res.description }}</p>
-      <p><strong>Parking Type:</strong> {{ res.parkingType }}</p>
+   
       <p><strong>Prix/heure:</strong> {{ res.price }} EUR</p>
-      <p><strong>Jour:</strong> {{ res.day }}</p>
       <p><strong>Date de réservation:</strong> {{ res.reservationDate.toDate() | date:'mediumDate' }}</p>
 
       <p><strong>Début de réservation:</strong> {{ res.departureTime }}</p>

@@ -38,6 +38,7 @@ export class Tab3Page implements OnInit {
 
 
   constructor(
+    
     private cdr: ChangeDetectorRef,
     private alertController: AlertController,
     private modalController: ModalController,
@@ -53,12 +54,12 @@ export class Tab3Page implements OnInit {
   handleRefresh(event) {
     setTimeout(() => {
       event.target.complete();
-    }, 2000);
+    }, 10000);
   }
 
   ngOnInit() {
 
-    this.timerSubscription = interval(1000).subscribe(() => {
+    this.timerSubscription = interval(10000).subscribe(() => {
       this.updateCountdowns();
       this.checkReservationsAndUpdateDoneStatus(); // New method to check reservation status
   });
@@ -140,6 +141,8 @@ export class Tab3Page implements OnInit {
    
 }
 
+
+
 checkReservationsAndUpdateDoneStatus() {
   const now = new Date();
   this.reservationData.forEach(res => {
@@ -151,15 +154,20 @@ checkReservationsAndUpdateDoneStatus() {
     console.log(`Original End Time: ${res.endTime}`);
 
     // Check if combinedEndDateTime is in the past
-    if (reservationDate.getTime() <= now.getTime() && !res.isDone) {
-      console.log(`Reservation ID: ${res.id} should be marked as done. Date & Time: ${reservationDate}`);
-      this.updateReservationAsDone(res.id);
+    if (reservationDate.getTime() <= now.getTime()) {
+      if (!res.isDone) {
+        console.log(`Reservation ID: ${res.id} should be marked as done. Date & Time: ${reservationDate}`);
+        this.updateReservationAsDone(res.id);
+      } else {
+        console.log(`Reservation ID: ${res.id} is finished, bool isDone true`);
+      }
     } else {
       console.log(`Reservation ID: ${res.id} is still active. Date & Time: ${reservationDate}`);
       console.log(`End Time Timestamp: ${endTimeTimestamp}`);
     }
   });
 }
+
 
 convertSelectedTimeToTimestamp(selectedTime: string): number {
   const currentTime = new Date();
