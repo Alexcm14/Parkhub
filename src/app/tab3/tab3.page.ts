@@ -58,7 +58,11 @@ export class Tab3Page implements OnInit {
 
   ngOnInit() {
 
-    
+    this.timerSubscription = interval(1000).subscribe(() => {
+      this.updateCountdowns();
+      this.checkReservationsAndUpdateDoneStatus(); // New method to check reservation status
+  });
+
     
     this.timerSubscription = interval(1000).subscribe(() => this.updateCountdowns());
      // Fetch logged-in user data
@@ -134,19 +138,81 @@ export class Tab3Page implements OnInit {
 
 
    
+}
+
+checkReservationsAndUpdateDoneStatus() {
+  const now = new Date();
+  this.reservationData.forEach(res => {
+    const reservationDate = res.reservationDate.toDate(); // Convert to JavaScript Date
+    const endTimeTimestamp = this.convertSelectedTimeToTimestamp(res.endTime);
+
+    // Print out the original date and time values
+    console.log(`Original Reservation Date: ${reservationDate}`);
+    console.log(`Original End Time: ${res.endTime}`);
+
+    // Check if combinedEndDateTime is in the past
+    if (reservationDate.getTime() <= now.getTime() && !res.isDone) {
+      console.log(`Reservation ID: ${res.id} should be marked as done. Date & Time: ${reservationDate}`);
+      this.updateReservationAsDone(res.id);
+    } else {
+      console.log(`Reservation ID: ${res.id} is still active. Date & Time: ${reservationDate}`);
+      console.log(`End Time Timestamp: ${endTimeTimestamp}`);
+    }
+  });
+}
+
+convertSelectedTimeToTimestamp(selectedTime: string): number {
+  const currentTime = new Date();
+  const [selectedHour, selectedMinute] = selectedTime.split(':').map(Number);
+  currentTime.setHours(selectedHour, selectedMinute, 0, 0);
+  return currentTime.getTime();
+}
+
+
+
+updateReservationAsDone(reservationId: string) {
+  const userId = this.authService.uid; // Get the user ID from your authentication service
+
+  if (!userId || !reservationId) {
+      console.error('Error: Missing user ID or reservation ID.');
+      return;
   }
 
-  
+  const now = new Date(); // Current time
+  const reservation = this.reservationData.find(res => res.id === reservationId);
+
+  if (!reservation) {
+      console.error(`Reservation with ID: ${reservationId} not found.`);
+      return;
+  }
+
+  const endTimeTimestamp = this.convertSelectedTimeToTimestamp(reservation.endTime);
+
+  if (endTimeTimestamp <= now.getTime()) {
+      // Update the reservation in Firestore only if the endTime has passed
+      this.firestore.collection('user_data').doc(userId)
+          .collection('reservation_data').doc(reservationId)
+          .update({ isDone: true })
+          .then(() => {
+              console.log(`Reservation with ID: ${reservationId} marked as done successfully!`);
+              // Optionally update your local data here to reflect the change
+          })
+          .catch((error) => {
+              console.error('Error updating reservation as done:', error);
+          });
+  } else {
+      console.log(`Reservation with ID: ${reservationId} is not yet due.`);
+  }
+}
 
 
-  updateCountdowns() {
+updateCountdowns() {
   const now = new Date().getTime();
   this.reservationData.forEach(res => {
-    // Check if the reservation is paid for
-    if (!res.isPayed) {
+    if (!res.isCancelled) { // Check if not already canceled
       if (res.createdAt && typeof res.createdAt.seconds === 'number') {
         const createdAtTime = new Date(res.createdAt.seconds * 1000).getTime();
-        const timeDiff = createdAtTime + 5 * 10000 - now; // 5 minutes in milliseconds
+        const timeDiff = createdAtTime + 5 * 60 * 1000 - now; // 5 minutes in milliseconds
 
         if (timeDiff > 0) {
           const minutes = Math.floor((timeDiff / (1000 * 60)) % 60);
@@ -160,9 +226,6 @@ export class Tab3Page implements OnInit {
           this.updateReservationStatus(res);
         }
       }
-    } else {
-      // For paid reservations, ensure they are not marked as cancelled
-      res.isCancelled = false;
     }
   });
 }
