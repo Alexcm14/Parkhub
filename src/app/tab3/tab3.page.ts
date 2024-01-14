@@ -210,9 +210,9 @@ updateCountdowns() {
   const now = new Date().getTime();
   this.reservationData.forEach(res => {
     if (!res.isCancelled) { // Check if not already canceled
-      if (res.createdAt && typeof res.createdAt.seconds === 'number') {
+      if (!res.isPayed &&res.createdAt && typeof res.createdAt.seconds === 'number') {
         const createdAtTime = new Date(res.createdAt.seconds * 1000).getTime();
-        const timeDiff = createdAtTime + 5 * 60 * 1000 - now; // 5 minutes in milliseconds
+        const timeDiff = createdAtTime + 5 * 60 * 200 - now; // 5 minutes in milliseconds
 
         if (timeDiff > 0) {
           const minutes = Math.floor((timeDiff / (1000 * 60)) % 60);
