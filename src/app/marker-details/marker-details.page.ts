@@ -267,6 +267,9 @@ export class MarkerDetailsPage {
         return;
       }
 
+      const reservationDate = this.getNextOccurrenceOfDay(this.selectedDay);
+
+
       
     
       try {
@@ -296,6 +299,7 @@ export class MarkerDetailsPage {
           // Now use set() to add data to this new document
           await reservationRef.set({
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            reservationDate: reservationDate,
             address: this.markerData.address,
             description: this.markerData.description,
             parkingType: this.markerData.parkingType,
@@ -323,6 +327,29 @@ export class MarkerDetailsPage {
         }
       } catch (error) {
         console.error('Error:', error);
+      }
+    }
+
+    getNextOccurrenceOfDay(dayName) {
+      const daysOfWeek = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
+      const currentDayIndex = new Date().getDay();
+      const selectedDayIndex = daysOfWeek.indexOf(dayName);
+    
+      const currentDate = new Date();
+      if (currentDayIndex === selectedDayIndex) {
+        // If the selected day is today, return today's date
+        return currentDate;
+      } else {
+        // Calculate the number of days until the next occurrence
+        let daysUntilNextOccurrence = selectedDayIndex - currentDayIndex;
+        if (daysUntilNextOccurrence < 0) {
+          daysUntilNextOccurrence += 7; // Adjust for the next week
+        }
+    
+        const nextOccurrenceDate = new Date();
+        nextOccurrenceDate.setDate(currentDate.getDate() + daysUntilNextOccurrence);
+    
+        return nextOccurrenceDate;
       }
     }
   }    

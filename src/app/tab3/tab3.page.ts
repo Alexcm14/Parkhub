@@ -57,6 +57,8 @@ export class Tab3Page implements OnInit {
   }
 
   ngOnInit() {
+
+    
     
     this.timerSubscription = interval(1000).subscribe(() => this.updateCountdowns());
      // Fetch logged-in user data
@@ -133,13 +135,19 @@ export class Tab3Page implements OnInit {
 
    
   }
+
+  
+
+
   updateCountdowns() {
-    const now = new Date().getTime();
-    this.reservationData.forEach(res => {
+  const now = new Date().getTime();
+  this.reservationData.forEach(res => {
+    // Check if the reservation is paid for
+    if (!res.isPayed) {
       if (res.createdAt && typeof res.createdAt.seconds === 'number') {
         const createdAtTime = new Date(res.createdAt.seconds * 1000).getTime();
-        const timeDiff = createdAtTime + 5 * 60000 - now; // 5 minutes in milliseconds
-  
+        const timeDiff = createdAtTime + 5 * 10000 - now; // 5 minutes in milliseconds
+
         if (timeDiff > 0) {
           const minutes = Math.floor((timeDiff / (1000 * 60)) % 60);
           const seconds = Math.floor((timeDiff / 1000) % 60);
@@ -152,8 +160,13 @@ export class Tab3Page implements OnInit {
           this.updateReservationStatus(res);
         }
       }
-    });
-  }
+    } else {
+      // For paid reservations, ensure they are not marked as cancelled
+      res.isCancelled = false;
+    }
+  });
+}
+
   
   
   ngOnDestroy() {
