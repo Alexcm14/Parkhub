@@ -27,17 +27,21 @@
       <p><strong>Début de réservation:</strong> {{ res.departureTime }}</p>
       <p><strong>Fin de réservation:</strong> {{ res.endTime }}</p>
       
-      <ion-select placeholder="Sélectionnez un véhicule" [(ngModel)]="selectedCar" (ionChange)="onCarChange($event)">
-        <ion-select-option *ngFor="let vehicle of vehicles" [value]="vehicle">
-          {{ vehicle.marque }} - {{ vehicle.plaque }}
-        </ion-select-option>
-      </ion-select>
-      <p *ngIf="!res.isPayed" class="countdown"><strong>Temps restant:</strong> {{ res.countdown }}</p>
-      <p *ngIf="res.isPayed" class="reserved"><strong>Réservé!</strong></p>
+      <ng-container *ngIf="!res.isPayed && res.countdown !== 'temps écoulé'">
+        <ion-select placeholder="Sélectionnez un véhicule" [(ngModel)]="selectedCar" (ionChange)="onCarChange($event)">
+          <ion-select-option *ngFor="let vehicle of vehicles" [value]="vehicle">
+            {{ vehicle.marque }} - {{ vehicle.plaque }}
+          </ion-select-option>
+        </ion-select>
+        
+        
 
-      <ion-button (click)="confirmReservation(res)" class="custom-button">Confirmer la réservation</ion-button>
+        <ion-button (click)="confirmReservation(res)" class="custom-button">Confirmer la réservation</ion-button>
+      </ng-container>
+      <p *ngIf="!res.isPayed" class="countdown"><strong>Temps restant:</strong> {{ res.countdown }}</p>
+        <p *ngIf="res.isPayed" class="reserved"><strong>Réservé!</strong></p>
+  
     </ion-card-content>
   </ion-card>
 </ion-content>
 
-  
