@@ -2,7 +2,14 @@
 .strong1 {
   color: red;
 }
-
+.cancel-button{
+ 
+    font-weight: bold;
+}
+.reservation-done {
+  color: red;
+  font-weight: bold;
+  }
 .title {
   font-size: 1.5rem;
 }
@@ -105,5 +112,8 @@ h2 {
     font-size: 12px;
     height: 30px;
   }
+
+  
+
 }
 }

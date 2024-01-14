@@ -156,6 +156,7 @@ checkReservationsAndUpdateDoneStatus() {
     // Check if combinedEndDateTime is in the past
     if (reservationDate.getTime() <= now.getTime()) {
       if (!res.isDone) {
+        
         console.log(`Reservation ID: ${res.id} should be marked as done. Date & Time: ${reservationDate}`);
         this.updateReservationAsDone(res.id);
       } else {
@@ -435,4 +436,37 @@ updateCountdowns() {
         }
       );
   }
+
+  cancelReservation(reservation) {
+    const userId = this.authService.uid;
+    if (!userId || !reservation.id) {
+      console.error('Error: Missing user ID or reservation ID.');
+      return;
+    }
+  
+    // Update the reservation as cancelled in Firestore
+    this.firestore.collection('user_data').doc(userId)
+      .collection('reservation_data').doc(reservation.id)
+      .update({ isCancelled: true })
+      .then(() => {
+        console.log(`Reservation with ID: ${reservation.id} marked as cancelled successfully!`);
+        
+        // Once marked as cancelled, delete the reservation from Firestore
+        return this.firestore.collection('user_data').doc(userId)
+          .collection('reservation_data').doc(reservation.id)
+          .delete();
+      })
+      .then(() => {
+        console.log(`Reservation with ID: ${reservation.id} deleted from Firestore successfully!`);
+        
+        // Remove the reservation from local data to reflect the deletion
+        this.reservationData = this.reservationData.filter(res => res.id !== reservation.id);
+      })
+      .catch(error => {
+        console.error('Error cancelling or deleting reservation:', error);
+      });
+  }
+  
+  
+  
 }
