@@ -12,14 +12,18 @@
       <ion-card-title>Numéro de réservation: {{ reservation.reservationId }}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <p>Start Time: {{ reservation.startTime }}</p>
+      <p>Start Time: {{ reservation.departureTime }}</p>
       <p>End Time: {{ reservation.endTime }}</p>
       <p>Vehicle: {{ reservation.vehicleMarque }} - {{ reservation.vehiclePlaque }}</p>
-      <p>Duration: {{ reservation.durationHours }} hours</p>
+      <p>Duration: {{ duration }} hours</p>
       <p>Subtotal: {{ reservation.subtotal | currency }}</p>
       <p>Total: {{ reservation.total | currency }}</p>
     </ion-card-content>
   </ion-card>
+  
+  
+    
+  
   
 
   </ion-content>
