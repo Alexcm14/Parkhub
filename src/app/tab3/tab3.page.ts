@@ -278,13 +278,16 @@ updateCountdowns() {
 
  
   async confirmReservation(reservation) {
+
+
+    const duration = this.calculateDuration(reservation.departureTime, reservation.endTime);
     const reservationDate = reservation.reservationDate.toDate();
     const formattedDate = reservationDate.getFullYear() + '-' + 
                           ('0' + (reservationDate.getMonth() + 1)).slice(-2) + '-' + 
                           ('0' + reservationDate.getDate()).slice(-2);
 
     const totalPrice = this.calculateTotalPrice(formattedDate, reservation.departureTime, reservation.endTime, reservation.price);
-    
+
     const alert = await this.alertController.create({
       header: 'Confirmation de la réservation',
       inputs: [
@@ -314,8 +317,9 @@ updateCountdowns() {
             // Update reservation properties
             reservation.isConfirmed = true;
             reservation.isPayed = true;
-            reservation.totalPrice = totalPrice;
             reservation.countdown = 'Réservé!';
+            reservation.totalPrice = totalPrice;
+            reservation.duration = duration;
   
             // Update Firestore and stop the countdown timer if it exists
             this.updateReservationStatus(reservation,totalPrice);
@@ -333,18 +337,21 @@ updateCountdowns() {
     await alert.present();
   }
   
-  updateReservationStatus(reservation, totalPrice?: number) {
+  updateReservationStatus(reservation, totalPrice?: number, ) {
     const userId = this.authService.uid;
     if (!userId || !reservation.id) {
       console.error('Error: Missing user ID or reservation ID.');
       return;
     }
-  
+    const duration = this.calculateDuration(reservation.departureTime, reservation.endTime);
+    reservation.duration = duration;
+
     this.firestore.collection('user_data').doc(userId).collection('reservation_data').doc(reservation.id).update({
     isPayed: reservation.isPayed,
     isCancelled: reservation.isCancelled,
-    totalPrice: totalPrice
-  
+    totalPrice: totalPrice,
+    duration: reservation.duration 
+   
     })
     .then(() => {
       console.log('Reservation updated successfully!');
@@ -355,6 +362,34 @@ updateCountdowns() {
   }
   )}
 
+  calculateTotalPrice(startDate: string, startTime: string, endTime: string, pricePerHour: number): number {
+    // Assuming your start date comes in a full date format, and start & end times are just 'HH:mm' format.
+    const startDateTime = new Date(`${startDate}T${startTime}`);
+    const endDateTime = new Date(`${startDate}T${endTime}`);
+  
+    // Check if the end time is the next day (if end time is less than start time)
+    if (endDateTime < startDateTime) {
+      endDateTime.setDate(endDateTime.getDate() + 1); // Adds a day to end date
+    }
+  
+    const durationInHours = (endDateTime.getTime() - startDateTime.getTime()) / 1000 / 3600;
+    return durationInHours * pricePerHour;
+  }
+  
+  calculateDuration(startTime: string, endTime: string): string {
+    const startDate = new Date(`1970-01-01T${startTime}`);
+    const endDate = new Date(`1970-01-01T${endTime}`);
+  
+    if (endDate < startDate) {
+      endDate.setDate(endDate.getDate() + 1); // Adjust for next day
+    }
+  
+    const diff = endDate.getTime() - startDate.getTime();
+    const hours = Math.floor(diff / 3600000); // milliseconds in an hour
+    const minutes = Math.round((diff % 3600000) / 60000); // milliseconds in a minute
+  
+    return `${hours}h ${minutes}m`;
+  }
 
  
 
@@ -476,36 +511,6 @@ updateCountdowns() {
         console.error('Error cancelling or deleting reservation:', error);
       });
   }
-
-  calculateTotalPrice(startDate: string, startTime: string, endTime: string, pricePerHour: number): number {
-    // Assuming your start date comes in a full date format, and start & end times are just 'HH:mm' format.
-    const startDateTime = new Date(`${startDate}T${startTime}`);
-    const endDateTime = new Date(`${startDate}T${endTime}`);
-  
-    // Check if the end time is the next day (if end time is less than start time)
-    if (endDateTime < startDateTime) {
-      endDateTime.setDate(endDateTime.getDate() + 1); // Adds a day to end date
-    }
-  
-    const durationInHours = (endDateTime.getTime() - startDateTime.getTime()) / 1000 / 3600;
-    return durationInHours * pricePerHour;
-  }
-  
-  calculateDuration(startTime: string, endTime: string): string {
-    const startDate = new Date(`1970-01-01T${startTime}`);
-    const endDate = new Date(`1970-01-01T${endTime}`);
-  
-    if (endDate < startDate) {
-      endDate.setDate(endDate.getDate() + 1); // Adjust for next day
-    }
-  
-    const diff = endDate.getTime() - startDate.getTime();
-    const hours = Math.floor(diff / 3600000); // milliseconds in an hour
-    const minutes = Math.round((diff % 3600000) / 60000); // milliseconds in a minute
-  
-    return `${hours}h ${minutes}m`;
-  }
-  
   
   
   
