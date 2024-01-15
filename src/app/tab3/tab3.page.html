@@ -11,9 +11,11 @@
 
   <ion-card *ngFor="let res of reservationData" class="custom-card">
     <ion-item>
-      <ion-button fill="clear" slot="end" class="message-icon" (click)="navigateToTab2()">
+
+      <ion-button fill="clear" slot="end" class="message-icon" (click)="navigateToTab2(res)">
         <ion-icon name="chatbubbles-outline"></ion-icon>
       </ion-button>
+      
     </ion-item>
     <ion-card-header>
       <img [src]="res.Photos" alt="Image de l'emplacement">

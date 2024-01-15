@@ -10,6 +10,7 @@ import { NgModule } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
 import { interval, Subscription, } from 'rxjs';
 import { NavController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 
 
@@ -44,11 +45,17 @@ export class Tab3Page implements OnInit {
     private authService: AuthService,
     private firestore: AngularFirestore,
     private navCtrl: NavController,
+    private router: Router
   ) {}
 
-  navigateToTab2() {
-    this.navCtrl.navigateForward('tabs/tab2');
+  navigateToTab2(reservation) {
+    let conversationData = {
+      otherUserId: reservation.ownerId
+    };
+    this.router.navigate(['tabs/tab2', conversationData]);
   }
+  
+  
 
   handleRefresh(event) {
     setTimeout(() => {
@@ -305,6 +312,7 @@ export class Tab3Page implements OnInit {
       }
     });
   }
+
   confirmerReservation(emplacement: any): void {
     const updatedStatus = emplacement.isRese;
 

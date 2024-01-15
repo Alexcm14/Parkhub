@@ -17,7 +17,7 @@
     <ion-text class="creer">
       Créer une nouvelle annonce
     </ion-text>
-    <ion-button class="creation" (click)="redirigerVersConfig1()"><ion-icon name="location"></ion-icon>  Créer une nouvelle annonce  <ion-icon name="arrow-forward"></ion-icon></ion-button>
+    <ion-button class="creation" (click)="redirigerVersConfig1()"><ion-icon name="location" slot="start"></ion-icon>  Créer une nouvelle annonce  <ion-icon name="arrow-forward" slot="end"></ion-icon></ion-button>
   </ion-list>
 
   <ion-text class="creer" *ngIf="aDesAnnonces">Mes annonces</ion-text>
@@ -49,7 +49,7 @@
 
       <ion-item>
       <ion-button fill="clear" (click)="editEmplacement(emplacement.id)" slot="start">
-        Modifier l'annonce<ion-icon name="create"></ion-icon>
+        Modifier l'annonce<ion-icon name="create" slot="end"></ion-icon>
      </ion-button>
     </ion-item>
     <ion-label style="font-size: 12px; margin-top: 5px;"> Numéro de réservation : {{ emplacement.id }}</ion-label>
@@ -57,7 +57,7 @@
     </ion-card-content>
   </ion-card>
   <ion-button class="reservations-button" (click)="goRes()">
-    <ion-icon name="list"></ion-icon> Réservations <ion-icon name="arrow-forward"></ion-icon>
+    <ion-icon name="list" slot="start"></ion-icon> Mes réservations <ion-icon name="arrow-forward" slot="end"></ion-icon>
   </ion-button>
   
   

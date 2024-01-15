@@ -4,21 +4,25 @@
   </ion-toolbar>
 </ion-header>
 
-
-
-
-
 <ion-content fullscreen="true">
-  <!-- Liste des personnes qui envoient des messages -->
-  <ion-list>
-    <ion-item *ngFor="let person of messageSenders">
-      <ion-avatar slot="start">
-        <ion-icon size="large" name="person-circle-outline"></ion-icon>
-      </ion-avatar>
-      <ion-label>
-        <h2>{{ person.name }}</h2>
-        <p>Dernier message : {{ person.lastMessage }}</p>
-      </ion-label>
-    </ion-item>
-  </ion-list>
+  <div class="messages">
+    <div *ngFor="let message of messages" [class]="message.sender === authService.uid ? 'message mine' : 'message other-user'">
+      <div *ngIf="message.sender === authService.uid" class="profile-pic">
+        <img [src]="myProfilePic">
+      </div>
+      <div class="message-content">
+        <div class="message-header">
+          <strong>{{ message.senderName }}</strong>
+        </div>
+        <p>{{ message.text }}</p>
+      </div>
+      <div *ngIf="message.sender !== authService.uid" class="profile-pic">
+        <img [src]="otherUserProfilePic">
+      </div>
+    </div>
+  </div>
+  <div class="message-input-container">
+    <input type="text" class="message-input" placeholder="Tapez votre message..." [(ngModel)]="newMessage" (keyup.enter)="sendMessage(newMessage)">
+    <button class="send-button" (click)="sendMessage(newMessage)"><ion-icon name="paper-plane" style="font-size: 17px;"></ion-icon></button>
+  </div>
 </ion-content>

@@ -1,91 +1,98 @@
-/* Styles existants */
-ion-avatar {
-    margin-right: 10px;
+.messages {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  overflow-y: auto;
+  height: 100%; /* Assurez-vous que la zone de messages utilise tout l'espace disponible */
+}
+
+.title{
+  font-weight: bold;
+  color: #46d1c8;
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+}
+.message {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  flex-direction: row-reverse; /* Inverse la direction pour vos messages */
+}
+
+.other-user .message {
+  flex-direction: row; /* Direction normale pour les messages de l'autre utilisateur */
+}
+
+.profile-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 0 10px;
+}
+
+.message-content {
+  background-color: #f0f0f0;
+  border-radius: 15px;
+  padding: 5px 10px; /* Réduit la taille du padding pour des messages plus fins */
+  max-width: 60%; /* Réduit la largeur maximale */
+  word-wrap: break-word; /* Empêche les mots longs de dépasser du cadre */
+}
+
+.mine .message-content {
+  background-color: #46d1c8;
+  color: white;
+}
+
+/* Messages de l'autre utilisateur */
+.other-user {
+  justify-content: flex-end; /* Messages de l'autre utilisateur à droite */
+}
+
+.other-user .message-content {
+  background-color: #f0f0f0;
+  color: black;
+}
+
+/* Ajustement pour la photo de profil */
+.mine .profile-pic {
+  order: 1;
+  margin-left: 10px;
+  margin-right: 0;
+}
+
+.other-user .profile-pic {
+  order: -1; /* Photo de profil à gauche pour l'autre utilisateur */
+}
+
+/* Conteneur pour la zone de saisie et le bouton */
+.message-input-container {
+  display: flex;
+  padding: 10px;
+  background-color: white;
+  border-top: 1px solid #ccc;
+  position: fixed;
+  bottom: 50px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Style pour le champ de saisie */
+.message-input {
+  flex-grow: 1;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  padding: 8px 15px;
+  margin-right: 10px;
+}
+
+/* Style pour le bouton d'envoi */
+.send-button {
+  background-color: #46d1c8;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 15px;
+  font-weight: bold;
+  cursor: pointer;
   }
-  
-  ion-list {
-    margin: 10px;
-  }
-  
-  ion-item {
-    border-bottom: 1px solid #ccc;
-  }
-  
-  .title {
-    font-size: 1.5rem;
-  }
-  
-  ion-title {
-    font-weight: bold;
-    color: #46d1c8; /* Utilisez la couleur bleue que vous avez mentionnée */
-    margin-bottom: 20px;
-  }
-  
-  ion-content {
-    ion-list {
-      ion-list-header {
-        font-weight: 600;
-        font-size: 1rem;
-      }
-      ion-item {
-        margin-top: 2vh;
-        ion-label {
-          font-size: 1.2rem;
-          p {
-            margin-top: 3px;
-          }
-        }
-        ion-text {
-          font-size: 0.9rem;
-        }
-      }
-    }
-  }
-  
-  /* Styles pour la réactivité */
-  @media screen and (max-width: 768px) {
-    .title {
-      font-size: 1.2rem;
-    }
-  
-    ion-item {
-      ion-label {
-        font-size: 1rem;
-        p {
-          font-size: 0.8rem;
-        }
-      }
-    }
-  
-    ion-title {
-      font-size: 1rem;
-    }
-  }
-  
-  @media screen and (max-width: 480px) {
-    .title {
-      font-size: 1rem;
-    }
-  
-    ion-item {
-      ion-label {
-        font-size: 0.9rem;
-        p {
-          font-size: 0.7rem;
-        }
-      }
-    }
-  
-    ion-title {
-      font-size: 0.9rem;
-    }
-  
-    ion-avatar {
-      margin-right: 5px;
-    }
-  
-    ion-list {
-      margin: 5px;
-    }
-  }
-  
