@@ -144,7 +144,7 @@ export class ResPage implements OnInit {
         endTime: endTime.toLocaleString(),
         vehicleMarque: reservation.vehicleMarque,
         vehiclePlaque: reservation.vehiclePlaque,
-        duration: durationHours,
+        duration: reservation.duration,
         subtotal: reservation.subtotal, 
         total: reservation.total, 
       };

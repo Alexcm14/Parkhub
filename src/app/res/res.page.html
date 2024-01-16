@@ -15,7 +15,7 @@
       <p>Start Time: {{ reservation.departureTime }}</p>
       <p>End Time: {{ reservation.endTime }}</p>
       <p>Vehicle: {{ reservation.vehicleMarque }} - {{ reservation.vehiclePlaque }}</p>
-      <p>Duration: {{ duration }} hours</p>
+      <p>Duration: {{ reservation.duration }} hours</p>
       <p>Subtotal: {{ reservation.subtotal | currency }}</p>
       <p>Total: {{ reservation.total | currency }}</p>
     </ion-card-content>
