@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { SharedService } from '../shared.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cartes',
@@ -13,7 +14,7 @@ export class CartesPage {
   numeroCvc: number;
 
   // Injectez le service dans le constructeur
-  constructor(private navCtrl: NavController, private sharedService: SharedService) {}
+  constructor(private router: Router, private navCtrl: NavController, private sharedService: SharedService) {}
 
   ajouterCarte() {
     console.log('Informations de carte ajoutées :', this.numeroCarte);
@@ -29,6 +30,7 @@ export class CartesPage {
 
   retourAuPopup() {
     this.navCtrl.navigateBack('/chemin-vers-votre-popup');
+    this.router.navigate(['tabs/tab5']);
   }
 }
 

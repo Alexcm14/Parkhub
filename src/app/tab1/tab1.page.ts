@@ -14,6 +14,7 @@ import { ModalController } from '@ionic/angular';
 import { PopoverController } from '@ionic/angular';
 import { MarkerDetailsPage } from '../marker-details/marker-details.page';
 import { UserBuildConditionals } from 'ionicons/dist/types/stencil-public-runtime';
+import { AlertController } from '@ionic/angular';
 
 declare var google: any;
 
@@ -72,7 +73,7 @@ export class Tab1Page {
 
  
 
- constructor(private popoverController: PopoverController, private modalController: ModalController, private router: Router, private zone: NgZone, private authService: AuthService, private firestore: AngularFirestore) {
+ constructor(private alertController: AlertController, private popoverController: PopoverController, private modalController: ModalController, private router: Router, private zone: NgZone, private authService: AuthService, private firestore: AngularFirestore) {
   // Déclarations et initialisations dans le constructeur
 
   this.endTimeSpan = document.createElement('div');
@@ -352,11 +353,29 @@ ionViewDidEnter(){
   this.loadMarkers();
 
   this.ShowMap();
+  this.showTermsAndConditionsPopup();
 }
 
+async showTermsAndConditionsPopup() {
+  // Vérifiez si l'utilisateur a déjà accepté les conditions générales
+  if (!localStorage.getItem('readenTerms')) {
+    const alert = await this.alertController.create({
+      header: 'Conditions Générales',
+      message: 'Veuillez lire et accepter les conditions générales.',
+      buttons: [
+        {
+          text: 'Lire',
+          handler: () => {
+            // Rediriger l'utilisateur vers la page "Conditions"
+            this.router.navigate(['/conditions']);
+          },
+        },
+      ],
+    });
 
-
-  
+    await alert.present();
+  }
+}
   
   
   // CARTE GOOGLE MAPS 

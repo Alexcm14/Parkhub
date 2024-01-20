@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { PaypopupPage } from '../paypopup/paypopup.page';
 import { SharedService } from '../shared.service';
+import { RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -13,10 +15,11 @@ export class PayPage implements OnInit {
   hasPaymentMethods = false;
   isAddPaymentMethodPopupOpen = false;
 
-  constructor(public popoverController: PopoverController, private sharedService: SharedService) { }
+  constructor(private router: Router, public popoverController: PopoverController, private sharedService: SharedService) { }
 
   openAddPaymentMethodPopup(ev: any) {
     this.presentPopover(ev);
+    this.router.navigate(['tabs/tab5']);
   }
 
   async presentPopover(ev: any) {
@@ -31,6 +34,8 @@ export class PayPage implements OnInit {
 
   closeAddPaymentMethodPopup() {
     this.isAddPaymentMethodPopupOpen = false;
+    
+    
   }
 
   get cartesService() {

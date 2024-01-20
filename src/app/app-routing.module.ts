@@ -102,7 +102,11 @@ const routes: Routes = [
   {
     path: 'proprio',
     loadChildren: () => import('./proprio/proprio.module').then( m => m.ProprioPageModule)
+  },  {
+    path: 'conditions',
+    loadChildren: () => import('./conditions/conditions.module').then( m => m.ConditionsPageModule)
   },
+
   
 
 

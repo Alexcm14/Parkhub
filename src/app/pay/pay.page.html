@@ -1,25 +1,14 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
    
-    <ion-title class="title">Moyens de paiement</ion-title>
+    <ion-title class="title">Portefeuille</ion-title>
     <ion-back-button slot="start" defaultHref="/tabs/tab5">Retour</ion-back-button>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
-  <!-- Affiche le message s'il n'y a pas de moyen de paiement -->
-  <ion-text *ngIf="!hasPaymentMethods" class="no-payment-methods">
-    Tu n'as pas encore de moyen de paiement. Ajoutes-en via le bouton "+".
-  </ion-text>
-
-  <ion-card *ngFor="let carte of cartesService.getCartes()">
-    <ion-card-content>
-      <ion-card-title>Mes cartes</ion-card-title>
-      Numéro de carte : {{ carte.numeroCarte }}
-      Date d'expiration : {{ carte.DateExp }}
-      CVC : {{ carte.numeroCvc }}
-    </ion-card-content>
-  </ion-card>
+ 
+  
   
 
   <!-- Affiche le bouton "+" pour ajouter un moyen de paiement -->

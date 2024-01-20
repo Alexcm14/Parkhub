@@ -64,6 +64,9 @@ export class Tab5Page implements OnInit {
     this.router.navigate(['/proprio']);
   }
 
+  goConditions() {
+    this.router.navigate(['/conditions']);
+  }
   onHover(status: boolean): void {
     this.hovering = status;
   }
