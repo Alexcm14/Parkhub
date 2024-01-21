@@ -3,7 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthService } from 'src/app/services/auth.service';
 import { map, switchMap, take } from 'rxjs/operators';
-import { Observable, from, of } from 'rxjs';
+import { Observable, from, of, combineLatest } from 'rxjs';
 import { AlertController } from '@ionic/angular';
 import { Pipe, PipeTransform } from '@angular/core';
 import { NgModule } from '@angular/core';
@@ -26,6 +26,12 @@ export class ResPage implements OnInit {
   reservationData: any[] = [];
   vehicles: any[] = [];
   Photos: Url;
+  emplacementIds: string[] = [];
+  departureTime: string;
+  endTime: string;
+  startTime:string;
+  durationHours: string;
+
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -70,45 +76,79 @@ export class ResPage implements OnInit {
     } else {
       console.log('User data not found in Firestore.');
   }
-  this.fetchReservations();
+  this.loadEmp();
+  this.loadReservations();
   });
+  
   }
 
-  fetchReservations() {
-    this.firestore.collection('reservations', ref => ref.where('userId', '==', this.authService.uid))
-      .valueChanges({ idField: 'reservationId' })
+  loadEmp() {
+    this.firestore
+      .collection('user_data')
+      .doc(this.authService.uid)
+      .collection('emplacement_data')
+      .snapshotChanges()
       .pipe(
-        map(reservations => this.processReservations(reservations))
+        map(actions => actions.map(a => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          this.emplacementIds.push(id); // Store each emplacement ID
+          return { id, ...data };
+        }))
       )
-      .subscribe(processedReservations => {
-        console.log('Réservations récupérées:', processedReservations); // Ajoutez cette ligne
-        this.reservations = processedReservations;
-        this.cdr.detectChanges();
+      .subscribe((empData: any) => {
+        if (empData) {
+          console.log('emp Data with IDs:', empData);
+          this.emplacements = empData;
+          this.loadReservations();
+        }
       });
   }
+  loadReservations() {
+    if (this.emplacementIds.length === 0) {
+      console.log('No emplacements to query for reservations');
+      return;
+    }
   
+    const reservationObservables = this.emplacementIds.map(emplacementId =>
+      this.firestore.collectionGroup('reservation_data', ref =>
+        ref.where('emplacementId', '==', emplacementId)
+        .where('isPayed', '==', true)
+      ).valueChanges()
+    );
+  
+    combineLatest(reservationObservables).subscribe(allReservations => {
+      // Flatten the array of arrays
+      const mergedReservations = [].concat.apply([], allReservations);
+      console.log('All matched reservations from all users:', mergedReservations);
+      this.reservations = mergedReservations;
+      console.log('Processed reservations:', this.reservations);
 
-  processReservations(reservations: any[]) {
-    return reservations.map(reservation => {
-      const startTime = new Date(reservation.departureTime);
-      const endTime = new Date(reservation.endTime);
-      const durationHours = (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60);
-      const subtotal = reservation.price * durationHours;
-      const total = subtotal * 0.8;
-  
-      return {
-        reservationId: reservation.reservationId,
-        startTime: startTime.toLocaleString(),
-        endTime: endTime.toLocaleString(),
-        vehicleMarque: reservation.vehicleMarque, // Assurez-vous que ces champs existent
-        vehiclePlaque: reservation.vehiclePlaque, // dans l'objet de réservation
-        durationHours,
-        subtotal,
-        total: reservation.total,
-      };
     });
   }
   
   
+
+
+
+
+  processReservations(reservations: any[]) {
+    return reservations.map(reservation => {
+      const departureTime = new Date(reservation.departureTime);
+      const endTime = new Date(reservation.endTime);
+      const durationHours = (endTime.getHours() - departureTime.getHours()) / (1000 * 60 * 60);
   
+      return {
+        reservationId: reservation.reservationId,
+        departureTime: departureTime.toLocaleString(),
+        endTime: endTime.toLocaleString(),
+        vehicleMarque: reservation.vehicleMarque,
+        vehiclePlaque: reservation.vehiclePlaque,
+        duration: reservation.duration,
+        subtotal: reservation.subtotal, 
+        total: reservation.total, 
+      };
+    });
+  }
+  
 }
