@@ -74,6 +74,51 @@ export class LoginPage implements OnInit {
 		});
 		await alert.present();
 	}
+
+	async forgotPassword() {
+		const alert = await this.alertController.create({
+		  header: 'Mot de passe oublié',
+		  message: 'Entrez votre adresse e-mail pour réinitialiser votre mot de passe.',
+		  inputs: [
+			{
+			  name: 'email',
+			  type: 'email',
+			  placeholder: 'Votre adresse e-mail',
+			},
+		  ],
+		  buttons: [
+			{
+			  text: 'Annuler',
+			  role: 'cancel',
+			  handler: () => {
+				console.log('Annulation de la réinitialisation du mot de passe');
+			  },
+			},
+			{
+			  text: 'Réinitialiser',
+			  handler: async (data) => {
+				const loading = await this.loadingController.create();
+				await loading.present();
+	
+				// Envoyez la demande de réinitialisation du mot de passe à votre service d'authentification
+				this.authService
+				  .resetPassword(data.email)
+				  .then(() => {
+					loading.dismiss();
+					this.showAlert('Réinitialisation réussie', 'Veuillez consulter votre e-mail pour les instructions.');
+				  })
+				  .catch((error) => {
+					loading.dismiss();
+					this.showAlert('Erreur', 'Une erreur s\'est produite. Veuillez réessayer.');
+				  });
+			  },
+			},
+		  ],
+		});
+	
+		await alert.present();
+	  }
+	
 }
  
 
