@@ -1,11 +1,9 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-   
-      <ion-button class="close" slot="start" (click)="fermerPage()">
-        <ion-icon name="close"></ion-icon>
-      </ion-button>
-      <ion-button slot="end" class="questions">Des questions ?</ion-button>
-   
+    <ion-button class="close" slot="start" (click)="fermerPage()">
+      <ion-icon name="close"></ion-icon>
+    </ion-button>
+    <ion-button slot="end" class="questions">{{ 'Des_questions' | translate }}</ion-button>
     <ion-title class="title"></ion-title>
   </ion-toolbar>
 </ion-header>
@@ -14,29 +12,25 @@
   <ion-img src="assets/images/localisation.png" alt="localisation" style="width: 85%; margin: auto; border-radius: 10px; position: relative;"></ion-img>
 
   <ion-text class="T-loc">
-    Où est situé votre parking ?
+    {{ 'Ou_est_situe_votre_parking' | translate }}
   </ion-text>
   <ion-text class="loc1">
-    L'adresse sera uniquement communiqué aux locataires une fois leur réservation effectuée
+    {{ 'L_adresse_sera_uniquement_communiquee_aux_locataires' | translate }}
   </ion-text>
 
+  <ion-searchbar [debounce]="600" [(ngModel)]="autocomplete.input" (ionInput)="updateSearchResults()" placeholder="{{ 'Cherchez_une_adresse' | translate }}"></ion-searchbar>
 
-    <ion-searchbar [debounce]="600" [(ngModel)]="autocomplete.input" (ionInput)="updateSearchResults()" placeholder="Cherchez une adresse"></ion-searchbar>
-   
-    <ion-list  lines="none" [inset]="true" *ngIf="autocompleteItems.length > 0" class="prediction-list" [hidden]="autocompleteItems.length === 0">
-      <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
-        {{ item.description }}
-      </ion-item>
-    </ion-list>
- 
-
+  <ion-list lines="none" [inset]="true" *ngIf="autocompleteItems.length > 0" class="prediction-list" [hidden]="autocompleteItems.length === 0">
+    <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
+      {{ item.description }}
+    </ion-item>
+  </ion-list>
 </ion-content>
 
 <ion-footer>
   <ion-toolbar>
     <ion-title></ion-title>
-    <ion-back-button slot="start" defaultHref="/config1">retour</ion-back-button>
-    <ion-button slot="end" (click)="redirigerVersNbplaces()">Suivant <ion-icon name="arrow-forward"></ion-icon></ion-button>
+    <ion-back-button slot="start" defaultHref="/config1">{{ 'retour' | translate }}</ion-back-button>
+    <ion-button slot="end" (click)="redirigerVersNbplaces()">{{ 'Suivant' | translate }} <ion-icon name="arrow-forward"></ion-icon></ion-button>
   </ion-toolbar>
 </ion-footer>
-

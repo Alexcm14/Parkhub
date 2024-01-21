@@ -1,11 +1,9 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-   
-      <ion-button class="close" slot="start" (click)="fermerPage()">
-        <ion-icon name="close"></ion-icon>
-      </ion-button>
-      <ion-button slot="end" class="questions">Des questions ?</ion-button>
-   
+    <ion-button class="close" slot="start" (click)="fermerPage()">
+      <ion-icon name="close"></ion-icon>
+    </ion-button>
+    <ion-button slot="end" class="questions">{{ 'Des_questions' | translate }}</ion-button>
     <ion-title class="title"></ion-title>
   </ion-toolbar>
 </ion-header>
@@ -14,36 +12,34 @@
   <ion-img src="assets/images/parking.png" alt="parking" style="width: 85%; margin: auto; border-radius: 10px; position: relative;"></ion-img>
   
   <ion-text class="etape1">
-    Etape 1
+    {{ 'Etape_1' | translate }}
   </ion-text>
   <ion-text class="T-etape1">
-    Parmi les propositions suivantes, laquelle décrit le mieux votre parking ?
+    {{ 'Parmi_les_propositions_suivantes' | translate }}
   </ion-text>
   <ion-item>
     <ion-card (click)="selectCard('Emplacement')" [class.selected]="selectedCard === 'Emplacement'">
-      <ion-icon name="car"></ion-icon> Emplacement
+      <ion-icon name="car"></ion-icon> {{ 'Emplacement' | translate }}
     </ion-card>
     <ion-card (click)="selectCard('Parking')" [class.selected]="selectedCard === 'Parking'">
-      <ion-icon name="people"></ion-icon> Parking partagé
+      <ion-icon name="people"></ion-icon> {{ 'Parking_partage' | translate }}
     </ion-card>
   </ion-item>
   
   <ion-item class="last">
     <ion-card (click)="selectCard('Box')" [class.selected]="selectedCard === 'Box'">
-      <ion-icon name="cube"></ion-icon> Box
+      <ion-icon name="cube"></ion-icon> {{ 'Box' | translate }}
     </ion-card>
     <ion-card (click)="selectCard('Garage')" [class.selected]="selectedCard === 'Garage'">
-      <ion-icon name="home"></ion-icon> Garage
+      <ion-icon name="home"></ion-icon> {{ 'Garage' | translate }}
     </ion-card>
   </ion-item>
-
-
 </ion-content>
 
 <ion-footer>
   <ion-toolbar>
     <ion-title></ion-title>
-    <ion-back-button slot="start" defaultHref="/annonces">retour</ion-back-button>
-    <ion-button slot="end" (click)="redirigerVerslocalisation()">Suivant <ion-icon name="arrow-forward"></ion-icon></ion-button>
+    <ion-back-button slot="start" defaultHref="/annonces">{{ 'retour' | translate }}</ion-back-button>
+    <ion-button slot="end" (click)="redirigerVerslocalisation()">{{ 'Suivant' | translate }} <ion-icon name="arrow-forward"></ion-icon></ion-button>
   </ion-toolbar>
 </ion-footer>

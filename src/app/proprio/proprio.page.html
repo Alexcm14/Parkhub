@@ -1,79 +1,83 @@
+<!-- your-page.page.html -->
+
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title class="title"></ion-title>
-    <ion-back-button slot="start" defaultHref="/tabs/tab5">Retour</ion-back-button>
+    <ion-title class="title" translate>
+      
+    </ion-title>
+    <ion-back-button slot="start" defaultHref="/tabs/tab5" translate>
+      Retour
+    </ion-back-button>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-list>
-      <ion-text class="T1">
-        Mettez votre place de parking sur ParkHub.
-      </ion-text>
+    <ion-text class="T1" translate>
+      Mettez_votre_place_sur_ParkHub
+    </ion-text>
 
-      <ion-item>
-        <ion-label class="T2">
-          Vous pourriez gagner jusqu'à 
-        </ion-label>
-      </ion-item>
-      
-      <ion-item>
-        <ion-label class="somme">{{ somme }} €</ion-label>
-      </ion-item>
-      
-      <ion-item>
-        <ion-label class="estimation">
-          Pour <span class="underline-text">{{ valeur }} {{ valeur === 0 || valeur === 1 ? 'jour' : 'jours' }}</span> de location avec une estimation de 2,00€/heure*
-        </ion-label>
-      </ion-item>
-      
-      <ion-item>
-        <ion-range [(ngModel)]="valeur" min="1" max="30" step="1" [pin]="true" (ionChange)="calculerSomme()">
-        </ion-range>
-      </ion-item>
+    <ion-item>
+      <ion-label class="T2" translate>
+        Vous_pourriez_gagner_jusqu_a
+      </ion-label>
+    </ion-item>
 
-    <ion-button (click)="afficherEstimation()" class ="search" color="light">
+    <ion-item>
+      <ion-label class="somme">{{ somme | currency: 'EUR' }}</ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-label class="estimation" translate>
+        Pour <span class="underline-text">{{ valeur }} {{ valeur === 0 || valeur === 1 ? 'jour' : 'jours' }}</span>
+        de_location_avec_une_estimation_de
+        <ion-text color="primary">2,00€/H*</ion-text>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-range [(ngModel)]="valeur" min="1" max="30" step="1" [pin]="true" (ionChange)="calculerSomme()">
+      </ion-range>
+    </ion-item>
+
+    <ion-button (click)="afficherEstimation()" class="search" color="light" translate>
       <ion-icon name="search-outline" style="color: #46d1c8;"></ion-icon>
       <div class="search-button-text">
-          Bruxelles -
-        <span class="gray-text">Place de parking...</span>
+        Bruxelles - <span class="gray-text">Place de parking...</span>
       </div>
     </ion-button>
 
-    <ion-img class="image" src="assets/images/cartebxl.png" alt="Carte de Bruxelles" style="width: 85%; margin: auto; border-radius: 10px; position: relative;"></ion-img>
+    <ion-img class="image" src="assets/images/cartebxl.png" alt="Carte de Bruxelles"
+      style="width: 85%; margin: auto; border-radius: 10px; position: relative;"></ion-img>
 
     <ion-item>
-      <ion-label class="start">
-        Avec ParkHub, c'est facile de se lancer 
-        <br>
+      <ion-label class="start" translate>
+        Avec_ParkHub_c_est_facile_de_se_lancer <br>
       </ion-label>
     </ion-item>
 
     <div class="etapes">
-    <ion-text style="text-align: center;">
-      <h2>Louez votre place de parking en 3 étapes tellement simple !</h2><br>
-      <h3>1. Saisissez les informations de base de votre parking</h3>
-      <p>Où se situe-t'il, combien de voitures peut-il accueillir,... </p>
-      <br>
-      <h3>2. Rendez votre annonce attrayante</h3>
-      <p>Postez plusieurs photos de votre place de parking, mettez-la en valeur, profitez des évènements près de chez vous,...</p>
-      <br>
-      <h3>3. Lancez-vous !</h3>
-      <p>Publiez votre annonce, fixez votre prix et recevez votre argent</p>
-    </ion-text>
-  </div>
-     
+      <ion-text style="text-align: center;">
+        <h2 translate>Louez_votre_place_en_3_etapes</h2><br>
+        <h3 translate>1._Saisissez_les_informations_de_base</h3>
+        <p translate>Ou_se_situe_t_il_combien_de_voitures_peut_il_accueillir</p>
+        <br>
+        <h3 translate>2._Rendez_votre_annonce_attrayante</h3>
+        <p translate>Postez_plusieurs_photos_mettez_la_en_valeur_profitez_des_evenements</p>
+        <br>
+        <h3 translate>3._Lancez_vous</h3>
+        <p translate>Publiez_votre_annonce_fixez_votre_prix_recevez_votre_argent</p>
+      </ion-text>
+    </div>
+
   </ion-list>
 
 </ion-content>
 
 <ion-footer>
-<div class="fixed-button">
-  
-    <ion-button color="primary" (click)="redirigerVersAnnonces()">
-      <ion-icon name="car-outline"> </ion-icon> ParkHub Start</ion-button>
-
-</div>
+  <div class="fixed-button">
+    <ion-button color="primary" (click)="redirigerVersAnnonces()" translate>
+      <ion-icon name="car-outline"></ion-icon> ParkHub_Start
+    </ion-button>
+  </div>
 </ion-footer>
-
-

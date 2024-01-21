@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { VehicleSelectionService } from '../shared/vehicule-selection.service';
+import { TranslateService } from '@ngx-translate/core';
+import { LanguageService } from 'src/app/language.service';
 
 @Component({
   selector: 'app-prix',
@@ -8,7 +10,7 @@ import { VehicleSelectionService } from '../shared/vehicule-selection.service';
   styleUrls: ['./prix.page.scss'],
 })
 export class PrixPage implements OnInit {
-
+  selectedLanguage: string = 'fr';
   days = [
     { name: 'Lun', value: 'monday', selected: false },
     { name: 'Mar', value: 'tuesday', selected: false },
@@ -17,6 +19,7 @@ export class PrixPage implements OnInit {
     { name: 'Ven', value: 'friday', selected: false },
     { name: 'Sam', value: 'saturday', selected: false },
     { name: 'Dim', value: 'sunday', selected: false }
+  
   ];
   heureDebut: Date;
   heureFin: Date;
@@ -30,7 +33,9 @@ export class PrixPage implements OnInit {
     return `${value}€`;
   }
 
-  constructor(private navCtrl: NavController, private vehicleSelectionService: VehicleSelectionService) {
+  constructor(
+    private languageService: LanguageService,  private translateService: TranslateService,
+    private navCtrl: NavController, private vehicleSelectionService: VehicleSelectionService) {
     this.heureDebut = new Date();
     this.heureFin = new Date();
   }
@@ -83,5 +88,14 @@ export class PrixPage implements OnInit {
   }
 
   ngOnInit() {
+    this.languageService.selectedLanguage$.subscribe((language) => {
+      this.selectedLanguage = language;
+      this.translateService.use(language);
+    });
+    
+  }
+
+  changeLanguage() {
+    this.languageService.setLanguage(this.selectedLanguage);
   }
 }

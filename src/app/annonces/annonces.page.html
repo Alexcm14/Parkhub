@@ -1,65 +1,58 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    
-      <ion-button slot="end" class="questions"><ion-icon name="help"></ion-icon></ion-button>
-   
-    <ion-title class="title">Annonces</ion-title>
+    <ion-button slot="end" class="questions"><ion-icon name="help"></ion-icon></ion-button>
+    <ion-title class="title">{{ 'Annonces' | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-list>
     <ion-text class="T1" *ngIf="!aDesAnnonces">
-      Nous sommes ravis de vous voir de ce côté de l'application !
+      {{ 'Bienvenue_dans_la_section_Annonces' | translate }}
     </ion-text>
     <br>
     <br>
     <ion-text class="creer">
-      Créer une nouvelle annonce
+      {{ 'Creer_une_nouvelle_annonce' | translate }}
     </ion-text>
-    <ion-button class="creation" (click)="redirigerVersConfig1()"><ion-icon name="location"></ion-icon>  Créer une nouvelle annonce  <ion-icon name="arrow-forward"></ion-icon></ion-button>
+    <ion-button class="creation" (click)="redirigerVersConfig1()">
+      <ion-icon name="location"></ion-icon> {{ 'Creer_une_nouvelle_annonce' | translate }}  <ion-icon name="arrow-forward"></ion-icon>
+    </ion-button>
   </ion-list>
 
-  <ion-text class="creer" *ngIf="aDesAnnonces">Mes annonces</ion-text>
+  <ion-text class="creer" *ngIf="aDesAnnonces">{{ 'Mes_annonces' | translate }}</ion-text>
 
   <ion-card *ngFor="let emplacement of emplacements | async">
-  
     <ion-card-header>
-      <img [src]="emplacement.Photos" alt="Image de l'emplacement">
-
+      <img [src]="emplacement.Photos" alt="{{ 'Image_de_l_emplacement' | translate }}">
       <ion-item>
-
-      <ion-button fill="clear" color="danger" (click)="deleteEmplacement(emplacement)" slot="end">
-        <ion-icon name="close"></ion-icon>
-      </ion-button>
-    </ion-item>
+        <ion-button fill="clear" color="danger" (click)="deleteEmplacement(emplacement)" slot="end">
+          <ion-icon name="close"></ion-icon>
+        </ion-button>
+      </ion-item>
     </ion-card-header>
     <ion-card-content>
-      Adresse: {{ emplacement.Adresse }}<br>
+      {{ 'Adresse' | translate }}: {{ emplacement.Adresse }}<br>
       <ion-row *ngIf="emplacement.Jours">
-        Jours disponibles : {{ emplacement.Jours.join(', ') }}<br>
+        {{ 'Jours_disponibles' | translate }} : {{ emplacement.Jours.join(', ') }}<br>
       </ion-row>
-      Heure de début : {{ emplacement.HeureDebut }}<br>
-      Heure de fin : {{ emplacement.HeureFin }}<br>
-      
+      {{ 'Heure_debut' | translate }} : {{ emplacement.HeureDebut }}<br>
+      {{ 'Heure_fin' | translate }} : {{ emplacement.HeureFin }}<br>
+
       <ion-item>
-        <ion-label>Publier l'annonce</ion-label>
-        <ion-toggle slot="end" [(ngModel)]="emplacement.isAdPosted" (ionChange)="toggleAdPost(emplacement)" aria-label="Publier l'annonce"></ion-toggle>
+        <ion-label>{{ 'Publier_l_annonce' | translate }}</ion-label>
+        <ion-toggle slot="end" [(ngModel)]="emplacement.isAdPosted" (ionChange)="toggleAdPost(emplacement)" aria-label="{{ 'Publier_l_annonce' | translate }}"></ion-toggle>
       </ion-item>
 
       <ion-item>
-      <ion-button fill="clear" (click)="editEmplacement(emplacement.id)" slot="start">
-        Modifier l'annonce<ion-icon name="create"></ion-icon>
-     </ion-button>
-    </ion-item>
-    <ion-label style="font-size: 12px; margin-top: 5px;"> Numéro de réservation : {{ emplacement.id }}</ion-label>
-
+        <ion-button fill="clear" (click)="editEmplacement(emplacement.id)" slot="start">
+          {{ 'Modifier_l_annonce' | translate }}<ion-icon name="create"></ion-icon>
+        </ion-button>
+      </ion-item>
+      <ion-label style="font-size: 12px; margin-top: 5px;"> {{ 'Numero_de_reservation' | translate }} : {{ emplacement.id }}</ion-label>
     </ion-card-content>
   </ion-card>
   <ion-button class="reservations-button" (click)="goRes()">
-    <ion-icon name="list"></ion-icon> Réservations <ion-icon name="arrow-forward"></ion-icon>
+    <ion-icon name="list"></ion-icon> {{ 'Reservations' | translate }} <ion-icon name="arrow-forward"></ion-icon>
   </ion-button>
-  
-  
 </ion-content>
-

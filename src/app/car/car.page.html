@@ -1,12 +1,12 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title><ion-icon name="car"></ion-icon> Mes véhicules</ion-title>
+    <ion-title><ion-icon name="car"></ion-icon> {{ 'Mes_vehicules' | translate }}</ion-title>
     <ion-buttons slot="start">
       <ion-back-button slot="start" defaultHref="../tab5"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
- 
+
 <ion-content [fullscreen]="true" class="ion-padding">
   <ion-list>
     <ion-card *ngFor="let vehicle of vehicles" class="custom-card">
@@ -17,25 +17,25 @@
         </ion-button>
       </ion-card-header>
       <ion-card-content *ngIf="vehicle">
-        <p>Plaque: {{ vehicle.plaque }}</p>
-        <p>Marque: {{ vehicle.marque }}</p>
-        <p>Type: {{vehicle.type}}</p>
+        <p>{{ 'Plaque' | translate }}: {{ vehicle.plaque }}</p>
+        <p>{{ 'Marque' | translate }}: {{ vehicle.marque }}</p>
+        <p>{{ 'Type' | translate }}: {{ vehicle.type }}</p>
       </ion-card-content>
     </ion-card>
   </ion-list>
   
   <ion-item class="custom-item">
-    <ion-label position="stacked">Plaque d'immatriculation</ion-label>
+    <ion-label position="stacked">{{ 'Plaque_immatriculation' | translate }}</ion-label>
     <ion-input type="text" [(ngModel)]="plaque" required [class.invalid]="!validatePlate(plaque)" placeholder="1-ABC-123"></ion-input>
     <ion-text color="danger" *ngIf="!validatePlate(plaque) && plaque">
-      Format invalide. Le format doit être : 1-ABC-123
+      {{ 'Format_invalide' | translate }}. {{ 'Format_doit_etre' | translate }} : 1-ABC-123
     </ion-text>
-    </ion-item>
+  </ion-item>
   
   
     <ion-item>
-      <ion-label position="stacked">Marque du véhicule</ion-label>
-      <ion-select placeholder="Sélectionnez la marque" [(ngModel)]="marque" required interface="popover">
+      <ion-label position="stacked">{{ 'Marque_vehicule' | translate }}</ion-label>
+    <ion-select placeholder="{{ 'Selectionnez_marque' | translate }}" [(ngModel)]="marque" required interface="popover">
       
         <ion-select-option value="Mercedes">Mercedes </ion-select-option>
         <ion-select-option value="BMW">BMW</ion-select-option>
@@ -68,11 +68,11 @@
       </ion-select>
     </ion-item>
     <ion-item>
-      <ion-label position="stacked">Type du véhicule</ion-label>
-      <ion-select placeholder="Sélectionnez le type de véhicule" [(ngModel)]="type" required interface="popover">
+      <ion-label position="stacked">{{ 'Type_vehicule' | translate }}</ion-label>
+      <ion-select placeholder="{{ 'Selectionnez_type' | translate }}" [(ngModel)]="type" required interface="popover">
       
         <ion-select-option value="Berline">Berline </ion-select-option>
-        <ion-select-option value="BMW">2 roues</ion-select-option>
+        <ion-select-option value="BMW">Moto</ion-select-option>
         <ion-select-option value="Citadine">Citadine</ion-select-option>
         <ion-select-option value="4x4">4x4</ion-select-option>
         <ion-select-option value="Camionette">Camionette</ion-select-option>
@@ -84,7 +84,6 @@
 
 
 
-    <ion-button class="custom-button" (click)="ajouterVehicule()">Ajouter véhicule</ion-button>
-</ion-content>
-
+    <ion-button class="custom-button" (click)="ajouterVehicule()">{{ 'Ajouter_vehicule' | translate }}</ion-button>
+  </ion-content>
  

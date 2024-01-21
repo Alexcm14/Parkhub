@@ -1,107 +1,103 @@
-<!-- recapitulatif.page.html -->
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Récapitulatif</ion-title>
+    <ion-title>{{ 'Recapitulatif' | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <!-- Type de parking -->
-<ion-item *ngIf="(selectedParkingType$ | async) as selectedParkingType">
-  <ion-label position="stacked"><ion-icon name="storefront"></ion-icon> Type de parking :</ion-label>
-  <ion-note>{{ selectedParkingType }}</ion-note>
-</ion-item>
-
+  <ion-item *ngIf="(selectedParkingType$ | async) as selectedParkingType">
+    <ion-label position="stacked"><ion-icon name="storefront"></ion-icon> {{ 'Type_de_parking' | translate }} :</ion-label>
+    <ion-note>{{ selectedParkingType }}</ion-note>
+  </ion-item>
 
   <!-- Adresse du parking -->
-<ion-item *ngIf="(selectedParkingAddress$ | async) as selectedParkingAddress">
-  <ion-label position="stacked"><ion-icon name="location"></ion-icon> Adresse du parking :</ion-label>
-  <ion-note>{{ selectedParkingAddress }}</ion-note>
-</ion-item>
-
+  <ion-item *ngIf="(selectedParkingAddress$ | async) as selectedParkingAddress">
+    <ion-label position="stacked"><ion-icon name="location"></ion-icon> {{ 'Adresse_du_parking' | translate }} :</ion-label>
+    <ion-note>{{ selectedParkingAddress }}</ion-note>
+  </ion-item>
 
   <!-- Nombre de places disponibles -->
   <ion-item *ngIf="(numberOfPlaces$ | async) as numberOfPlaces">
-    <ion-label position="stacked"><ion-icon name="pricetag"></ion-icon> Nombre de places disponibles :</ion-label>
+    <ion-label position="stacked"><ion-icon name="pricetag"></ion-icon> {{ 'Nombre_de_places_disponibles' | translate }} :</ion-label>
     <ion-note>{{ numberOfPlaces }}</ion-note>
   </ion-item>
 
   <!-- Types de véhicules acceptés -->
   <ion-item *ngIf="(selectedVehicleTypes$ | async)?.length > 0">
-    <ion-label position="stacked"><ion-icon name="car"></ion-icon> Types de véhicules acceptés :</ion-label>
+    <ion-label position="stacked"><ion-icon name="car"></ion-icon> {{ 'Types_de_vehicules_acceptes' | translate }} :</ion-label>
     <ion-note>{{ (selectedVehicleTypes$ | async)?.join(', ') }}</ion-note>
   </ion-item>
 
   <!-- Description -->
   <ion-item *ngIf="(selectedDescription$ | async) as selectedDescription">
-    <ion-label position="stacked"><ion-icon name="pencil"></ion-icon> Description :</ion-label>
+    <ion-label position="stacked"><ion-icon name="pencil"></ion-icon> {{ 'Description' | translate }} :</ion-label>
     <ion-note>{{ selectedDescription }}</ion-note>
   </ion-item>
 
   <ion-item *ngIf="(selectedPrice$ | async) as selectedPrice">
-    <ion-label position="stacked"><ion-icon name="card"></ion-icon> Prix :</ion-label>
+    <ion-label position="stacked"><ion-icon name="card"></ion-icon> {{ 'Prix' | translate }} :</ion-label>
     <ion-note>{{ selectedPrice }}€</ion-note>
   </ion-item>
 
-<br>
+  <br>
+
   <!-- Ajout de la sélection des jours de la semaine -->
-<ion-row class="custom-margin">
-  <ion-text style="white-space: normal; margin-left: 20px; "><ion-icon name="calendar-number" color="primary"></ion-icon> Choisissez les jours de la semaine pendant lesquels votre parking sera disponible :</ion-text>
-</ion-row>
-<ion-row>
-  <ion-col size="auto" *ngFor="let day of days">
-    <ion-button class="jours"  (click)="toggleDay(day)" [color]="day.selected ? 'primary' : 'medium'" [class.selected]="day.selected">{{ day.name }}</ion-button>
-  </ion-col>
-</ion-row>
+  <ion-row class="custom-margin">
+    <ion-text style="white-space: normal; margin-left: 20px; "><ion-icon name="calendar-number" color="primary"></ion-icon> {{ 'Choisissez_les_jours_semaine' | translate }} :</ion-text>
+  </ion-row>
+  <ion-row>
+    <ion-col size="auto" *ngFor="let day of days">
+      <ion-button class="jours" (click)="toggleDay(day)" [color]="day.selected ? 'primary' : 'medium'" [class.selected]="day.selected">{{ day.name | translate }}</ion-button>
+    </ion-col>
+  </ion-row>
+  
 
-<!-- Sélection de l'heure de début -->
-<ion-row class="custom-margin">
-  <ion-item>
-    <ion-label><ion-icon name="time" color="primary"></ion-icon> Heure de début :</ion-label>
-    <ion-input type="time" [(ngModel)]="heureDebut"></ion-input>
-  </ion-item>
-</ion-row>
+  <!-- Sélection de l'heure de début -->
+  <ion-row class="custom-margin">
+    <ion-item>
+      <ion-label><ion-icon name="time" color="primary"></ion-icon> {{ 'Heure_debut' | translate }} :</ion-label>
+      <ion-input type="time" [(ngModel)]="heureDebut"></ion-input>
+    </ion-item>
+  </ion-row>
 
-<!-- Sélection de l'heure de fin -->
-<ion-row class="custom-margin">
-  <ion-item>
-    <ion-label><ion-icon name="time" color="primary"></ion-icon> Heure de fin :</ion-label>
-    <ion-input type="time" [(ngModel)]="heureFin"></ion-input>
-  </ion-item>
-</ion-row>
+  <!-- Sélection de l'heure de fin -->
+  <ion-row class="custom-margin">
+    <ion-item>
+      <ion-label><ion-icon name="time" color="primary"></ion-icon> {{ 'Heure_de_fin' | translate }} :</ion-label>
+      <ion-input type="time" [(ngModel)]="heureFin"></ion-input>
+    </ion-item>
+  </ion-row>
 
+  <ion-text class="T-desc">
+    <ion-icon name="camera"></ion-icon> {{ 'Ajoutez_des_photos_parking' | translate }}.
+  </ion-text>
+  <ion-text class="pic">
+    {{ 'Proprietaires_photos_qualite' | translate }}
+  </ion-text>
+  <div class="upload-button">
+    <input type="file" (change)="handleFileInput($event)" accept="image/*" multiple />
+    <ion-icon name="add-circle" (click)="ajouterPhoto()"></ion-icon>
+  </div>
 
-<ion-text class="T-desc">
-  <ion-icon name="camera"></ion-icon> Ajoutez des photos de votre parking.
-</ion-text>
-<ion-text class="pic">
-  Les propiétaires qui mettent des photos de bonne qualité dans leurs annonces ont 25% de chance de plus de louer leur parking.
-</ion-text>
-<div class="upload-button">
-  <input type="file" (change)="handleFileInput($event)" accept="image/*" multiple />
-  <ion-icon name="add-circle" (click)="ajouterPhoto()"></ion-icon>
-</div>
-
-<ion-row>
-  <ion-col *ngFor="let photo of photos">
-    <img [src]="photo" alt="Uploaded Photo" class="uploaded-photo"/>
-  </ion-col>
-</ion-row>
-
+  <ion-row>
+    <ion-col *ngFor="let photo of photos">
+      <img [src]="photo" alt="Uploaded Photo" class="uploaded-photo" />
+    </ion-col>
+  </ion-row>
 
   <!-- Bouton on/off pour poster l'annonce -->
   <ion-item>
-    <ion-toggle [(ngModel)]="isAdPosted">Poster l'annonce</ion-toggle>
+    <ion-toggle [(ngModel)]="isAdPosted">{{ 'Poster_annonce' | translate }}</ion-toggle>
   </ion-item>
 
   <!-- Bouton de validation -->
-  <ion-button (click)="ajouterEmplacement()" color="primary" style="border-radius: 20px;">Valider</ion-button>
+  <ion-button (click)="ajouterEmplacement()" color="primary" style="border-radius: 20px;">{{ 'Valider' | translate }}</ion-button>
 </ion-content>
 
 <ion-footer>
   <ion-toolbar>
     <ion-title></ion-title>
-    <ion-back-button slot="start" defaultHref="/description">Retour</ion-back-button>
+    <ion-back-button slot="start" defaultHref="/description">{{ 'Retour' | translate }}</ion-back-button>
   </ion-toolbar>
 </ion-footer>
-

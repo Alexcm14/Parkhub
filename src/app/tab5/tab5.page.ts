@@ -6,6 +6,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { switchMap, from, take, map, finalize } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { TranslateService } from '@ngx-translate/core';
+import { LanguageService } from 'src/app/language.service';
 
 @Component({
   selector: 'app-tab5',
@@ -13,6 +15,7 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
   styleUrls: ['./tab5.page.scss'],
 })
 export class Tab5Page implements OnInit {
+  selectedLanguage: string = 'fr';
   userName: string;
   credentials: FormGroup;
   prenom: any;
@@ -21,14 +24,24 @@ export class Tab5Page implements OnInit {
   hovering: boolean;
 
   constructor(
+    private languageService: LanguageService,
     private router: Router,
     private afAuth: AngularFireAuth,
     private fb: FormBuilder,
     private firestore: AngularFirestore,
-    private storage: AngularFireStorage
+    private storage: AngularFireStorage,
+    private translateService: TranslateService
   ) {}
 
+
+  
   ngOnInit() {
+
+    this.languageService.selectedLanguage$.subscribe((language) => {
+      this.selectedLanguage = language;
+      this.translateService.use(language);
+    });
+    
     this.afAuth.authState.pipe(
       switchMap((user) => {
         if (user) {
@@ -47,6 +60,11 @@ export class Tab5Page implements OnInit {
       }
     });
   }
+
+  changeLanguage() {
+    this.languageService.setLanguage(this.selectedLanguage);
+  }
+
 
   goPersonal() {
     this.router.navigate(['/personal']);
@@ -67,6 +85,7 @@ export class Tab5Page implements OnInit {
   goConditions() {
     this.router.navigate(['/conditions']);
   }
+
   onHover(status: boolean): void {
     this.hovering = status;
   }

@@ -5,6 +5,9 @@ import { from, take, switchMap } from 'rxjs';
 import { AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { ToastController } from '@ionic/angular';
 
+import { TranslateService } from '@ngx-translate/core';
+import { LanguageService } from 'src/app/language.service';
+
 @Component({
   selector: 'app-car',
   templateUrl: './car.page.html',
@@ -22,10 +25,20 @@ export class CarPage {
   vehicles: any[] = [];
   selectedVehicle: any;
   ajoutVehiculeClicked: boolean = false
+  selectedLanguage: string = 'fr';
 
-  constructor(private authService: AuthService, private firestore: AngularFirestore, private toastController: ToastController) {}
+
+  constructor(private languageService: LanguageService,  private translateService: TranslateService,
+    private authService: AuthService, private firestore: AngularFirestore, private toastController: ToastController) {}
 
   ngOnInit() {
+
+    
+this.languageService.selectedLanguage$.subscribe((language) => {
+  this.selectedLanguage = language;
+  this.translateService.use(language);
+});
+
     // Fetch logged-in user data
     this.authService.getLoggedInUserObservable().pipe(
       switchMap((userData) => {
@@ -63,6 +76,10 @@ export class CarPage {
   validatePlate(plate: string): boolean {
     const platePattern = /^\d-[A-Za-z]{3}-\d{3}$/;
     return platePattern.test(plate);
+  }
+
+  changeLanguage() {
+    this.languageService.setLanguage(this.selectedLanguage);
   }
   
 

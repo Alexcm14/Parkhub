@@ -1,11 +1,9 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-   
-      <ion-button class="close" slot="start" (click)="fermerPage()">
-        <ion-icon name="close"></ion-icon>
-      </ion-button>
-      <ion-button slot="end" class="questions">Des questions ?</ion-button>
-   
+    <ion-button class="close" slot="start" (click)="fermerPage()">
+      <ion-icon name="close"></ion-icon>
+    </ion-button>
+    <ion-button slot="end" class="questions">{{ 'Des_questions' | translate }}</ion-button>
     <ion-title class="title"></ion-title>
   </ion-toolbar>
 </ion-header>
@@ -15,43 +13,45 @@
   <ion-img src="assets/images/Cars.png" alt="voitures" style="width: 85%; margin: auto; border-radius: 10px; margin-top: 50px; margin-bottom: 50px; position: relative;"></ion-img>
 
   <ion-text class="T-nb">
-    Indiquez le nombre et le type de véhicule que votre parking peut accueillir
+    {{ 'Indiquez_le_nombre_et_le_type_de_vehicule' | translate }}
   </ion-text>
   <ion-text class="nbplaces">
-   Indiquez uniquement le nombre de places que vous souhaitez mettre en location ainsi que le type de véhicule qui peut y être stationné.
+    {{ 'Indiquez_uniquement_le_nombre_de_places' | translate }}
   </ion-text>
 
-<ion-list>
-  <ion-item>
-    <ion-label class="nb-places">Nombre de places disponibles :</ion-label>  
-    <ion-buttons slot="end">
-      <ion-button (click)="decrementPlaces()"><ion-icon name="remove-outline"></ion-icon></ion-button>
-      <ion-label>{{ NombrePlaces }}</ion-label>
-      <ion-button (click)="incrementPlaces()"><ion-icon name="add"></ion-icon></ion-button>
-    </ion-buttons>
-  </ion-item>
+  <ion-list>
+    <ion-item>
+      <ion-label class="nb-places">{{ 'Nombre_de_places_disponibles' | translate }} :</ion-label>
+      <ion-buttons slot="end">
+        <ion-button (click)="decrementPlaces()"><ion-icon name="remove-outline"></ion-icon></ion-button>
+        <ion-label>{{ NombrePlaces }}</ion-label>
+        <ion-button (click)="incrementPlaces()"><ion-icon name="add"></ion-icon></ion-button>
+      </ion-buttons>
+    </ion-item>
 
-  <ion-item>
-    <ion-label position="stacked">Types de véhicules acceptés</ion-label>
-    <ion-select aria-label="TypeVoiture" placeholder="Type(s) de véhicule" [multiple]="true" (ionChange)="selectVehicleType($event.detail.value)">
-      <ion-select-option value="2 roues">2 Roues</ion-select-option>
-      <ion-select-option value="Citadine">Citadine</ion-select-option>
-      <ion-select-option value="Berline">Berline</ion-select-option>
-      <ion-select-option value="4x4">4x4</ion-select-option>
-      <ion-select-option value="Pick-up">Pick-up</ion-select-option>
-      <ion-select-option value="Camionnette">Camionnette</ion-select-option>
-    </ion-select>
-  </ion-item>
-  
-</ion-list>
+    <ion-item>
+      <ion-label position="stacked">{{ 'Types_de_vehicules_acceptes' | translate }}</ion-label>
+      <ion-select aria-label="TypeVoiture" placeholder="{{ 'Type(s)_de_vehicule' | translate }}" [multiple]="true"
+        (ionChange)="selectVehicleType($event.detail.value)">
+        <ion-select-option value="2 roues">{{ '2_Roues' | translate }}</ion-select-option>
+        <ion-select-option value="Citadine">{{ 'Citadine' | translate }}</ion-select-option>
+        <ion-select-option value="Berline">{{ 'Berline' | translate }}</ion-select-option>
+        <ion-select-option value="4x4">{{ '4x4' | translate }}</ion-select-option>
+        <ion-select-option value="Pick-up">{{ 'Pick-up' | translate }}</ion-select-option>
+        <ion-select-option value="Camionnette">{{ 'Camionnette' | translate }}</ion-select-option>
+      </ion-select>
+    </ion-item>
 
+  </ion-list>
 
 </ion-content>
 
 <ion-footer>
   <ion-toolbar>
     <ion-title></ion-title>
-    <ion-back-button slot="start" defaultHref="/localisation">Retour</ion-back-button>
-    <ion-button slot="end" (click)="redirigerVersPrix()">Suivant <ion-icon name="arrow-forward"></ion-icon></ion-button>
+    <ion-back-button slot="start" defaultHref="/localisation">{{ 'Retour' | translate }}</ion-back-button>
+    <ion-button slot="end" (click)="redirigerVersPrix()">{{ 'Suivant' | translate }}
+      <ion-icon name="arrow-forward"></ion-icon>
+    </ion-button>
   </ion-toolbar>
 </ion-footer>

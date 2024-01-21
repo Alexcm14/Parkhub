@@ -8,7 +8,8 @@ import { AuthService } from 'src/app/services/auth.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { finalize } from 'rxjs';
-
+import { TranslateService } from '@ngx-translate/core';
+import { LanguageService } from 'src/app/language.service';
 
 @Component({
   selector: 'app-recapitulatif',
@@ -39,7 +40,7 @@ export class RecapitulatifPage implements OnInit, OnDestroy {
   selectedPrice$: Observable<number>;
   selectedStartTime$: Observable<string | null>;
   selectedEndTime$: Observable<string | null>;
-
+  selectedLanguage: string = 'fr';
 
 
   nom: string;
@@ -57,6 +58,7 @@ export class RecapitulatifPage implements OnInit, OnDestroy {
   selectedFiles: File[] = [];
 
   constructor(
+    private languageService: LanguageService,  private translateService: TranslateService,
     private navCtrl: NavController,
     private vehicleSelectionService: VehicleSelectionService,
     private cdr: ChangeDetectorRef,
@@ -77,6 +79,12 @@ export class RecapitulatifPage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
+    this.languageService.selectedLanguage$.subscribe((language) => {
+      this.selectedLanguage = language;
+      this.translateService.use(language);
+    });
+
 
     
     this.cdr.detectChanges(); 
@@ -114,6 +122,10 @@ export class RecapitulatifPage implements OnInit, OnDestroy {
       }
     });
   
+  }
+
+  changeLanguage() {
+    this.languageService.setLanguage(this.selectedLanguage);
   }
 
   ngOnDestroy() {

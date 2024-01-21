@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { VehicleSelectionService } from '../shared/vehicule-selection.service';
 import { ChangeDetectorRef } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { LanguageService } from 'src/app/language.service';
 
 @Component({
   selector: 'app-description',
@@ -14,12 +16,12 @@ export class DescriptionPage implements OnInit {
   customCounterFormatter(inputLength: number, maxLength: number) {
     return `${maxLength - inputLength} caractères restants`;
   }
-
+  selectedLanguage: string = 'fr';
   description: string = '';
   isDescriptionSaved: boolean = false;
   photos: string[] = [];
 
-  constructor(private navCtrl: NavController, private vehicleSelectionService: VehicleSelectionService, private cdr: ChangeDetectorRef) { }
+  constructor(private languageService: LanguageService,  private translateService: TranslateService,private navCtrl: NavController, private vehicleSelectionService: VehicleSelectionService, private cdr: ChangeDetectorRef) { }
 
   fermerPage() {
     this.navCtrl.navigateForward('tabs/annonces');
@@ -66,6 +68,13 @@ export class DescriptionPage implements OnInit {
   }
   
 
-  ngOnInit() {
+  ngOnInit() {this.languageService.selectedLanguage$.subscribe((language) => {
+    this.selectedLanguage = language;
+    this.translateService.use(language);
+  });
   }
+  changeLanguage() {
+    this.languageService.setLanguage(this.selectedLanguage);
+  }
+  
 }

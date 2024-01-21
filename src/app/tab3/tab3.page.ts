@@ -10,7 +10,8 @@ import { NgModule } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
 import { interval, Subscription, } from 'rxjs';
 import { NavController } from '@ionic/angular';
-
+import { TranslateService } from '@ngx-translate/core';
+import { LanguageService } from 'src/app/language.service';
 
 
 
@@ -22,7 +23,7 @@ import { NavController } from '@ionic/angular';
 })
 export class Tab3Page implements OnInit {
   emplacements: Observable<any[]>;
-
+  selectedLanguage: string = 'fr';
   nom: string;
   prenom: string;
   email: string;
@@ -45,6 +46,8 @@ export class Tab3Page implements OnInit {
     private authService: AuthService,
     private firestore: AngularFirestore,
     private navCtrl: NavController,
+    private translateService: TranslateService,
+    private languageService: LanguageService,
   ) {}
 
   navigateToTab2() {
@@ -57,7 +60,17 @@ export class Tab3Page implements OnInit {
     }, 10000);
   }
 
+  changeLanguage() {
+    this.languageService.setLanguage(this.selectedLanguage);
+  }
+
   ngOnInit() {
+
+    this.languageService.selectedLanguage$.subscribe((language) => {
+      this.selectedLanguage = language;
+      this.translateService.use(language);
+    });
+
 
     this.timerSubscription = interval(10000).subscribe(() => {
       this.updateCountdowns();

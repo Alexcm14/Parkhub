@@ -1,46 +1,42 @@
 <ion-header [translucent]="true">
- 
+
   <ion-item lines="none">
- 
+
     <ion-avatar slot="start">
       <ion-icon size="large" name="person-circle-outline"></ion-icon>
-     
     </ion-avatar>
-      <ion-label>
-        <p>Bonjour,</p>
-        <h3>{{ prenom }} {{ nom }}</h3>
-      </ion-label>
- 
-      <ion-fab vertical="bottom" horizontal="end"  slot="end">
-      <ion-fab-button size="small"  style="margin-top: 20px;">
-      <ion-icon style="color: white;" name="help-outline"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
- 
+    <ion-label>
+      <p>{{ 'Bonjour' | translate }},</p>
+      <h3>{{ prenom }} {{ nom }}</h3>
+    </ion-label>
+
+    <ion-fab vertical="bottom" horizontal="end" slot="end">
+      <ion-fab-button size="small" style="margin-top: 20px;">
+        <ion-icon style="color: white;" name="help-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+
   </ion-item>
- 
+
 </ion-header>
- 
+
 <ion-content fullscreen="true">
-<br>
- 
+  <br>
+
   <div class="slides ion-margin-bottom">
     <swiper-container>
- 
+
       <swiper-slide>
         <ion-card>
           <ion-card-header>
 
-          <a id="imgforest" href="https://www.forest-national.be/">
-            <img src="assets/Forest.jpg" alt="Forest National">
-          </a>
- 
+            <a id="imgforest" href="https://www.forest-national.be/">
+              <img src="assets/Forest.jpg" alt="{{ 'Forest_National' | translate }}">
+            </a>
+
           </ion-card-header>
           <ion-card-content class="ion-text-left">
             <ion-card-title class="ion-margin-bottom"></ion-card-title>
-
-           
-           
           </ion-card-content>
         </ion-card>
       </swiper-slide>
@@ -49,16 +45,13 @@
         <ion-card>
           <ion-card-header>
 
-          <a id="imgtour" href="https://www.bruxelles-j.be/actus/salon-siep-2022-tour-taxi/">
-            <img src="assets/TOUR.jpg" alt="Description de l'image">
-          </a>
- 
+            <a id="imgtour" href="https://www.bruxelles-j.be/actus/salon-siep-2022-tour-taxi/">
+              <img src="assets/TOUR.jpg" alt="{{ 'Description_image' | translate }}">
+            </a>
+
           </ion-card-header>
           <ion-card-content class="ion-text-left">
             <ion-card-title class="ion-margin-bottom"></ion-card-title>
-
-           
-           
           </ion-card-content>
         </ion-card>
       </swiper-slide>
@@ -67,46 +60,32 @@
         <ion-card>
           <ion-card-header>
 
-          <a id="imgforest" href="https://ing.arena.brussels/">
-            <img src="assets/ING.jpg" alt="ING arena">
-          </a>
- 
+            <a id="imgforest" href="https://ing.arena.brussels/">
+              <img src="assets/ING.jpg" alt="{{ 'ING_Arena' | translate }}">
+            </a>
+
           </ion-card-header>
           <ion-card-content class="ion-text-left">
             <ion-card-title class="ion-margin-bottom"></ion-card-title>
-
-           
-           
           </ion-card-content>
         </ion-card>
       </swiper-slide>
- 
+
     </swiper-container>
   </div>
- 
- 
+
   <ion-toolbar color="primary">
-    <ion-searchbar [debounce]="600" [(ngModel)]="autocomplete.input" (ionInput)="updateSearchResults()" placeholder="Cherchez une adresse"></ion-searchbar>
+    <ion-searchbar [debounce]="600" [(ngModel)]="autocomplete.input" (ionInput)="updateSearchResults()" placeholder="{{ 'Adresse' | translate }}"></ion-searchbar>
   </ion-toolbar>
- 
- 
-  <ion-list  lines="none" [inset]="true" *ngIf="autocompleteItems.length > 0" class="prediction-list" [hidden]="autocompleteItems.length === 0">
+
+  <ion-list lines="none" [inset]="true" *ngIf="autocompleteItems.length > 0" class="prediction-list" [hidden]="autocompleteItems.length === 0">
     <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
       {{ item.description }}
     </ion-item>
   </ion-list>
-  
- 
- 
- 
- 
- 
+
   <div id="container">
- 
     <capacitor-google-map #map id="map"></capacitor-google-map>
- 
- 
   </div>
 
-
-  
+</ion-content>

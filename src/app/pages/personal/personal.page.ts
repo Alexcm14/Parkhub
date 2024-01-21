@@ -4,6 +4,8 @@ import { from, of, switchMap, take } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { ToastController } from '@ionic/angular';
 
+import { TranslateService } from '@ngx-translate/core';
+import { LanguageService } from 'src/app/language.service';
 
 @Component({
   selector: 'app-personal',
@@ -16,10 +18,20 @@ export class PersonalPage implements OnInit {
   email: string;
   motDePasse: string;
   telephone: string;
+  selectedLanguage: string = 'fr';
 
-  constructor(private authService: AuthService, private firestore: AngularFirestore, private toastController: ToastController ) {}
+  constructor(private languageService: LanguageService,  private translateService: TranslateService,
+    private authService: AuthService, private firestore: AngularFirestore, private toastController: ToastController ) {}
 
   ngOnInit() {
+
+
+    this.languageService.selectedLanguage$.subscribe((language) => {
+      this.selectedLanguage = language;
+      this.translateService.use(language);
+    });
+
+
     // Fetch logged-in user data
     this.authService.getLoggedInUserObservable().pipe(
       switchMap((userData) => {
@@ -55,6 +67,10 @@ export class PersonalPage implements OnInit {
         console.log('User data not found in Firestore.');
       }
     });
+  }
+  
+  changeLanguage() {
+    this.languageService.setLanguage(this.selectedLanguage);
   }
   
   async presentToast() {

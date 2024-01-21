@@ -1,10 +1,9 @@
-<!-- description.page.html -->
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-button class="close" slot="start" (click)="fermerPage()">
       <ion-icon name="close"></ion-icon>
     </ion-button>
-    <ion-button slot="end" class="questions">Des questions ?</ion-button>
+    <ion-button slot="end" class="questions">{{ 'Des_questions' | translate }}</ion-button>
     <ion-title class="title"></ion-title>
   </ion-toolbar>
 </ion-header>
@@ -12,36 +11,36 @@
 <ion-content [fullscreen]="true">
 
   <ion-text class="T-desc">
-    Vous y êtes presque !
+    {{ 'Vous_y_etes_presque' | translate }}
   </ion-text>
 
   <ion-text class="T-desc">
-    Maintenant, rédigez une description de votre parking.
+    {{ 'Maintenant_reedigez_description_parking' | translate }}
   </ion-text>
 
   <ion-text class="description">
-    Soyez complets, donnez des détails utiles aux utilisateurs qui liront votre annonce
+    {{ 'Soyez_complets_details_utiles' | translate }}
   </ion-text>
 
   <div class="desc">
-  <ion-input
-    id="custom-input"
-    label="Votre description"
-    labelPlacement="floating"
-    [counter]="true"
-    maxlength="1000"
-    [counterFormatter]="customCounterFormatter"
-    [(ngModel)]="description"
-    (ionChange)="modifierDescription()"
-  ></ion-input>
+    <ion-input
+      id="custom-input"
+      label="{{ 'Votre_description' | translate }}"
+      labelPlacement="floating"
+      [counter]="true"
+      maxlength="1000"
+      [counterFormatter]="customCounterFormatter"
+      [(ngModel)]="description"
+      (ionChange)="modifierDescription()"
+    ></ion-input>
   </div>  
 
-  <ion-button class="enregistrer"(click)="enregistrerDescription()">Enregistrer</ion-button>
+  <ion-button class="enregistrer" (click)="enregistrerDescription()">{{ 'Enregistrer' | translate }}</ion-button>
 
   <!-- Carte pour afficher la description -->
   <ion-card *ngIf="isDescriptionSaved">
     <ion-card-header>
-      Description
+      {{ 'Description' | translate }}
     </ion-card-header>
     <ion-card-content>
       {{ description }}
@@ -49,14 +48,14 @@
   </ion-card>
 
   <!-- Message "Description enregistrée" -->
-  <ion-label *ngIf="isDescriptionSaved" class="description-saved">Description enregistrée</ion-label>
+  <ion-label *ngIf="isDescriptionSaved" class="description-saved">{{ 'Description_enregistree' | translate }}</ion-label>
 
 </ion-content>
 
 <ion-footer>
   <ion-toolbar>
     <ion-title></ion-title>
-    <ion-back-button slot="start" defaultHref="/nbplaces">Retour</ion-back-button>
-    <ion-button slot="end" (click)="redirigerVersRecap()">Suivant <ion-icon name="arrow-forward"></ion-icon></ion-button>
+    <ion-back-button slot="start" defaultHref="/nbplaces">{{ 'Retour' | translate }}</ion-back-button>
+    <ion-button slot="end" (click)="redirigerVersRecap()">{{ 'Suivant' | translate }} <ion-icon name="arrow-forward"></ion-icon></ion-button>
   </ion-toolbar>
 </ion-footer>

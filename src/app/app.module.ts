@@ -18,14 +18,30 @@ import { getDatabase, provideDatabase } from '@angular/fire/database';
 
 import { provideStorage, getStorage } from '@angular/fire/storage';
 
-
+// import ngx-translate and the http loader
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
 
 import { CardDetailsModalModule } from './cards/card.component/card.component.component.module';
 import { FormatTimerPipe } from './format-timer.pipe';
 
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
+
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule,
+    HttpClientModule,
+    TranslateModule.forRoot({
+        loader: {
+            provide: TranslateLoader,
+            useFactory: HttpLoaderFactory,
+            deps: [HttpClient]
+        }
+    })
+,
     AngularFireModule, 
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule, 
@@ -43,3 +59,4 @@ import { FormatTimerPipe } from './format-timer.pipe';
   bootstrap: [AppComponent],
 })
 export class AppModule {}
+

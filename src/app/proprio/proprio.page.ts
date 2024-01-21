@@ -4,6 +4,8 @@ import { SharedService } from '../shared.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthService } from 'src/app/services/auth.service';
 import { from, of, switchMap, take } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
+import { LanguageService } from 'src/app/language.service';
 
 
 @Component({
@@ -14,6 +16,7 @@ import { from, of, switchMap, take } from 'rxjs';
 export class ProprioPage implements OnInit {
   valeur: number = 7;
   somme: number = 48;
+  selectedLanguage: string = 'fr';
 
    
   nom: string;
@@ -23,9 +26,16 @@ export class ProprioPage implements OnInit {
   telephone: string;
   
 
-  constructor(private navCtrl: NavController, private sharedService: SharedService, private authService: AuthService, private firestore: AngularFirestore) { }
+  constructor(
+    private languageService: LanguageService,  private translateService: TranslateService,private navCtrl: NavController, private sharedService: SharedService, private authService: AuthService, private firestore: AngularFirestore) { }
 
   ngOnInit() {
+
+    this.languageService.selectedLanguage$.subscribe((language) => {
+      this.selectedLanguage = language;
+      this.translateService.use(language);
+    });
+
     // Fetch logged-in user data
     this.authService.getLoggedInUserObservable().pipe(
       switchMap((userData) => {
@@ -74,6 +84,10 @@ export class ProprioPage implements OnInit {
 
   redirigerVersAnnonces() {
     this.navCtrl.navigateForward('tabs/annonces');
+  }
+
+  changeLanguage() {
+    this.languageService.setLanguage(this.selectedLanguage);
   }
  
 }

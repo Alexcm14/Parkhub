@@ -15,6 +15,8 @@ import { PopoverController } from '@ionic/angular';
 import { MarkerDetailsPage } from '../marker-details/marker-details.page';
 import { UserBuildConditionals } from 'ionicons/dist/types/stencil-public-runtime';
 import { AlertController } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
+import { LanguageService } from 'src/app/language.service';
 
 declare var google: any;
 
@@ -53,7 +55,7 @@ export class Tab1Page {
   autocompleteItems: any = [];
   geocoder: any;
   
-  
+  selectedLanguage: string = 'fr';
   nom: string;
   prenom: string;
   email: string;
@@ -73,7 +75,7 @@ export class Tab1Page {
 
  
 
- constructor(private alertController: AlertController, private popoverController: PopoverController, private modalController: ModalController, private router: Router, private zone: NgZone, private authService: AuthService, private firestore: AngularFirestore) {
+ constructor(private languageService: LanguageService,  private translateService: TranslateService, private alertController: AlertController, private popoverController: PopoverController, private modalController: ModalController, private router: Router, private zone: NgZone, private authService: AuthService, private firestore: AngularFirestore) {
   // Déclarations et initialisations dans le constructeur
 
   this.endTimeSpan = document.createElement('div');
@@ -94,7 +96,10 @@ export class Tab1Page {
 
 ngOnInit() {
   
-
+  this.languageService.selectedLanguage$.subscribe((language) => {
+    this.selectedLanguage = language;
+    this.translateService.use(language);
+  });
   
   // Fetch logged-in user data
   this.authService.getLoggedInUserObservable().pipe(
@@ -132,6 +137,11 @@ ngOnInit() {
     }
   });
 }
+
+changeLanguage() {
+  this.languageService.setLanguage(this.selectedLanguage);
+}
+
 
 loadCarData() {
   // Retrieve data from the 'car_data' collection
@@ -193,9 +203,9 @@ addMarkersToMap() {
               path: google.maps.SymbolPath.CIRCLE,
               scale: 14,
               fillColor: '#87CEEB', // Couleur bleue pour tous les marqueurs
-              fillOpacity: data.isReserved ? 0.3 : 1, // Semi-transparent si réservé, sinon pleine couleur
+              fillOpacity:  1, 
               strokeColor: '#000000', // Couleur noir pour la bordure de tous les marqueurs
-              strokeOpacity: data.isReserved ? 0.3 : 1, // Semi-transparent si réservé, sinon pleine couleur
+              strokeOpacity: 1, 
               strokeWeight: 2,
             },
             label: {

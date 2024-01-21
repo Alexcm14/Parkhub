@@ -6,6 +6,8 @@ import { from, take, switchMap, Observable, of, BehaviorSubject } from 'rxjs';
 import { AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { LanguageService } from 'src/app/language.service';
 
 
 
@@ -29,9 +31,11 @@ export class AnnoncesPage implements OnInit {
   telephone: any;
   private emplacementsSubject = new BehaviorSubject<any[]>([]);
 
+  selectedLanguage: string = 'fr';
 
 
-  constructor(private navCtrl: NavController,private authService: AuthService, private firestore: AngularFirestore, private router: Router) {}
+
+  constructor(private languageService: LanguageService,  private translateService: TranslateService,private navCtrl: NavController,private authService: AuthService, private firestore: AngularFirestore, private router: Router) {}
 
   redirigerVersConfig1() {
     this.navCtrl.navigateForward('/config1');
@@ -40,6 +44,14 @@ export class AnnoncesPage implements OnInit {
     this.router.navigate(['/res'])
   }
   ngOnInit() {
+
+    this.languageService.selectedLanguage$.subscribe((language) => {
+      this.selectedLanguage = language;
+      this.translateService.use(language);
+    });
+  
+    
+
     this.loadEmpData();
     this.authService
       .getLoggedInUserObservable()
@@ -73,6 +85,10 @@ export class AnnoncesPage implements OnInit {
           this.telephone = additionalData.telephone;
         }
       });
+    }
+
+    changeLanguage() {
+      this.languageService.setLanguage(this.selectedLanguage);
     }
 
     toggleAdPost(emplacement: any): void {

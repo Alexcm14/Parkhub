@@ -1,9 +1,22 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Mes informations</ion-title>
+    <ion-title>{{ 'Mes_informations' | translate }}</ion-title>
 
+    <!-- Langue actuelle -->
+
+    <!-- Sélection de langue en haut à droite -->
+    <ion-buttons slot="end" class="boutton1">
+      <ion-item>
+        
+        <ion-select [(ngModel)]="selectedLanguage" (ionChange)="changeLanguage()">
+          <ion-select-option value="fr">{{ 'FR' | translate }}</ion-select-option>
+          <ion-select-option value="nl">{{ 'NL' | translate }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
 
 <ion-content fullscreen="true">
 
@@ -16,50 +29,37 @@
     </div>
   </div>
   <input type="file" #fileInput style="display: none" (change)="changeImage($event)" />
-  
-  
 
   <ion-list>
+    
+
     <ion-item lines="full" detail (click)="goPersonal()" class="perso">
       <ion-icon slot="start" name="person-circle"></ion-icon>
-      <ion-label>
-        Mes données personnelles
-      </ion-label>
+      <ion-label>{{ 'Mes_donnees_personnelles' | translate }}</ion-label>
     </ion-item>
-  
+
     <ion-item lines="full" detail (click)="goCar()" class="car">
       <ion-icon slot="start" name="car"></ion-icon>
-      <ion-label>
-        Mes véhicules
-      </ion-label>
+      <ion-label>{{ 'Mes_vehicules' | translate }}</ion-label>
     </ion-item>
 
     <ion-item lines="full" detail class="proprio" (click)="goProprio()">
       <ion-icon slot="start" name="home"></ion-icon>
-      <ion-label>
-           Louer mon parking
-      </ion-label>
+      <ion-label>{{ 'Louer_mon_parking' | translate }}</ion-label>
     </ion-item>
-  
+
     <ion-item lines="full" detail class="pay" (click)="goPay()">
       <ion-icon slot="start" name="card"></ion-icon>
-      <ion-label>
-         Portefeuille
-      </ion-label>
+      <ion-label>{{ 'Methode_de_paiement' | translate }}</ion-label>
     </ion-item>
-  
+
+    <ion-item lines="full" detail class="FAQ" (click)="goConditions()">
+      <ion-icon slot="start" name="help-circle"></ion-icon>
+      <ion-label>{{ 'Conditions_générales' | translate }}</ion-label>
+    </ion-item>
     
-
-
-  <ion-item lines="full" detail class="conditions" (click)="goConditions()">
-    <ion-icon slot="start" name="help-circle"></ion-icon>
-    <ion-label>
-       Conditions générales
-    </ion-label>
-  </ion-item>
-    </ion-list>
+  </ion-list>
 
   <ion-button fill="clear" class="ion-margin" color="danger" (click)="logout()" class="deco">
-    <ion-icon name="log-out" slot="start"></ion-icon>Se déconnecter</ion-button>
-
+    <ion-icon name="log-out" slot="start"></ion-icon>{{ 'Se_deconnecter' | translate }}</ion-button>
 </ion-content>

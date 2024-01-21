@@ -5,7 +5,8 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthService } from 'src/app/services/auth.service';
 import { from, switchMap, take } from 'rxjs';
 import { VehicleSelectionService } from '../shared/vehicule-selection.service';
-
+import { TranslateService } from '@ngx-translate/core';
+import { LanguageService } from 'src/app/language.service';
 declare var google: any;
 
 @Component({
@@ -18,7 +19,7 @@ export class LocalisationPage implements OnInit {
   GoogleAutocomplete: any;
   autocomplete: any;
   autocompleteItems: any = [];
-
+  selectedLanguage: string = 'fr';
   nom: string;
   prenom: string;
   email: string;
@@ -28,7 +29,8 @@ export class LocalisationPage implements OnInit {
 
   @ViewChild('searchbar', { read: ElementRef, static: false }) searchbarRef: ElementRef;
 
-  constructor(private navCtrl: NavController, private zone: NgZone, private authService: AuthService, private firestore: AngularFirestore, public vehicleSelectionService: VehicleSelectionService) { 
+  constructor(
+    private languageService: LanguageService,  private translateService: TranslateService,private navCtrl: NavController, private zone: NgZone, private authService: AuthService, private firestore: AngularFirestore, public vehicleSelectionService: VehicleSelectionService) { 
     this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
     this.autocomplete = { input: '' };
     this.autocompleteItems = [];
@@ -69,6 +71,13 @@ export class LocalisationPage implements OnInit {
   }
 
   ngOnInit(){
+
+    
+this.languageService.selectedLanguage$.subscribe((language) => {
+  this.selectedLanguage = language;
+  this.translateService.use(language);
+});
+
     this.authService.getLoggedInUserObservable().pipe(
       switchMap((userData) => {
         console.log('Raw userData:', userData);
@@ -106,5 +115,9 @@ export class LocalisationPage implements OnInit {
   }
   initMap() {
 
+  }
+
+  changeLanguage() {
+    this.languageService.setLanguage(this.selectedLanguage);
   }
 }

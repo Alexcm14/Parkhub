@@ -1,12 +1,8 @@
 <ion-content fullscreen="true">
-  <h1 class="titel">Réservation(s) en cours</h1>
+  <h1 class="titel">{{ 'Reservations_en_cours' | translate }}</h1>
 
   <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
-    <ion-refresher-content
-      pullingIcon="chevron-down-circle-outline"
-      refreshingSpinner="circles"
-    >
-    </ion-refresher-content>
+    <ion-refresher-content pullingIcon="chevron-down-circle-outline" refreshingSpinner="circles"></ion-refresher-content>
   </ion-refresher>
 
   <ion-card *ngFor="let res of reservationData" class="custom-card">
@@ -16,43 +12,38 @@
       </ion-button>
     </ion-item>
     <ion-card-header>
-      <img [src]="res.Photos" alt="Image de l'emplacement">
+      <img [src]="res.Photos" alt="{{ 'Image_emplacement' | translate }}">
       <h2>{{ res.address }}</h2>
     </ion-card-header>
     <ion-card-content>
 
-      <p *ngIf="res.isDone" class="reservation-done"><strong>Réservation terminée</strong></p>
+      <p *ngIf="res.isDone" class="reservation-done"><strong>{{ 'Reservation_terminee' | translate }}</strong></p>
       <br>
 
-   
-      <p><strong>Prix/heure:</strong> {{ res.price }} EUR</p>
-      <p><strong>Date de réservation:</strong> {{ res.reservationDate.toDate() | date:'mediumDate' }}</p>
-      
+      <p><strong>{{ 'Prix_par_heure' | translate }}:</strong> {{ res.price }} EUR</p>
+      <p><strong>{{ 'Date_reservation' | translate }}:</strong> {{ res.reservationDate.toDate() | date:'mediumDate' }}</p>
 
-      <p><strong>Début de réservation:</strong> {{ res.departureTime }}</p>
-      <p><strong>Fin de réservation:</strong> {{ res.endTime }}</p>
-      <p><strong>De</strong> {{ res.departureTime }} à {{ res.endTime }}</p>
-     <p><strong>Prix total:</strong> {{ calculateTotalPrice(res.reservationDate.toDate() | date:'yyyy-MM-dd', res.departureTime, res.endTime, res.price) }} EUR</p>
-      <p><strong>Durée de la réservation:</strong> {{ calculateDuration(res.departureTime, res.endTime) }}</p>
-      
+      <p><strong>{{ 'Debut_reservation' | translate }}:</strong> {{ res.departureTime }}</p>
+      <p><strong>{{ 'Fin_reservation' | translate }}:</strong> {{ res.endTime }}</p>
+      <p><strong>{{ 'De' | translate }}</strong> {{ res.departureTime }} {{ 'a' | translate }} {{ res.endTime }}</p>
+      <p><strong>{{ 'Prix_total' | translate }}:</strong> {{ calculateTotalPrice(res.reservationDate.toDate() | date:'yyyy-MM-dd', res.departureTime, res.endTime, res.price) }} EUR</p>
+      <p><strong>{{ 'Duree_reservation' | translate }}:</strong> {{ calculateDuration(res.departureTime, res.endTime) }}</p>
+
       <ng-container *ngIf="!res.isPayed && res.countdown !== 'temps écoulé'">
-        <ion-select placeholder="Sélectionnez un véhicule" [(ngModel)]="selectedCar" (ionChange)="onCarChange($event)">
+        <ion-select placeholder="{{ 'Selectionnez_un_vehicule' | translate }}" [(ngModel)]="selectedCar" (ionChange)="onCarChange($event)">
           <ion-select-option *ngFor="let vehicle of vehicles" [value]="vehicle">
             {{ vehicle.marque }} - {{ vehicle.plaque }}
           </ion-select-option>
         </ion-select>
-        
-        
 
-        <ion-button (click)="confirmReservation(res)" class="custom-button">Confirmer la réservation</ion-button>
+        <ion-button (click)="confirmReservation(res)" class="custom-button">{{ 'Confirmer_la_reservation' | translate }}</ion-button>
       </ng-container>
-      <p *ngIf="!res.isPayed" class="countdown"><strong>Temps restant:</strong> {{ res.countdown }}</p>
-        <p *ngIf="res.isPayed" class="reserved"><strong>Réservé!</strong></p>
-        <ion-button *ngIf="res.isPayed && !res.isCancelled && !res.isDone" (click)="cancelReservation(res)" class="cancel-button">
-          Terminer la réservation
-        </ion-button>
-  
+      <p *ngIf="!res.isPayed" class="countdown"><strong>{{ 'Temps_restant' | translate }}:</strong> {{ res.countdown }}</p>
+      <p *ngIf="res.isPayed" class="reserved"><strong>{{ 'Reserve' | translate }}!</strong></p>
+      <ion-button *ngIf="res.isPayed && !res.isCancelled && !res.isDone" (click)="cancelReservation(res)" class="cancel-button">
+        {{ 'Terminer_la_reservation' | translate }}
+      </ion-button>
+
     </ion-card-content>
   </ion-card>
 </ion-content>
-
