@@ -7,9 +7,12 @@
     pointer-events: none;
   }
 
-.title{
-  font-size: 1.5rem;
-}
+  ion-title{
+    font-weight: bold;
+    color: #46d1c8; /* Utilisez la couleur bleue que vous avez mentionnée */
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
   
 ion-item {
   text-align: center;

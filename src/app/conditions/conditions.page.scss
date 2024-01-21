@@ -2,4 +2,36 @@ ion-title{
     font-weight: bold;
     color: #46d1c8; /* Utilisez la couleur bleue que vous avez mentionnée */
     margin-bottom: 20px;
+    margin-top: 20px;
   }
+
+
+.my-custom-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px; /* Ajustez la largeur selon vos besoins */
+    height: 50px; /* Ajustez la hauteur selon vos besoins */
+    background-color: #46d1c8;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .my-custom-button:hover {
+    background-color: #2c958f; /* Couleur au survol */
+  }
+
+  .center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+  }
+
+  .text1{
+    font-size: large;
+  }
+  
