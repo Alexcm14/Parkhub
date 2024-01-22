@@ -447,13 +447,21 @@ updateCountdowns() {
   
 
   loadResData() {
-    // récupérer les données de toutes les collections reservation_data
-    this.firestore.collection('user_data').doc(this.authService.uid).collection('reservation_data').valueChanges().subscribe((resData: any[]) => {
-      if (resData) {
-        console.log('Reservation Data:', resData);
-        this.reservations = resData;
-      }
-    });
+    this.firestore.collection('user_data').doc(this.authService.uid)
+      .collection('reservation_data', ref => ref.orderBy('createdAt', 'desc'))
+      .valueChanges()
+      .subscribe((resData: any[]) => {
+        if (resData && resData.length > 0) {
+          console.log('Reservation Data:', resData);
+          this.reservations = resData;
+        } else {
+          console.log('No reservation data found');
+          this.reservations = []; // Handle case where there are no reservations
+        }
+      }, error => {
+        console.error('Error fetching reservation data:', error);
+        this.reservations = []; // Handle any error during data fetching
+      });
   }
   confirmerReservation(emplacement: any): void {
     const updatedStatus = emplacement.isRese;
