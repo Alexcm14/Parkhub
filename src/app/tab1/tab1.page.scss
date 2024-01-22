@@ -1,3 +1,6 @@
+
+
+
 ion-header ion-toolbar {
   margin-top: 0; /* Réduit la marge supérieure à zéro */
   margin-bottom: 0;
@@ -81,11 +84,13 @@ ion-content {
     border-radius: 25px;
   }
 
-  .bouttonquestion {
-    width: 30px;
-    height: 30px;
-    margin-top: 20px;
-  }
+  .questions{
+    text-align: right;
+    font-size: small;
+    border-radius: 30px !important ;
+    border-width: 10px;
+    background-color: none !important ;
+}
 
   ion-toolbar {
     --background-color: transparent;

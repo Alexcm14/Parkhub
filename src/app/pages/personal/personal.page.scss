@@ -1,4 +1,12 @@
 /* Style général pour la page */
+
+ion-title{
+  font-weight: bold;
+  color: #000000; /* Utilisez la couleur bleue que vous avez mentionnée */
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
 ion-content {
   --background: #f2f2f7; /* Couleur de fond, ajustez selon votre thème */
 }
@@ -45,4 +53,12 @@ ion-back-button {
   ion-content {
     padding: 15px 30px;
   }
+
+  ion-title{
+    font-weight: bold;
+    color: #000000; /* Utilisez la couleur bleue que vous avez mentionnée */
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+
 }

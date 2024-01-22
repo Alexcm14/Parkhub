@@ -4,6 +4,13 @@ ion-content {
     --ion-background-color: #f5f5f5; /* Couleur de fond légèrement grise */
   }
 
+  ion-title{
+    font-weight: bold;
+    color: #000000; /* Utilisez la couleur bleue que vous avez mentionnée */
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+
 .no-payment-methods {
   font-size: 16px;
   text-align: center;

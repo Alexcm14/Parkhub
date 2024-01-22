@@ -1,4 +1,4 @@
-ion-title{
+.titre{
     font-weight: bold;
     color: #46d1c8; /* Utilisez la couleur bleue que vous avez mentionnée */
     margin-bottom: 20px;
@@ -33,5 +33,12 @@ ion-title{
 
   .text1{
     font-size: large;
+  }
+
+  ion-title{
+    font-weight: bold;
+    color: #000000; /* Utilisez la couleur bleue que vous avez mentionnée */
+    margin-bottom: 20px;
+    margin-top: 20px;
   }
   
