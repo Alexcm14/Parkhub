@@ -10,6 +10,9 @@ import { NgModule } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
 import { interval, Subscription, } from 'rxjs';
 import { Url } from 'url';
+import { NavController } from '@ionic/angular';
+
+
 @Component({
   selector: 'app-res',
   templateUrl: './res.page.html',
@@ -31,9 +34,11 @@ export class ResPage implements OnInit {
   endTime: string;
   startTime:string;
   durationHours: string;
+  totalWalletAmount: number = 0;
 
 
   constructor(
+    private navctrl: NavController,
     private cdr: ChangeDetectorRef,
     private alertController: AlertController,
     private modalController: ModalController,
@@ -42,6 +47,10 @@ export class ResPage implements OnInit {
   ) {}
 
   ngOnInit() {
+
+
+    this.calculateTotalWalletAmount();
+    
     // Fetch logged-in user data
   this.authService.getLoggedInUserObservable().pipe(
     switchMap((userData) => {
@@ -82,6 +91,8 @@ export class ResPage implements OnInit {
   
   }
 
+  
+
   loadEmp() {
     this.firestore
       .collection('user_data')
@@ -118,37 +129,48 @@ export class ResPage implements OnInit {
     );
   
     combineLatest(reservationObservables).subscribe(allReservations => {
-      // Flatten the array of arrays
       const mergedReservations = [].concat.apply([], allReservations);
-      console.log('All matched reservations from all users:', mergedReservations);
       this.reservations = mergedReservations;
       console.log('Processed reservations:', this.reservations);
 
+      // Calculate total wallet amount after reservations are loaded
+      this.calculateTotalWalletAmount();
     });
+  };
+
+  
+  
+  goToPayPage() {
+    this.navctrl.navigateForward('/pay'); // Adjust the route as needed
   }
-  
-  
 
 
+  calculateTotalWalletAmount() {
+    // Use the processReservations function to get processed reservations
+    const processedReservations = this.processReservations(this.reservations);
+
+    // Calculate total wallet amount by summing up the totalPrice from processed reservations
+    this.totalWalletAmount = processedReservations.reduce((total, reservation) => total + reservation.totalPrice, 0);
+  }
 
 
   processReservations(reservations: any[]) {
-    return reservations.map(reservation => {
-      const departureTime = new Date(reservation.departureTime);
-      const endTime = new Date(reservation.endTime);
-      const durationHours = (endTime.getHours() - departureTime.getHours()) / (1000 * 60 * 60);
-  
-      return {
-        reservationId: reservation.reservationId,
-        departureTime: departureTime.toLocaleString(),
-        endTime: endTime.toLocaleString(),
-        vehicleMarque: reservation.vehicleMarque,
-        vehiclePlaque: reservation.vehiclePlaque,
-        duration: reservation.duration,
-        subtotal: reservation.subtotal, 
-        total: reservation.total, 
-      };
-    });
-  }
-  
+  return reservations.map(reservation => {
+    const departureTime = new Date(reservation.departureTime);
+    const endTime = new Date(reservation.endTime);
+    const durationHours = (endTime.getHours() - departureTime.getHours()) / (1000 * 60 * 60);
+
+    return {
+      reservationId: reservation.reservationId,
+      departureTime: departureTime.toLocaleString(),
+      endTime: endTime.toLocaleString(),
+      vehicleMarque: reservation.vehicleMarque,
+      vehiclePlaque: reservation.vehiclePlaque,
+      duration: reservation.duration,
+      subtotal: reservation.subtotal,
+      total: reservation.total,
+      totalPrice: reservation.totalPrice,  // Ensure totalPrice is included in the returned object
+    };
+  });
+}
 }

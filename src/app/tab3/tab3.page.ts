@@ -504,36 +504,70 @@ updateCountdowns() {
       );
   }
 
-  cancelReservation(reservation) {
+  cancelReservation(reservation: any) {
     const userId = this.authService.uid;
+  
     if (!userId || !reservation.id) {
       console.error('Error: Missing user ID or reservation ID.');
       return;
     }
   
-    // Update the reservation as cancelled in Firestore
-    this.firestore.collection('user_data').doc(userId)
-      .collection('reservation_data').doc(reservation.id)
-      .update({ isCancelled: true })
-      .then(() => {
-        console.log(`Reservation with ID: ${reservation.id} marked as cancelled successfully!`);
-        
-        // Once marked as cancelled, delete the reservation from Firestore
-        return this.firestore.collection('user_data').doc(userId)
+    // Show confirmation dialog before proceeding
+    this.showCancellationConfirmation().then((confirmed) => {
+      if (confirmed) {
+        // Update the reservation as cancelled in Firestore
+        this.firestore.collection('user_data').doc(userId)
           .collection('reservation_data').doc(reservation.id)
-          .delete();
-      })
-      .then(() => {
-        console.log(`Reservation with ID: ${reservation.id} deleted from Firestore successfully!`);
-        
-        // Remove the reservation from local data to reflect the deletion
-        this.reservationData = this.reservationData.filter(res => res.id !== reservation.id);
-      })
-      .catch(error => {
-        console.error('Error cancelling or deleting reservation:', error);
-      });
+          .update({ isCancelled: true })
+          .then(() => {
+            console.log(`Reservation with ID: ${reservation.id} marked as cancelled successfully!`);
+            
+            // Once marked as cancelled, delete the reservation from Firestore
+            return this.firestore.collection('user_data').doc(userId)
+              .collection('reservation_data').doc(reservation.id)
+              .delete();
+          })
+          .then(() => {
+            console.log(`Reservation with ID: ${reservation.id} deleted from Firestore successfully!`);
+            
+            // Remove the reservation from local data to reflect the deletion
+            this.reservationData = this.reservationData.filter(res => res.id !== reservation.id);
+          })
+          .catch(error => {
+            console.error('Error cancelling or deleting reservation:', error);
+          });
+      }
+    });
   }
   
+  async showCancellationConfirmation(): Promise<boolean> {
+    const confirmAlert = await this.alertController.create({
+      header: 'Confirmation',
+      message: 'Êtes-vous sûr de vouloir annuler la réservation? Des frais de service seront appliqués si l\'annulation n\'est pas effectuée 5 heures avant le début de la réservation.',
+      buttons: [
+        {
+          text: 'Annuler',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            return false; // User cancelled the action
+          }
+        },
+        {
+          text: 'Confirmer',
+          handler: () => {
+            return true; // User confirmed the action
+          }
+        }
+      ]
+    });
   
+    await confirmAlert.present();
   
-}
+    // Wait for the user to interact with the alert
+    const { role } = await confirmAlert.onDidDismiss();
+  
+    // Return false if the user dismissed the alert without choosing an action
+    return role !== 'cancel';
+  }
+}  

@@ -2,5 +2,28 @@ ion-title{
     font-weight: bold;
     color: #000000; /* Utilisez la couleur bleue que vous avez mentionnée */
     margin-bottom: 20px;
-    margin-top: 20px;
+    margin-top: 5px;
   }
+
+  .wallet-amount-container {
+    position: fixed;
+    bottom: 10px; /* Adjust as needed */
+    right: 10px; /* Adjust as needed */
+    z-index: 999; /* Set a high z-index to make sure it's above everything */
+    text-align: center;
+    border-radius: 50%; /* Create a perfect circle */
+    background-color: black; /* Set the background color to black */
+    width: 70px; /* Set the width to create a perfect circle */
+    height: 70px; /* Set the height to create a perfect circle */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .wallet-amount {
+    font-size: 1.5em; /* Adjust as needed */
+    font-weight: bold;
+    color: white; /* Set the text color to white */
+  }
+  
+  

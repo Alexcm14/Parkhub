@@ -1,10 +1,28 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-   
-    <ion-title class="title">Portefeuille</ion-title>
-    <ion-back-button slot="start" color="primary" defaultHref="/tabs/tab5">Retour</ion-back-button>
+    <ion-title>Portefeuille</ion-title>
+    <ion-back-button slot="start" color="primary" defaultHref="tabs/annonces"></ion-back-button>
   </ion-toolbar>
 </ion-header>
+
+<ion-content fullscreen="true">
+
+  <!-- Display the wallet amount here -->
+
+  <div class="montant-container">
+    <ion-label class="montant"> Montant disponible </ion-label>
+  </div>
+
+  <div class="wallet-amount-container">
+    <ion-label class="wallet-amount">{{ totalWalletAmount }} EUR</ion-label>
+  </div>
+
+  <div class="transfert-container">
+    <ion-label class="transfert"> Transférer vers compte bancaire </ion-label>
+  </div>
+
+ 
+
 
 <ion-content [fullscreen]="true" class="ion-padding">
  

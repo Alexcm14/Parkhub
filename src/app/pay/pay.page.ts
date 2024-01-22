@@ -4,6 +4,7 @@ import { PaypopupPage } from '../paypopup/paypopup.page';
 import { SharedService } from '../shared.service';
 import { RouterLink } from '@angular/router';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -14,12 +15,13 @@ import { Router } from '@angular/router';
 export class PayPage implements OnInit {
   hasPaymentMethods = false;
   isAddPaymentMethodPopupOpen = false;
+  totalWalletAmount: number;
 
-  constructor(private router: Router, public popoverController: PopoverController, private sharedService: SharedService) { }
+  constructor(private route: ActivatedRoute, private router: Router, public popoverController: PopoverController, private sharedService: SharedService) { }
 
   openAddPaymentMethodPopup(ev: any) {
     this.presentPopover(ev);
-    this.router.navigate(['tabs/tab5']);
+    
   }
 
   async presentPopover(ev: any) {
@@ -43,6 +45,9 @@ export class PayPage implements OnInit {
   }
 
   ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      this.totalWalletAmount = parseFloat(params['totalWalletAmount']) || 0;
+    });
   }
 
 }
