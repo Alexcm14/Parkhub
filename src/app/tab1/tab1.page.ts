@@ -17,6 +17,7 @@ import { UserBuildConditionals } from 'ionicons/dist/types/stencil-public-runtim
 import { AlertController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { LanguageService } from 'src/app/language.service';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 declare var google: any;
 
@@ -61,6 +62,7 @@ export class Tab1Page {
   email: string;
   motDePasse: string;
   telephone: string;
+  termsAccepted: boolean = false;
 
   selectedMarkerData: any; // Type it based on your marker data structure
 
@@ -75,7 +77,7 @@ export class Tab1Page {
 
  
 
- constructor(private languageService: LanguageService,  private translateService: TranslateService, private alertController: AlertController, private popoverController: PopoverController, private modalController: ModalController, private router: Router, private zone: NgZone, private authService: AuthService, private firestore: AngularFirestore) {
+ constructor(  private auth: AngularFireAuth, private languageService: LanguageService,  private translateService: TranslateService, private alertController: AlertController, private popoverController: PopoverController, private modalController: ModalController, private router: Router, private zone: NgZone, private authService: AuthService, private firestore: AngularFirestore) {
   // Déclarations et initialisations dans le constructeur
 
   this.endTimeSpan = document.createElement('div');
@@ -367,26 +369,43 @@ ionViewDidEnter(){
 }
 
 async showTermsAndConditionsPopup() {
-  // Vérifiez si l'utilisateur a déjà accepté les conditions générales
-  if (!localStorage.getItem('readenTerms')) {
-    const alert = await this.alertController.create({
-      header: 'Conditions Générales',
-      message: 'Veuillez lire et accepter les conditions générales.',
-      buttons: [
-        {
-          text: 'Lire',
-          handler: () => {
-            // Rediriger l'utilisateur vers la page "Conditions"
-            this.router.navigate(['/conditions']);
-          },
-        },
-      ],
-    });
+  const user = await this.auth.currentUser;
 
-    await alert.present();
+  if (user) {
+    const userId = user.uid;
+
+    try {
+      const userData: any = await this.firestore.collection('user_data').doc(userId).get().toPromise();
+
+      const termsAccepted = userData?.data()?.termsAccepted || false;
+
+      // Check if terms have been accepted, if not, show the popup
+      if (!termsAccepted) {
+        const alert = await this.alertController.create({
+          header: 'Conditions Générales',
+          message: 'Veuillez lire et accepter les conditions générales pour poursuivre.',
+          buttons: [
+            {
+              text: 'Lire',
+              handler: () => {
+                // Redirect the user to the "Conditions" page
+                this.router.navigate(['/conditions']);
+              },
+            },
+          ],
+        });
+
+        await alert.present();
+      }
+    } catch (error) {
+      console.error('Error fetching user data from Firestore:', error);
+    }
+  } else {
+    console.error('User not authenticated.');
   }
 }
-  
+
+
   
   // CARTE GOOGLE MAPS 
   
