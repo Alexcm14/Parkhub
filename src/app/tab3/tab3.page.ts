@@ -12,6 +12,7 @@ import { interval, Subscription, } from 'rxjs';
 import { NavController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { LanguageService } from 'src/app/language.service';
+import { LoadingController } from '@ionic/angular';
 
 
 
@@ -48,6 +49,7 @@ export class Tab3Page implements OnInit {
     private navCtrl: NavController,
     private translateService: TranslateService,
     private languageService: LanguageService,
+    private loadingController: LoadingController,
   ) {}
 
   navigateToTab2() {
@@ -64,12 +66,13 @@ export class Tab3Page implements OnInit {
     this.languageService.setLanguage(this.selectedLanguage);
   }
 
-  ngOnInit() {
-
+   ngOnInit() {
+    
     this.languageService.selectedLanguage$.subscribe((language) => {
       this.selectedLanguage = language;
       this.translateService.use(language);
     });
+    
 
 
     this.timerSubscription = interval(10000).subscribe(() => {
@@ -147,11 +150,6 @@ export class Tab3Page implements OnInit {
       }
     });
 
-
-
-
-
-   
 }
 
 
@@ -265,9 +263,12 @@ updateCountdowns() {
   
   
   
+  ionViewDidEnter() {
+    // This will be called every time the view is entered
+    this.loadResData()
+  }
 
-
-
+  
 
 
  
