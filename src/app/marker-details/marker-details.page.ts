@@ -23,7 +23,7 @@ import firebase from 'firebase/compat/app';
     <p style="font-size: 13px; color: #333; margin-bottom: 12px;"><strong style="color: #46d1c8;"><ion-icon name="pencil"></ion-icon> Description:</strong> {{ markerData.description }}</p>
     
     <p style="font-size: 13px; color: #333; margin-bottom: 12px;"><strong style="color: #46d1c8;"><ion-icon name="car"></ion-icon> Autorisé aux:</strong> {{ markerData.vehicleType }} </p>
-    <p style="font-size: 13px; color: #333; margin-bottom: 12px;"><strong style="color: #46d1c8;"><ion-icon name="card"></ion-icon> Prix:</strong> {{ markerData.price }} €</p>
+    <p style="font-size: 13px; color: #333; margin-bottom: 12px;"><strong style="color: #46d1c8;"><ion-icon name="card"></ion-icon> Prix:</strong> {{ (markerData.price * 1.21).toFixed(2) }} € TVAC</p>
 
 
     <ion-item style="margin-bottom: 8px;">

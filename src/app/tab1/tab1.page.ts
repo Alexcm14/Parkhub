@@ -211,7 +211,7 @@ addMarkersToMap() {
               strokeWeight: 2,
             },
             label: {
-              text: `${data.Prix} €`,  // Afficher le prix sur le marqueur            
+              text: `${(data.Prix * 1.21).toFixed(2)} €`,  // Afficher le prix sur le marqueur            
               color: 'black',  // Couleur du texte            
               fontSize: '9px',  // Taille de la police            
               fontWeight: 'bold',  // Poids de la police
