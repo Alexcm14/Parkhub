@@ -26,6 +26,10 @@
 
   <ion-button (click)="afficherSelections()">{{ 'Afficher_la_selection' | translate }}</ion-button>
 
+  <p>Sur le prix choisi, Parkhub prendra une commission de 20 %.</p>
+
+
+
   <ion-card *ngIf="isSelectionsAffichees">
     <ion-card-header *ngIf="isSelectionsAffichees">{{ 'Prix_selectionne' | translate }}</ion-card-header>
     <ion-card-content *ngIf="isSelectionsAffichees">

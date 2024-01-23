@@ -6,7 +6,7 @@
 </ion-header>
 
 <div class="wallet-amount-container" (click)="goToPayPage()">
-  <ion-label class="wallet-amount">{{ totalWalletAmount }} EUR</ion-label>
+  <ion-label class="wallet-amount">{{ (totalWalletAmount * 0.8).toFixed(2) }} EUR</ion-label>
 </div>
 
 <ion-content fullscreen="true">
@@ -21,7 +21,7 @@
       <p>Le {{ reservation.day }} de: {{ reservation.departureTime }} à  {{ reservation.endTime }}</p>
       <p>Vehicule: {{ reservation.vehicleMarque }} - {{ reservation.vehiclePlaque }}</p>
       <p>Durée: {{ reservation.duration }} </p>
-      <p>Prix total: {{ reservation.totalPrice}} EUR </p>
+      <p>Prix total: {{ (reservation.totalPrice * 0.8).toFixed(2) }} EUR </p>
      
     </ion-card-content>
   </ion-card>

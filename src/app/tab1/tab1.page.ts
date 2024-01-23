@@ -211,7 +211,7 @@ addMarkersToMap() {
               strokeWeight: 2,
             },
             label: {
-              text: `${data.Prix} €`,  // Afficher le prix sur le marqueur            
+              text: `${(data.Prix * 1.21).toFixed(2)} €`,  // Afficher le prix sur le marqueur            
               color: 'black',  // Couleur du texte            
               fontSize: '9px',  // Taille de la police            
               fontWeight: 'bold',  // Poids de la police
@@ -332,9 +332,9 @@ selectSearchResult(item) {
         icon: {
           path: google.maps.SymbolPath.CIRCLE,
           scale: 7, // Taille du cercle
-          fillColor: '#46d1c8', // Couleur bleue
+          fillColor: '#000000', // Couleur bleue
           fillOpacity: 0.7, // Opacité de remplissage
-          strokeColor: '#46d1c8', // Couleur de la bordure
+          strokeColor: '#000000', // Couleur de la bordure
           strokeWeight: 2, // Épaisseur de la bordure
         },
       });

@@ -232,7 +232,7 @@ updateCountdowns() {
     if (!res.isCancelled) { // Check if not already canceled
       if (!res.isPayed &&res.createdAt && typeof res.createdAt.seconds === 'number') {
         const createdAtTime = new Date(res.createdAt.seconds * 1000).getTime();
-        const timeDiff = createdAtTime + 5 * 60 * 200 - now; // 5 minutes in milliseconds
+        const timeDiff = createdAtTime + 5 * 60 * 1000 - now; // 5 minutes in milliseconds
 
         if (timeDiff > 0) {
           const minutes = Math.floor((timeDiff / (1000 * 60)) % 60);
@@ -305,14 +305,9 @@ updateCountdowns() {
     const alert = await this.alertController.create({
       header: 'Confirmation de la réservation',
       inputs: [
-        {
-          name: 'selectedCar',
-          type: 'text', // Vous pouvez changer cela en 'hidden' si vous ne voulez pas afficher le véhicule sélectionné.
-          value: this.selectedCar, // Assurez-vous que this.selectedCar contient la valeur que vous voulez enregistrer.
-          disabled: true // Rendre le champ non modifiable.
-        }
+        
       ],
-      message: `Confirmez-vous la réservation de ${reservation.address} avec le véhicule ${this.selectedCar ? this.selectedCar.marque + ' ' + this.selectedCar.plaque : '' }  pour un total de ${totalPrice} EUR ?`,
+      message: `Confirmez-vous la réservation de ${reservation.address} avec le véhicule ${this.selectedCar ? this.selectedCar.marque + ' ' + this.selectedCar.plaque : '' }  pour un total de ${(totalPrice * 1.21).toFixed(2)} EUR ?`,
       buttons: [
         {
           text: 'Annuler',

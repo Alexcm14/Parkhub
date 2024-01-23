@@ -31,7 +31,7 @@
       <p><strong>{{ 'Debut_reservation' | translate }}:</strong> {{ res.departureTime }}</p>
       <p><strong>{{ 'Fin_reservation' | translate }}:</strong> {{ res.endTime }}</p>
       <p><strong>{{ 'De' | translate }}</strong> {{ res.departureTime }} {{ 'a' | translate }} {{ res.endTime }}</p>
-      <p><strong>{{ 'Prix_total' | translate }}:</strong> {{ calculateTotalPrice(res.reservationDate.toDate() | date:'yyyy-MM-dd', res.departureTime, res.endTime, res.price) }} EUR</p>
+      <p><strong>{{ 'Prix_total' | translate }}:</strong> {{ (calculateTotalPrice(res.reservationDate.toDate() | date:'yyyy-MM-dd', res.departureTime, res.endTime, res.price) * 1.21).toFixed(2) }} EUR</p>
       <p><strong>{{ 'Duree_reservation' | translate }}:</strong> {{ calculateDuration(res.departureTime, res.endTime) }}</p>
 
       <ng-container *ngIf="!res.isPayed && res.countdown !== 'temps écoulé'">

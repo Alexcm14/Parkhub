@@ -48,7 +48,7 @@ export class LoginPage implements OnInit {
 		if (user) {
 			this.router.navigateByUrl('/tabs/tab1', { replaceUrl: true });
 		} else {
-			this.showAlert('Registration failed', 'Please try again!');
+			this.showAlert('Erreur', 'Veuillez réessayer en fournissant une adresse e-mail et un mot de passe.');
 		}
 	}
 
@@ -62,7 +62,7 @@ export class LoginPage implements OnInit {
 		if (user) {
 			this.router.navigateByUrl('/tabs/tab1', { replaceUrl: true });
 		} else {
-			this.showAlert('Login failed', 'Please try again!');
+			this.showAlert('Échec de la connexion', 'Veuillez réessayer.');
 		}
 	}
 
