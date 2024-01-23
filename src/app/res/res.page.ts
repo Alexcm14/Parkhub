@@ -11,6 +11,9 @@ import { ChangeDetectorRef } from '@angular/core';
 import { interval, Subscription, } from 'rxjs';
 import { Url } from 'url';
 import { NavController } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
+import { LanguageService } from 'src/app/language.service';
+
 
 
 @Component({
@@ -35,9 +38,12 @@ export class ResPage implements OnInit {
   startTime:string;
   durationHours: string;
   totalWalletAmount: number = 0;
+  selectedLanguage: string = 'fr';
 
 
   constructor(
+    private languageService: LanguageService,  private translateService: TranslateService,
+
     private navctrl: NavController,
     private cdr: ChangeDetectorRef,
     private alertController: AlertController,
@@ -47,6 +53,11 @@ export class ResPage implements OnInit {
   ) {}
 
   ngOnInit() {
+
+    this.languageService.selectedLanguage$.subscribe((language) => {
+      this.selectedLanguage = language;
+      this.translateService.use(language);
+    });
 
 
     this.calculateTotalWalletAmount();
@@ -90,7 +101,9 @@ export class ResPage implements OnInit {
   });
   
   }
-
+  changeLanguage() {
+    this.languageService.setLanguage(this.selectedLanguage);
+  }
   
 
   loadEmp() {

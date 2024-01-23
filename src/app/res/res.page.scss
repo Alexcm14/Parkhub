@@ -1,9 +1,19 @@
 ion-title{
+  font-size: 13px;
     font-weight: bold;
     color: #000000; /* Utilisez la couleur bleue que vous avez mentionnée */
     margin-bottom: 20px;
-    margin-top: 5px;
-  }
+    margin-top:5px;
+}
+
+ion-card {
+  border: 2px solid #ADD8E6; /* Light blue border */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+}
+ion-card-title {
+  
+  font-size: 12px;
+}
 
   .wallet-amount-container {
     position: fixed;

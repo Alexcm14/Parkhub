@@ -10,45 +10,55 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthService } from 'src/app/services/auth.service';
 import { take } from 'rxjs/operators';
 import firebase from 'firebase/compat/app';
+import { TranslateService } from '@ngx-translate/core';
+import { LanguageService } from 'src/app/language.service';
 
 
 
 @Component({
   selector: 'app-marker-details',
   template: `
-  <ion-content style="padding: 20px; max-width: 600px ; margin: auto; font-family: Arial, sans-serif;">
-    <!-- Affichez les détails du marqueur ici -->
-    <img [src]="markerData.Photos" alt="Image de l'emplacement">
-    <p style="font-size: 13px; color: #333; margin-bottom: 12px;"><strong style="color: #46d1c8;"><ion-icon name="location"></ion-icon> Adresse:</strong> {{ markerData.address }} - {{ markerData.parkingType }}</p>
-    <p style="font-size: 13px; color: #333; margin-bottom: 12px;"><strong style="color: #46d1c8;"><ion-icon name="pencil"></ion-icon> Description:</strong> {{ markerData.description }}</p>
-    
-    <p style="font-size: 13px; color: #333; margin-bottom: 12px;"><strong style="color: #46d1c8;"><ion-icon name="car"></ion-icon> Autorisé aux:</strong> {{ markerData.vehicleType }} </p>
-    <p style="font-size: 13px; color: #333; margin-bottom: 12px;"><strong style="color: #46d1c8;"><ion-icon name="card"></ion-icon> Prix:</strong>{{ (markerData.price * 1.21).toFixed(2) }} € TVAC</p>
+  <ion-content style="padding: 20px; max-width: 600px; margin: auto; font-family: Arial, sans-serif;">
+  <img [src]="markerData.Photos" alt="{{ 'Image de l\'emplacement' | translate }}">
+  <p style="font-size: 13px; color: #333; margin-bottom: 12px;">
+    <strong style="color: #46d1c8;"><ion-icon name="location"></ion-icon> {{ 'Adresse' | translate }}:</strong> {{ markerData.address }} - {{ markerData.parkingType }}
+  </p>
+  <p style="font-size: 13px; color: #333; margin-bottom: 12px;">
+    <strong style="color: #46d1c8;"><ion-icon name="pencil"></ion-icon> {{ 'Description' | translate }}:</strong> {{ markerData.description }}
+  </p>
+  
+  <p style="font-size: 13px; color: #333; margin-bottom: 12px;">
+    <strong style="color: #46d1c8;"><ion-icon name="car"></ion-icon> {{ 'Autorisé aux' | translate }}:</strong> {{ markerData.vehicleType }}
+  </p>
+  
+  <p style="font-size: 13px; color: #333; margin-bottom: 12px;">
+    <strong style="color: #46d1c8;"><ion-icon name="card"></ion-icon> {{ 'Prix' | translate }}:</strong> {{ (markerData.price * 1.21).toFixed(2) }} € TVAC
+  </p>
 
+  <ion-item style="margin-bottom: 8px;">
+    <ion-label position="stacked" style="color: #32a39b;"><ion-icon name="calendar-number"></ion-icon> {{ 'Jour de la réservation' | translate }}</ion-label>
+    <ion-select placeholder="{{ 'Sélectionnez un jour' | translate }}" [(ngModel)]="selectedDay" (ionChange)="onDayChange(selectedDay)" style="font-size: 13px;">
+      <ion-select-option *ngFor="let day of markerData.jours" [value]="day">{{ day }}</ion-select-option>
+    </ion-select>
+  </ion-item>
 
-    <ion-item style="margin-bottom: 8px;">
-      <ion-label position="stacked" style="color: #32a39b;"><ion-icon name="calendar-number"></ion-icon> Jour de la réservation</ion-label>
-      <ion-select placeholder="Sélectionnez un jour" [(ngModel)]="selectedDay" (ionChange)="onDayChange(selectedDay)" style="font-size: 13px;">
-        <ion-select-option *ngFor="let day of markerData.jours" [value]="day">{{ day }}</ion-select-option>
-      </ion-select>
-    </ion-item> 
+  <ion-item style="margin-bottom: 8px;">
+    <ion-label position="stacked" style="color: #32a39b;"><ion-icon name="time"></ion-icon> {{ 'Heure de départ' | translate }}</ion-label>
+    <ion-select placeholder=" " [(ngModel)]="departureTime" (ionChange)="handleDepartureTimeChange(departureTime)" style="font-size: 13px;">
+      <ion-select-option *ngFor="let hour of availableHours" [value]="hour">{{ hour }}</ion-select-option>
+    </ion-select>
+  </ion-item>
 
-    <ion-item style="margin-bottom: 8px;">
-      <ion-label position="stacked" style="color: #32a39b;"><ion-icon name="time"></ion-icon> Heure de départ</ion-label>
-      <ion-select placeholder="Sélectionnez l'heure de départ" [(ngModel)]="departureTime" (ionChange)="handleDepartureTimeChange(departureTime)" style="font-size: 13px;">
-        <ion-select-option *ngFor="let hour of availableHours" [value]="hour">{{ hour }}</ion-select-option>
-      </ion-select>
-    </ion-item>
+  <ion-item style="margin-bottom: 8px;">
+    <ion-label position="stacked" style="color: #32a39b;"><ion-icon name="time"></ion-icon> {{ 'Heure de fin' | translate }}</ion-label>
+    <ion-select placeholder=" " [(ngModel)]="endTime" style="font-size: 13px;">
+      <ion-select-option *ngFor="let hour of availableEndHours" [value]="hour">{{ hour }}</ion-select-option>
+    </ion-select>
+  </ion-item>
 
-    <ion-item style="margin-bottom: 8px;">
-      <ion-label position="stacked" style="color: #32a39b;"><ion-icon name="time"></ion-icon> Heure de fin</ion-label>
-      <ion-select placeholder="Sélectionnez l'heure de fin" [(ngModel)]="endTime" style="font-size: 13px;">
-        <ion-select-option *ngFor="let hour of availableEndHours" [value]="hour">{{ hour }}</ion-select-option>
-      </ion-select>
-    </ion-item>
+  <ion-button (click)="reserve()" style="font-size: 16px; height: 50px; --background: #46d1c8; margin-top: 10px; display: flex; text-align : center; justify-content: center; margin-bottom: 20px; ">{{ 'Réserver' | translate }}</ion-button>
+</ion-content>
 
-    <ion-button (click)="reserve()" style="font-size: 16px; height: 50px; --background: #46d1c8; margin-top: 10px; display: flex; text-align : center: justify-content: center; margin-bottom: 20px; ">Réserver</ion-button>
-  </ion-content>
 `,
 })
 export class MarkerDetailsPage {
@@ -64,12 +74,19 @@ export class MarkerDetailsPage {
   reservedHoursByDay: { [day: string]: string[] } = {};
   reservations: any;
   daysOfWeek = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
+  selectedLanguage: string = 'fr';
 
-  constructor(  private firestore: AngularFirestore,
+  constructor(  private languageService: LanguageService,  private translateService: TranslateService,
+    private firestore: AngularFirestore,
     private authService: AuthService, private router: Router, private popoverController: PopoverController, private alertController: AlertController) {}
 
    
     ngOnInit() {
+      this.languageService.selectedLanguage$.subscribe((language) => {
+        this.selectedLanguage = language;
+        this.translateService.use(language);
+      });
+
       console.log('Component initialized');
       this.logCurrentDateTime();
   
@@ -129,6 +146,9 @@ export class MarkerDetailsPage {
       this.generateAvailableHours(newDay);
     }
   
+    changeLanguage() {
+      this.languageService.setLanguage(this.selectedLanguage);
+    }
 
   
     checkReservationsAndUpdateStatus() {

@@ -64,10 +64,10 @@ export class Tab1Page {
   telephone: string;
   termsAccepted: boolean = false;
 
-  selectedMarkerData: any; // Type it based on your marker data structure
+  selectedMarkerData: any; 
 
 
-  // Nouvelle propriété pour stocker le prix du marqueur sélectionné
+ 
   selectedMarkerPrice: number;
  
   
@@ -78,7 +78,7 @@ export class Tab1Page {
  
 
  constructor(  private auth: AngularFireAuth, private languageService: LanguageService,  private translateService: TranslateService, private alertController: AlertController, private popoverController: PopoverController, private modalController: ModalController, private router: Router, private zone: NgZone, private authService: AuthService, private firestore: AngularFirestore) {
-  // Déclarations et initialisations dans le constructeur
+  
 
   this.endTimeSpan = document.createElement('div');
   this.endTimeSpan.id = 'endTimeSpan';
@@ -103,7 +103,7 @@ ngOnInit() {
     this.translateService.use(language);
   });
   
-  // Fetch logged-in user data
+  // Fetch données user
   this.authService.getLoggedInUserObservable().pipe(
     switchMap((userData) => {
       console.log('Raw userData:', userData);
@@ -117,7 +117,7 @@ ngOnInit() {
         console.log('Logged-in UID:', this.authService.uid);
         console.log('Logged-in Email:', this.email);
 
-        // Retourne les données supplémentaires de Firestore
+        // Retourne les données de Firestore
         return this.firestore.collection('user_data').doc(this.authService.uid).valueChanges();
       } else {
         this.email = '';
@@ -146,11 +146,11 @@ changeLanguage() {
 
 
 loadCarData() {
-  // Retrieve data from the 'car_data' collection
+  
   this.firestore.collection('user_data').doc(this.authService.uid).collection('car_data').valueChanges().subscribe((carData: any) => {
     if (carData) {
       console.log('Car Data:', carData);
-      // Update the list of vehicles
+      
       this.vehicles = carData;
     }
   });
@@ -158,9 +158,9 @@ loadCarData() {
 
 
 loadMarkers() {
-  console.log('loadMarkers called');
+  console.log('loadMarkers appelé');
 
-  // Assuming that 'emplacement_data' collection contains a field 'userUid'
+  
   this.firestore.collectionGroup('emplacement_data')
     .snapshotChanges()
     .subscribe(
@@ -168,7 +168,7 @@ loadMarkers() {
         this.markers = snapshotChanges.map(doc => {
           const data = doc.payload.doc.data() as any;
           const id = doc.payload.doc.id;
-          // Ensure data includes the userUid
+          // data contient le userId
           if (data && typeof data === 'object') {
             return { id, userUid: data.userUid, ...data };
           } else {
@@ -176,11 +176,11 @@ loadMarkers() {
             return { id };
           }
         });
-        console.log('Received data from Firebase:', this.markers);
+        console.log('Data recu de firebase:', this.markers);
         this.addMarkersToMap();
       },
       (error) => {
-        console.error('Error fetching data from Firebase:', error);
+        console.error('Error', error);
       }
     );
 }
@@ -189,7 +189,7 @@ loadMarkers() {
 
 
 addMarkersToMap() {
-  console.log('addMarkersToMap called');
+  console.log('addMarkersToMap appellé');
   this.zone.run(() => {
     for (const data of this.markers) {
       if (data.Adresse && data.isAdPosted) {
@@ -206,14 +206,14 @@ addMarkersToMap() {
               scale: 14,
               fillColor: '#87CEEB', // Couleur bleue pour tous les marqueurs
               fillOpacity:  1, 
-              strokeColor: '#000000', // Couleur noir pour la bordure de tous les marqueurs
+              strokeColor: '#000000', // Couleur noir pour la bordure
               strokeOpacity: 1, 
               strokeWeight: 2,
             },
             label: {
               text: `${(data.Prix * 1.21).toFixed(2)} €`,  // Afficher le prix sur le marqueur            
               color: 'black',  // Couleur du texte            
-              fontSize: '9px',  // Taille de la police            
+              fontSize: '9px',  // taille de la police            
               fontWeight: 'bold',  // Poids de la police
         }});
 
@@ -234,7 +234,7 @@ addMarkersToMap() {
               Photos : data.Photos,
             };
 
-            console.log('Marker Data being sent to popover:', markerData);
+            console.log('Marker Details ouvert:', markerData);
 
             const popover = await this.popoverController.create({
               component: MarkerDetailsPage,
@@ -249,7 +249,7 @@ addMarkersToMap() {
 
           this.markers.push(marker);
         }).catch(error => {
-          console.error('Error geocoding address:', data.Adresse, error);
+          console.error('Error geocoding :', data.Adresse, error);
         });
       }
     }
@@ -368,6 +368,8 @@ ionViewDidEnter(){
   this.showTermsAndConditionsPopup();
 }
 
+
+
 async showTermsAndConditionsPopup() {
   const user = await this.auth.currentUser;
 
@@ -441,6 +443,7 @@ async showTermsAndConditionsPopup() {
  //   this.addMarkersToMap(this.markers);
   
  // }   
+ 
   }
 
   closeAllInfoWindows() {

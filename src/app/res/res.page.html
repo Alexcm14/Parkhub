@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Mes emplacements réservés</ion-title>
+    <ion-title>{{ 'Reservations' | translate }}</ion-title>
     <ion-back-button slot="start" color="primary" defaultHref="tabs/annonces"></ion-back-button>
   </ion-toolbar>
 </ion-header>
@@ -13,22 +13,13 @@
 
   <ion-card *ngFor="let reservation of reservations">
     <ion-card-header>
-      <ion-card-title>Numéro de réservation: {{ reservation.reservationId }}</ion-card-title>
+      <ion-card-title>{{ 'Numéro de réservation' | translate }}: {{ reservation.reservationId }}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-
-      
-      <p>Le {{ reservation.day }} de: {{ reservation.departureTime }} à  {{ reservation.endTime }}</p>
-      <p>Vehicule: {{ reservation.vehicleMarque }} - {{ reservation.vehiclePlaque }}</p>
-      <p>Durée: {{ reservation.duration }} </p>
-      <p>Prix total: {{ (reservation.totalPrice * 0.8).toFixed(2) }} EUR </p>
-     
+      <p>{{ 'Le' | translate }} {{ reservation.day }} {{ 'de' | translate }}: {{ reservation.departureTime }} {{ 'à' | translate }} {{ reservation.endTime }}</p>
+      <p>{{ 'Vehicule' | translate }}: {{ reservation.vehicleMarque }} - {{ reservation.vehiclePlaque }}</p>
+      <p>{{ 'Durée' | translate }}: {{ reservation.duration }} </p>
+      <p>{{ 'Prix total' | translate }}: {{ (reservation.totalPrice * 0.8).toFixed(2) }} EUR </p>
     </ion-card-content>
   </ion-card>
-  
-  
-    
-  
-  
-
-  </ion-content>
+</ion-content>
