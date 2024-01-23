@@ -67,7 +67,9 @@ export class Tab3Page implements OnInit {
   }
 
    ngOnInit() {
+
     
+    this.ionViewDidEnter();
     this.languageService.selectedLanguage$.subscribe((language) => {
       this.selectedLanguage = language;
       this.translateService.use(language);
