@@ -1,7 +1,7 @@
 // tab2.page.ts
 
 import { Component } from '@angular/core';
-import { switchMap, take } from 'rxjs';
+import { switchMap, take, from, map } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthService } from 'src/app/services/auth.service';
 import { FirebaseService } from '../services/firebase.service';
@@ -21,6 +21,9 @@ export class Tab2Page {
   messages: any[] = [];
   conversationId: string;
   newMessage: string = '';
+  myProfilePic: string;
+  otherUserProfilePic: string;
+  reservationData: any[];
 
   constructor(
     private authService: AuthService,
@@ -30,6 +33,71 @@ export class Tab2Page {
   ) {}
 
   ngOnInit() {
+    
+     this.authService.getLoggedInUserObservable().pipe(
+      switchMap((userData) => {
+        console.log('Raw userData:', userData);
+
+        if (userData) {
+          const userId = this.authService.uid || userData['uid']; // Access the UID property
+
+          console.log('User ID:', userId);
+
+          // Retrieve additional data from Firestore
+          return this.firestore.collection('user_data').doc(userId).valueChanges();
+        } else {
+          console.log('User is not logged in');
+          return from([]); // Empty observable
+        }
+      }),
+      take(1)
+    ).subscribe((additionalData: any) => {
+      console.log('Processed additionalData:', additionalData);
+
+      if (additionalData) {
+        this.nom = additionalData.nom;
+        this.prenom = additionalData.prenom;
+        this.telephone = additionalData.telephone;
+
+      } else {
+        console.log('User data not found in Firestore.');
+      }
+    });
+    
+    // Fetch logged-in user data
+    this.authService.getLoggedInUserObservable().pipe(
+      take(1)
+    ).subscribe((userData) => {
+      console.log('Raw userData:', userData);
+
+      if (userData) {
+        this.email = userData.email;
+        this.motDePasse = userData.motDePasse;
+        console.log('User is logged in:', this.email, this.authService.uid);
+
+        // Connecte le UID et EMAIL
+        console.log('Logged-in UID:', this.authService.uid);
+        console.log('Logged-in Email:', this.email);
+
+        this.firestore.collection('user_data').doc(this.authService.uid).collection('reservation_data').snapshotChanges().pipe(
+          take(1),
+          map(actions => actions.map(a => {
+            const data = a.payload.doc.data();
+            const id = a.payload.doc.id;
+            return { id, ...data };
+          }))
+        ).subscribe((reservationData: any[]) => {
+          console.log('Processed reservationData:', reservationData);
+          this.reservationData = reservationData;
+      
+        
+        });
+      } else {
+        this.email = '';
+        this.motDePasse = '';
+        console.log('User is not logged in');
+      }
+    });
     this.subscribeToUserData();
     this.setupConversationAndMessages();
   }
@@ -76,7 +144,8 @@ export class Tab2Page {
     const messageData = {
       content: messageContent,
       timestamp: new Date().toISOString(), // Convertir Date en chaîne ISO
-      sender: this.authService.uid
+      sender: this.authService.uid,
+      senderName: this.prenom + ' ' + this.nom, // Ajout du nom de l'expéditeur
     };
 
     this.firebaseService.sendMessage(this.conversationId, messageData.sender, messageData.content, messageData.timestamp)

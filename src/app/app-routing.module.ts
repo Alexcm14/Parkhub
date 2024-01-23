@@ -11,6 +11,7 @@ import { AuthGuard } from '../app/services/auth.guard';
 const redirectLoggedInToChat = () => redirectLoggedInTo(['/tab1']);
 
 const routes: Routes = [
+  
   {
     path: '',
     loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule),
@@ -103,6 +104,7 @@ const routes: Routes = [
     path: 'proprio',
     loadChildren: () => import('./proprio/proprio.module').then( m => m.ProprioPageModule)
   },
+
   
 
 

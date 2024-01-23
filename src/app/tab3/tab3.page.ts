@@ -50,6 +50,7 @@ export class Tab3Page implements OnInit {
 
   navigateToTab2(reservation) {
     let conversationData = {
+      currentUserId: this.authService.uid,
       otherUserId: reservation.ownerId
     };
     this.router.navigate(['tabs/tab2', conversationData]);
@@ -133,13 +134,8 @@ export class Tab3Page implements OnInit {
         console.log('User is not logged in');
       }
     });
-
-
-
-
-
-   
   }
+  
   updateCountdowns() {
     const now = new Date().getTime();
     this.reservationData.forEach(res => {
